@@ -1,0 +1,153 @@
+# lookmatch: project brief for AI assistants
+
+## What this is
+lookmatch is an open-source Python tool that matches the color look of a
+reference photo and applies it to the user's photos. It exports the look to
+multiple editing apps. It has three interfaces over one engine:
+1. Python package (the engine, all real logic lives here)
+2. CLI: `lookmatch fit REF_IMAGE INPUT_DIR --name NAME`
+3. Agent layer: a SKILL.md (Claude Code, Codex, Cursor) and an optional MCP server
+
+## Core principle (most important rule)
+Every number in the output comes from measurement or optimization.
+No LLM, vision model, or neural network ever produces slider values,
+curves, or LUT data. The agent layer only orchestrates, reads reports,
+and picks options. Results must be deterministic (fixed random seed).
+
+## Audience and product goals
+lookmatch should be scientific, safe, quick, and easy to use. It is not only
+for developers: photographers who have never used a terminal should be able
+to learn it and use it.
+- Every user-facing text (CLI help, errors, warnings, report.html, README,
+  docs) uses plain language. Explain what happened and what to do next, in
+  photographer terms. Keep the math in docs/method.md.
+- Defaults must give a good result with no extra flags.
+- Never overwrite or modify the user's original photos.
+- report.html and any other UI follow a clean, minimal design that also
+  works on a phone.
+
+## Non-goals (do not build these)
+- No masks, denoise, retouching, culling, or AI enhancement
+- No GUI app in v1
+- No neural networks or trained models
+- No cloud service or API keys
+
+## Color pipeline (v1 definitions)
+- LUT domain: display-referred, sRGB-encoded RGB in [0,1] in and out
+- Fitting math: linear sRGB primaries
+- Perceptual comparisons: OKLab / OKLCh
+- RAW input: decode with rawpy to linear, apply neutral rendering, encode sRGB
+- Reference input: sRGB JPEG/PNG/TIFF (assume sRGB if no profile)
+- Pixel sampling: up to 100,000 pixels per image, seed = 0
+
+## Pipeline steps
+0. Load + normalize: decode, convert to working spaces, sample pixels
+1. Neutralize: estimate and remove white balance (gray world + white patch,
+   blended) and exposure (median luminance) for both reference and input
+2. Decompose the look:
+   a. Tone curve: histogram matching on OKLab L, then isotonic regression,
+      then PCHIP interpolation, 256 samples, must be monotonic
+   b. Split toning: weighted least squares fit of OKLab a/b offsets for
+      shadows / midtones / highlights with smooth zone weights
+   c. Residual color: sliced optimal transport in OKLab, strength in [0,1]
+   d. Skin constraint: YCbCr rule-based skin mask; penalty if skin hue in
+      OKLCh drifts more than a threshold (default 6 degrees)
+3. Bake: 33x33x33 LUT fit by sparse least squares with trilinear
+   interpolation weights + Laplacian smoothness term. Cells with no samples
+   fall back to steps 2a+2b only (not identity). Check monotonic L, clip gamut.
+4. Verify: compute metrics (see below), write report
+5. Export: write all target formats
+
+## Metrics
+- Sliced Wasserstein distance (OKLab) between output and reference
+- Histogram distance on OKLab L
+- Skin hue drift (degrees, mean and p95)
+- SSIM on luminance, output vs input (artifact check)
+- LUT total variation (smoothness)
+- Benchmark only: mean and p95 Delta E 2000 vs ground truth
+
+## Outputs of one run (folder NAME/)
+- NAME_33.cube            Adobe/IRIDAS .cube, LUT_3D_SIZE 33, red changes fastest
+- NAME_hald.png           Hald CLUT level 8 (512x512)
+- NAME_preset.xmp         Lightroom/ACR preset: tone curve + color grading wheels
+- LIGHTROOM_PROFILE.md    steps to turn the .cube into a LR profile via Camera Raw
+- look.json               every fitted parameter + version + seed (reproducible)
+- report.html             before/after grid, curves, metrics, warnings
+- previews/               input photos with the look applied
+
+## Warnings the tool must raise
+- Reference and input scene content too different (color distribution distance
+  above threshold, or very different luminance histograms)
+- Skin drift above threshold
+- Reference looks heavily compressed or tiny (< 800 px short side)
+
+## Tech stack (only these dependencies)
+Python 3.11+. Runtime: numpy, scipy, scikit-image, colour-science, POT,
+rawpy, pillow, typer (CLI), jinja2 (report), matplotlib (report plots).
+Optional extras: mcp (MCP server), opencv-python, mediapipe.
+Dev: pytest, ruff, mypy.
+Never add a dependency outside this list without asking first.
+
+## License rules
+- Project license: MIT (copyright Jackson Feng)
+- Never copy code from repos without a confirmed permissive license
+  (MIT, BSD, Apache-2.0). Specifically do NOT copy from ColorMatch3D,
+  mini-film, or the Adobe DNG SDK.
+- Do not vendor or modify LibRaw.
+- MIT-Adobe FiveK images: benchmark use only, never commit them, never put
+  them in README or demos. Only a download script and result numbers.
+- README and demo images: only the maintainer's own photos.
+- Algorithms from papers (Reinhard, Pitie sliced OT) are implemented from
+  the paper, with citations in docs.
+
+## File format rules
+- Never guess file format fields. For Lightroom XMP fields, use a real
+  preset exported from Lightroom (in tests/fixtures/) as the reference.
+- .cube must follow the Adobe Cube LUT spec 1.0 (TITLE, LUT_3D_SIZE,
+  DOMAIN_MIN, DOMAIN_MAX).
+
+## Repo structure
+lookmatch/
+  lookmatch/
+    __init__.py
+    io.py          load images/RAW, sampling, color space conversion
+    neutralize.py  white balance + exposure normalization
+    tone.py        tone curve fitting
+    toning.py      split toning fit
+    transport.py   sliced optimal transport
+    skin.py        skin mask + constraint
+    bake.py        LUT fitting with smoothness
+    apply.py       apply LUT (trilinear) to images
+    metrics.py     all metrics
+    report.py      report.html
+    look.py        Look dataclass + look.json read/write
+    export/
+      cube.py  hald.py  lr_preset.py  lr_profile_guide.py
+    cli.py
+    mcp_server.py
+  skills/lookmatch/SKILL.md
+  bench/           synthetic benchmark scripts + results
+  tests/           pytest, fixtures/
+  docs/            method.md (math + citations), apps.md (per-app install)
+  README.md  README.zh-CN.md  LICENSE  pyproject.toml  AGENTS.md  CLAUDE.md
+
+## Development setup
+```bash
+python3.11 -m venv .venv
+.venv/bin/pip install -e ".[dev]"
+.venv/bin/pytest && .venv/bin/ruff check . && .venv/bin/mypy
+```
+
+## Coding standards
+- Type hints everywhere, docstrings on public functions
+- Pure functions for math; no global state
+- Every module has tests; math tests use synthetic images with known answers
+- ruff + mypy clean, pytest passing before any commit
+- Keep functions small; explain any formula with a comment and citation
+
+## Definition of done for any task
+1. Code + tests written
+2. `pytest`, `ruff check`, `mypy` all pass
+3. Any new behavior documented in docs/ or README
+4. No new dependency, no copied code, no guessed file format fields
+5. User-facing text is understandable by a photographer who is not a developer
