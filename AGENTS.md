@@ -1,12 +1,41 @@
 # lookmatch: project brief for AI assistants
 
 ## What this is
-lookmatch is an open-source Python tool that matches the color look of a
-reference photo and applies it to the user's photos. It exports the look to
-multiple editing apps. It has three interfaces over one engine:
+lookmatch is an open-source Python tool that measures the color look of one
+or more reference photos and builds a LUT that gives the user's photos that
+look. It exports the look to multiple editing apps. It has three interfaces
+over one engine:
 1. Python package (the engine, all real logic lives here)
-2. CLI: `lookmatch fit REF_IMAGE INPUT_DIR --name NAME`
+2. CLI: `lookmatch fit REFERENCE INPUTS --name NAME`
+   - REFERENCE: one photo, or a folder of photos that share the same look
+     (for example one photographer's series, or one film stock)
+   - INPUTS: a folder of the user's own photos
 3. Agent layer: a SKILL.md (Claude Code, Codex, Cursor) and an optional MCP server
+
+## Goal: one universal LUT, not a 1:1 match
+The output is one LUT that maps "the user's camera and editing app's typical
+colors" to "the reference look", so it works on photos it has never seen.
+- Pool all INPUTS photos to learn the user's typical starting colors. Pool all
+  REFERENCE photos to learn the target look.
+- Each photo counts equally: every photo contributes the same number of
+  samples (up to the cap), so one large or unusual photo can't dominate.
+- Neutralize each photo on its own (white balance, exposure) before pooling,
+  so the LUT learns the look, not each photo's lighting.
+- Per-photo problems (one wrong white balance) are not the LUT's job; the
+  user fixes those in their editor.
+
+## Input rendering (how the user's photos are read)
+A LUT is applied to the image *after* the editing app renders the RAW, so the
+fit must see the user's photos rendered the same way. Two paths, both
+supported:
+1. Recommended, most accurate: unedited exports from the user's editor
+   (JPEG or 16-bit TIFF, same profile they edit with). The LUT sees exactly
+   what it learned from.
+2. Convenient: RAW files decoded directly by lookmatch (rawpy, neutral
+   rendering). This only approximates the editor's rendering, so lookmatch
+   warns that results may differ slightly in the app.
+The report states which path was used. Mixing both in one INPUTS folder
+triggers a warning.
 
 ## Core principle (most important rule)
 Every number in the output comes from measurement or optimization.
@@ -36,14 +65,19 @@ to learn it and use it.
 - LUT domain: display-referred, sRGB-encoded RGB in [0,1] in and out
 - Fitting math: linear sRGB primaries
 - Perceptual comparisons: OKLab / OKLCh
-- RAW input: decode with rawpy to linear, apply neutral rendering, encode sRGB
-- Reference input: sRGB JPEG/PNG/TIFF (assume sRGB if no profile)
+- RAW input: decode with rawpy to linear sRGB with camera white balance, no
+  auto brightening and no tone curve ("neutral rendering"), encode sRGB.
+  See "Input rendering" above for when this is used.
+- Reference input: JPEG/PNG/TIFF; embedded profiles converted to sRGB,
+  sRGB assumed if no profile
 - Pixel sampling: up to 100,000 pixels per image, seed = 0
 
 ## Pipeline steps
-0. Load + normalize: decode, convert to working spaces, sample pixels
+0. Load + normalize: decode, convert to working spaces, sample pixels from
+   every reference and input photo
 1. Neutralize: estimate and remove white balance (gray world + white patch,
-   blended) and exposure (median luminance) for both reference and input
+   blended) and exposure (median luminance) for each reference and input
+   photo, then pool the reference samples and the input samples
 2. Decompose the look:
    a. Tone curve: histogram matching on OKLab L, then isotonic regression,
       then PCHIP interpolation, 256 samples, must be monotonic
@@ -80,6 +114,10 @@ to learn it and use it.
   above threshold, or very different luminance histograms)
 - Skin drift above threshold
 - Reference looks heavily compressed or tiny (< 800 px short side)
+- Reference photos disagree with each other a lot (they may not share one look)
+- Too few input photos to generalize (default: fewer than 5)
+- Input photos were decoded from RAW directly (approximation of the editor)
+- INPUTS mixes RAW files and rendered exports
 
 ## Tech stack (only these dependencies)
 Python 3.11+. Runtime: numpy, scipy, scikit-image, colour-science, POT,
