@@ -64,5 +64,10 @@ python_version = "3.11"
 strict = true
 packages = ["lookmatch"]
 
+[[tool.mypy.overrides]]
+# rawpy's __init__ imports its names from rawpy._rawpy without re-exporting them.
+module = ["rawpy"]
+implicit_reexport = true
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]

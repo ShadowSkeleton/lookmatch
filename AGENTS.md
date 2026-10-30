@@ -141,6 +141,9 @@ python3.11 -m venv .venv
 ## Coding standards
 - Type hints everywhere, docstrings on public functions
 - Pure functions for math; no global state
+- Full images may be float32 to save memory, but compute statistics and fits
+  in float64 (use `io.sample_pixels`, or `dtype=np.float64` in reductions).
+  float32 sums over a large photo are badly wrong.
 - Every module has tests; math tests use synthetic images with known answers
 - ruff + mypy clean, pytest passing before any commit
 - Keep functions small; explain any formula with a comment and citation
