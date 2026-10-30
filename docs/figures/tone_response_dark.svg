@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="633.6pt" height="273.6pt" viewBox="0 0 633.6 273.6" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-10-29T20:24:51.318708</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.2, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 273.6 
+L 633.6 273.6 
+L 633.6 0 
+L 0 0 
+L 0 273.6 
+z
+" style="fill: none"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 57.024 229.824 
+L 614.592 229.824 
+L 614.592 54.72 
+L 57.024 54.72 
+L 57.024 229.824 
+z
+" style="fill: none"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 57.024 229.824 
+L 266.931953 229.824 
+L 266.931953 54.72 
+L 57.024 54.72 
+z
+" clip-path="url(#pdeb8d41053)" style="fill: #1c1c1e; stroke: #1c1c1e; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 406.870588 229.824 
+L 614.592 229.824 
+L 614.592 54.72 
+L 406.870588 54.72 
+z
+" clip-path="url(#pdeb8d41053)" style="fill: #1c1c1e; stroke: #1c1c1e; stroke-linejoin: miter"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1"/>
+     <g id="text_1">
+      <text style="font-size: 11px; font-family:-apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; text-anchor: middle; fill: #a1a1a6" x="57.024" y="243.796" transform="rotate(-0 57.024 243.796)">0</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2"/>
+     <g id="text_2">
+      <text style="font-size: 11px; font-family:-apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; text-anchor: middle; fill: #a1a1a6" x="196.962635" y="243.796" transform="rotate(-0 196.962635 243.796)">64</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_3"/>
+     <g id="text_3">
+      <text style="font-size: 11px; font-family:-apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; text-anchor: middle; fill: #a1a1a6" x="336.901271" y="243.796" transform="rotate(-0 336.901271 243.796)">128</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_4"/>
+     <g id="text_4">
+      <text style="font-size: 11px; font-family:-apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; text-anchor: middle; fill: #a1a1a6" x="476.839906" y="243.796" transform="rotate(-0 476.839906 243.796)">192</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_5"/>
+     <g id="text_5">
+      <text style="font-size: 11px; font-family:-apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; text-anchor: middle; fill: #a1a1a6" x="614.592" y="243.796" transform="rotate(-0 614.592 243.796)">255</text>
+     </g>
+    </g>
+    <g id="text_6">
+     <text style="font-size: 11px; font-family:-apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; text-anchor: middle; fill: #a1a1a6" x="335.808" y="260.611" transform="rotate(-0 335.808 260.611)">Input gray level (8-bit)</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_6">
+      <path d="M 57.024 209.619692 
+L 614.592 209.619692 
+" clip-path="url(#pdeb8d41053)" style="fill: none; stroke: #3a3a3c; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_7"/>
+     <g id="text_7">
+      <text style="font-size: 11px; font-family:-apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; text-anchor: end; fill: #a1a1a6" x="53.524" y="214.855692" transform="rotate(-0 53.524 214.855692)">−4</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_8">
+      <path d="M 57.024 175.945846 
+L 614.592 175.945846 
+" clip-path="url(#pdeb8d41053)" style="fill: none; stroke: #3a3a3c; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_9"/>
+     <g id="text_8">
+      <text style="font-size: 11px; font-family:-apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; text-anchor: end; fill: #a1a1a6" x="53.524" y="181.181846" transform="rotate(-0 53.524 181.181846)">−2</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_10">
+      <path d="M 57.024 142.272 
+L 614.592 142.272 
+" clip-path="url(#pdeb8d41053)" style="fill: none; stroke: #3a3a3c; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_11"/>
+     <g id="text_9">
+      <text style="font-size: 11px; font-family:-apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; text-anchor: end; fill: #a1a1a6" x="53.524" y="147.508" transform="rotate(-0 53.524 147.508)">0</text>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_12">
+      <path d="M 57.024 108.598154 
+L 614.592 108.598154 
+" clip-path="url(#pdeb8d41053)" style="fill: none; stroke: #3a3a3c; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_13"/>
+     <g id="text_10">
+      <text style="font-size: 11px; font-family:-apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; text-anchor: end; fill: #a1a1a6" x="53.524" y="113.834154" transform="rotate(-0 53.524 113.834154)">2</text>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="line2d_14">
+      <path d="M 57.024 74.924308 
+L 614.592 74.924308 
+" clip-path="url(#pdeb8d41053)" style="fill: none; stroke: #3a3a3c; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_15"/>
+     <g id="text_11">
+      <text style="font-size: 11px; font-family:-apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; text-anchor: end; fill: #a1a1a6" x="53.524" y="80.160308" transform="rotate(-0 53.524 80.160308)">4</text>
+     </g>
+    </g>
+    <g id="text_12">
+     <text style="font-size: 11px; font-family:-apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; text-anchor: middle; fill: #a1a1a6" x="34.465688" y="142.272" transform="rotate(-90 34.465688 142.272)">Change (OKLab x 100)</text>
+    </g>
+   </g>
+   <g id="line2d_16">
+    <path d="M 57.024 142.272 
+L 614.592 142.272 
+" clip-path="url(#pdeb8d41053)" style="fill: none; stroke: #86868b; stroke-linecap: square"/>
+   </g>
+   <g id="line2d_17">
+    <path d="M 57.024 142.272 
+L 59.210541 135.724944 
+L 63.583624 127.152929 
+L 67.956706 117.840726 
+L 72.329788 108.317907 
+L 74.516329 103.973581 
+L 76.702871 105.891989 
+L 78.889412 106.822659 
+L 81.075953 107.106599 
+L 83.262494 106.937897 
+L 85.449035 106.437134 
+L 87.635576 105.684286 
+L 92.008659 103.78133 
+L 94.1952 104.90875 
+L 96.381741 105.845472 
+L 98.568282 106.573363 
+L 100.754824 107.118069 
+L 102.941365 107.506557 
+L 105.127906 107.760303 
+L 109.500988 108.001415 
+L 111.687529 108.670456 
+L 113.874071 109.199739 
+L 122.620235 110.905614 
+L 126.993318 112.027211 
+L 133.552941 113.257411 
+L 140.112565 114.800552 
+L 144.485647 115.961133 
+L 153.231812 117.759168 
+L 177.283765 123.017866 
+L 188.216471 125.30247 
+L 218.828047 131.572874 
+L 247.253082 137.185311 
+L 295.356988 146.396064 
+L 369.699388 159.962383 
+L 415.616753 168.079458 
+L 496.518776 181.879171 
+L 507.451482 183.610488 
+L 509.638024 183.920569 
+L 514.011106 183.883537 
+L 518.384188 183.592294 
+L 522.757271 183.108491 
+L 527.130353 182.436926 
+L 531.503435 180.996711 
+L 538.063059 178.518314 
+L 544.622682 175.76529 
+L 551.182306 172.147284 
+L 562.115012 165.826539 
+L 577.4208 156.309456 
+L 581.793882 153.756014 
+L 588.353506 150.26153 
+L 594.913129 147.055375 
+L 597.099671 146.052761 
+L 599.286212 144.89736 
+L 601.472753 143.957491 
+L 603.659294 143.22855 
+L 605.845835 142.696874 
+L 608.032376 142.348874 
+L 610.218918 142.171028 
+L 612.405459 142.149873 
+L 614.592 142.272 
+L 614.592 142.272 
+" clip-path="url(#pdeb8d41053)" style="fill: none; stroke: #d95926; stroke-width: 2; stroke-linecap: square"/>
+   </g>
+   <g id="line2d_18">
+    <path d="M 57.024 142.272 
+L 59.210541 157.116453 
+L 61.397082 161.831057 
+L 63.583624 165.585256 
+L 65.770165 168.883564 
+L 67.956706 171.891571 
+L 70.143247 174.680706 
+L 72.329788 177.285426 
+L 74.516329 179.65536 
+L 81.075953 180.503768 
+L 83.262494 181.274292 
+L 85.449035 182.356639 
+L 87.635576 183.70572 
+L 92.008659 186.960311 
+L 94.1952 187.278659 
+L 109.500988 191.111557 
+L 118.247153 192.146063 
+L 124.806776 192.644886 
+L 129.179859 192.740978 
+L 135.739482 192.600077 
+L 142.299106 192.238843 
+L 146.672188 191.772748 
+L 155.418353 190.474786 
+L 161.977976 189.317693 
+L 172.910682 186.571307 
+L 179.470306 184.785715 
+L 194.776094 179.547673 
+L 199.149176 177.850947 
+L 214.454965 171.515359 
+L 236.320376 161.193349 
+L 258.185788 150.164351 
+L 297.543529 130.232255 
+L 312.849318 122.958189 
+L 323.782024 118.076772 
+L 332.528188 114.384957 
+L 341.274353 110.927414 
+L 350.020518 107.696192 
+L 356.580141 105.454016 
+L 365.326306 102.706435 
+L 371.885929 100.80537 
+L 380.632094 98.599859 
+L 389.378259 96.629336 
+L 398.124424 95.057994 
+L 404.684047 94.005113 
+L 411.243671 93.241689 
+L 419.989835 92.417358 
+L 424.362918 92.122974 
+L 435.295624 91.833593 
+L 441.855247 91.839874 
+L 452.787953 92.361781 
+L 459.347576 92.846026 
+L 470.280282 94.145992 
+L 476.839906 95.084951 
+L 489.959153 97.537628 
+L 494.332235 98.472865 
+L 509.638024 102.273667 
+L 520.570729 105.511235 
+L 529.316894 108.243208 
+L 544.622682 113.532133 
+L 562.115012 120.187368 
+L 583.980424 129.173339 
+L 597.099671 134.7281 
+L 601.472753 137.311382 
+L 605.845835 139.427585 
+L 610.218918 141.076408 
+L 614.592 142.272 
+L 614.592 142.272 
+" clip-path="url(#pdeb8d41053)" style="fill: none; stroke: #3987e5; stroke-width: 2; stroke-linecap: square"/>
+   </g>
+   <g id="text_13">
+    <text style="font-size: 10px; font-family:-apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; text-anchor: middle; fill: #f5f5f7" x="170.724141" y="113.593445" transform="rotate(-0 170.724141 113.593445)">Warmth</text>
+   </g>
+   <g id="text_14">
+    <text style="font-size: 10px; font-family:-apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; text-anchor: middle; fill: #f5f5f7" x="494.332235" y="90.472865" transform="rotate(-0 494.332235 90.472865)">Lightness</text>
+   </g>
+   <g id="text_15">
+    <text style="font-size: 11px; font-family:-apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; text-anchor: middle; fill: #a1a1a6" x="161.977976" y="219.721846" transform="rotate(-0 161.977976 219.721846)">Shadows: warmer, darker</text>
+   </g>
+   <g id="text_16">
+    <text style="font-size: 11px; font-family:-apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; text-anchor: middle; fill: #a1a1a6" x="509.638024" y="219.721846" transform="rotate(-0 509.638024 219.721846)">Highlights: cooler, brighter</text>
+   </g>
+   <g id="legend_1">
+    <g id="line2d_19">
+     <path d="M 66.024 40.09 
+L 74.024 40.09 
+L 82.024 40.09 
+" style="fill: none; stroke: #d95926; stroke-width: 2; stroke-linecap: square"/>
+    </g>
+    <g id="text_17">
+     <text style="font-size: 10px; font-family:-apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; text-anchor: start; fill: #f5f5f7" x="90.024" y="43.59" transform="rotate(-0 90.024 43.59)">Warmth (OKLab b)</text>
+    </g>
+    <g id="line2d_20">
+     <path d="M 192.652125 40.09 
+L 200.652125 40.09 
+L 208.652125 40.09 
+" style="fill: none; stroke: #3987e5; stroke-width: 2; stroke-linecap: square"/>
+    </g>
+    <g id="text_18">
+     <text style="font-size: 10px; font-family:-apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; text-anchor: start; fill: #f5f5f7" x="216.652125" y="43.59" transform="rotate(-0 216.652125 43.59)">Lightness (OKLab L)</text>
+    </g>
+   </g>
+  </g>
+  <g id="text_19">
+   <text style="font-weight: 700; font-size: 14px; font-family:-apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif; text-anchor: start; fill: #f5f5f7" x="57.024" y="19.152" transform="rotate(-0 57.024 19.152)">Test look, measured on a gray ramp</text>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pdeb8d41053">
+   <rect x="57.024" y="54.72" width="557.568" height="175.104"/>
+  </clipPath>
+ </defs>
+</svg>

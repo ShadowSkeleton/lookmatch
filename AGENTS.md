@@ -167,6 +167,7 @@ lookmatch/
   bench/           synthetic benchmark scripts + results
   tests/           pytest, fixtures/
   docs/            method.md (math + citations), apps.md (per-app install)
+    figures/       README figures + make_figures.py (real lookmatch output only)
   README.md  README.zh-CN.md  LICENSE  pyproject.toml  AGENTS.md  CLAUDE.md
 
 ## Development setup

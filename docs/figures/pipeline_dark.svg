@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="400" viewBox="0 0 880 400" font-family="-apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif">
+<text x="0" y="32" font-size="18" font-weight="600" fill="#f5f5f7">How lookmatch builds a look</text>
+<rect x="0" y="62" width="256" height="150" rx="18" fill="#1c1c1e"/>
+<text x="24" y="100" font-size="13" font-weight="600" fill="#2997ff">STEP 1</text>
+<text x="24" y="126" font-size="19" font-weight="600" fill="#f5f5f7">Load</text>
+<text x="24" y="154" font-size="13.5" fill="#a1a1a6">sRGB, linear and OKLab</text>
+<text x="24" y="174" font-size="13.5" fill="#a1a1a6">100,000 pixels per photo</text>
+<text x="24" y="194" font-size="13.5" fill="#a1a1a6">fixed seed</text>
+<path d="M270 137 h28 m-6 -5 l6 5 l-6 5" fill="none" stroke="#a1a1a6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="312" y="62" width="256" height="150" rx="18" fill="#1c1c1e"/>
+<text x="336" y="100" font-size="13" font-weight="600" fill="#2997ff">STEP 2</text>
+<text x="336" y="126" font-size="19" font-weight="600" fill="#f5f5f7">Neutralize</text>
+<text x="336" y="154" font-size="13.5" fill="#a1a1a6">white balance</text>
+<text x="336" y="174" font-size="13.5" fill="#a1a1a6">exposure</text>
+<text x="336" y="194" font-size="13.5" fill="#a1a1a6">per photo, then pooled</text>
+<path d="M582 137 h28 m-6 -5 l6 5 l-6 5" fill="none" stroke="#a1a1a6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="624" y="62" width="256" height="150" rx="18" fill="#1c1c1e"/>
+<text x="648" y="100" font-size="13" font-weight="600" fill="#2997ff">STEP 3</text>
+<text x="648" y="126" font-size="19" font-weight="600" fill="#f5f5f7">Measure the look</text>
+<text x="648" y="154" font-size="13.5" fill="#a1a1a6">tone curve (isotonic)</text>
+<text x="648" y="174" font-size="13.5" fill="#a1a1a6">split toning (WLS)</text>
+<text x="648" y="194" font-size="13.5" fill="#a1a1a6">sliced optimal transport</text>
+<rect x="0" y="248" width="256" height="150" rx="18" fill="#1c1c1e"/>
+<text x="24" y="286" font-size="13" font-weight="600" fill="#2997ff">STEP 4</text>
+<text x="24" y="312" font-size="19" font-weight="600" fill="#f5f5f7">Bake</text>
+<text x="24" y="340" font-size="13.5" fill="#a1a1a6">33-point 3D LUT</text>
+<text x="24" y="360" font-size="13.5" fill="#a1a1a6">least squares + smoothness</text>
+<text x="24" y="380" font-size="13.5" fill="#a1a1a6">skin hue guard</text>
+<path d="M270 323 h28 m-6 -5 l6 5 l-6 5" fill="none" stroke="#a1a1a6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="312" y="248" width="256" height="150" rx="18" fill="#1c1c1e"/>
+<text x="336" y="286" font-size="13" font-weight="600" fill="#2997ff">STEP 5</text>
+<text x="336" y="312" font-size="19" font-weight="600" fill="#f5f5f7">Verify</text>
+<text x="336" y="340" font-size="13.5" fill="#a1a1a6">distribution distance</text>
+<text x="336" y="360" font-size="13.5" fill="#a1a1a6">skin hue drift, SSIM</text>
+<text x="336" y="380" font-size="13.5" fill="#a1a1a6">warnings in plain words</text>
+<path d="M582 323 h28 m-6 -5 l6 5 l-6 5" fill="none" stroke="#a1a1a6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="624" y="248" width="256" height="150" rx="18" fill="#1c1c1e"/>
+<text x="648" y="286" font-size="13" font-weight="600" fill="#2997ff">STEP 6</text>
+<text x="648" y="312" font-size="19" font-weight="600" fill="#f5f5f7">Export</text>
+<text x="648" y="340" font-size="13.5" fill="#a1a1a6">.cube, Hald PNG</text>
+<text x="648" y="360" font-size="13.5" fill="#a1a1a6">Lightroom preset</text>
+<text x="648" y="380" font-size="13.5" fill="#a1a1a6">report.html</text>
+<path d="M752 218 v12 H128 v12 m-5 -6 l5 6 l5 -6" fill="none" stroke="#a1a1a6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
