@@ -134,7 +134,9 @@ to learn it and use it.
 - Skin drift above threshold (without `--portrait`: suggest it if the
   photos have people; with it: say how much was held back)
 - Reference looks heavily compressed or tiny (< 800 px short side)
-- Reference photos disagree with each other a lot (they may not share one look)
+- Reference photos disagree with each other a lot (they may not share one look).
+  Not built yet: the per-photo tint spread depends more on scene content than
+  on the look (docs/method.md, "Checking the result"); needs a better measure
 - Too few input photos to generalize (default: fewer than 5)
 - Input photos were decoded from RAW directly (approximation of the editor)
 - INPUTS mixes RAW files and rendered exports
@@ -177,7 +179,8 @@ lookmatch/
     bake.py        LUT fitting with smoothness
     apply.py       apply LUT (trilinear) to images
     metrics.py     all metrics
-    report.py      report.html
+    checks.py      warnings (codes + plain-language messages)
+    report.py      report.html (template in templates/report.html)
     look.py        Look dataclass + look.json read/write
     pipeline.py    fit(): every step in order, returns Look + LUT
     scenes.py      scene match: graded copies + color distance

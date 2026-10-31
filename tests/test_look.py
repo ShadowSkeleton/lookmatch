@@ -6,7 +6,14 @@ import numpy as np
 import pytest
 
 import lookmatch
-from lookmatch.look import SCHEMA_VERSION, Look, Photo, load_look, save_look
+from lookmatch.look import (
+    SCHEMA_VERSION,
+    Look,
+    LookWarning,
+    Photo,
+    load_look,
+    save_look,
+)
 from lookmatch.neutralize import Correction, Estimate
 from lookmatch.toning import SplitToning
 
@@ -30,7 +37,7 @@ def _look(tmp_path: Path) -> Look:
         tone_curve=curve,
         split_toning=SplitToning((-0.02, -0.03), (0.0, 0.001), (0.012, 0.03)),
         metrics={"sliced_wasserstein": 0.0123},
-        warnings=["Only 1 input photo."],
+        warnings=[LookWarning("few_inputs", "Only 1 input photo.")],
     )
 
 
@@ -171,3 +178,29 @@ def test_split_toning_is_saved_as_named_zones(tmp_path: Path) -> None:
 def test_missing_file(tmp_path: Path) -> None:
     with pytest.raises(FileNotFoundError, match="Can't find"):
         load_look(tmp_path / "nope.json")
+
+
+def test_version_2_file_still_loads(tmp_path: Path) -> None:
+    path = tmp_path / "look.json"
+    save_look(_look(tmp_path), path)
+    data = json.loads(path.read_text())
+    data["schema_version"] = 2
+    data["warnings"] = ["Only 1 input photo."]  # plain text in format 2
+    for photo in data["photos"]:
+        for key in ("width", "height", "jpeg_quality"):
+            del photo[key]
+    look = load_look(_write(tmp_path, data))
+    assert look.warnings == [LookWarning("note", "Only 1 input photo.")]
+    assert look.photos[0].width is None
+
+
+def test_photo_records_size_and_jpeg_quality(tmp_path: Path) -> None:
+    from PIL import Image
+
+    path = tmp_path / "small.jpg"
+    Image.new("RGB", (64, 48), (120, 130, 140)).save(path, quality=60)
+    est = Estimate(np.ones(3), 0.18, True)
+    cor = Correction(np.ones(3), 1.0)
+    photo = Photo.from_estimate(path, "reference", "rendered", est, cor, (64, 48))
+    assert (photo.width, photo.height) == (64, 48)
+    assert photo.jpeg_quality == 60

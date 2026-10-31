@@ -33,7 +33,17 @@ from typing import Any
 import numpy as np
 import numpy.typing as npt
 
-from lookmatch import io, metrics, neutralize, scenes, skin, tone, toning, transport
+from lookmatch import (
+    checks,
+    io,
+    metrics,
+    neutralize,
+    scenes,
+    skin,
+    tone,
+    toning,
+    transport,
+)
 from lookmatch.apply import apply_lut
 from lookmatch.bake import LUT_SIZE, PRIOR_PULL, SMOOTHNESS, BakeResult, bake_lut
 from lookmatch.export.cube import Cube, identity_table
@@ -65,6 +75,7 @@ class _Sampled:
     estimate: neutralize.Estimate
     structure: npt.NDArray[np.float64]  # see scenes.structure
     aspect: float
+    size: tuple[int, int]  # width, height in pixels
 
 
 def collect_photos(source: PhotoSource) -> list[Path]:
@@ -105,7 +116,11 @@ def _sample_group(
     for path in paths:
         image = io.load_image(path)
         pixels = io.sample_pixels(image, max_pixels=per_photo, seed=seed)
-        shape = (scenes.structure(image), scenes.aspect(image))
+        shape = (
+            scenes.structure(image),
+            scenes.aspect(image),
+            (int(image.shape[1]), int(image.shape[0])),
+        )
         del image  # keep memory low: only the samples and structure are needed
         source = "raw" if path.suffix.lower() in io.RAW_EXTENSIONS else "rendered"
         sampled.append(
@@ -166,9 +181,9 @@ def fit(
     # 2. The safe part of the look: black and white points, and the tint of
     # the most common colors, kept only as far as the references agree.
     safe_curve = tone.fit_end_points(in_lab[:, 0], ref_lab[:, 0])
-    safe_split, _ = toning.fit_neutral_toning(
+    safe_split = toning.fit_neutral_toning(
         tone_and_toning(in_lab, safe_curve, None), ref_labs
-    )
+    ).toning
 
     # 3. How alike are the scenes? The full fit (whole tone curve, average
     # tint, transport) is used only as far as they are: on other scenes it
@@ -185,9 +200,9 @@ def fit(
         safe_curve, tone.fit_tone_curve(in_lab[:, 0], ref_lab[:, 0]), match
     )
     toned = tone_and_toning(in_lab, curve, None)
-    neutral_split, kept = toning.fit_neutral_toning(toned, ref_labs)
+    neutral = toning.fit_neutral_toning(toned, ref_labs)
     split = toning.blend_toning(
-        neutral_split, toning.fit_split_toning(toned, ref_lab), match
+        neutral.toning, toning.fit_split_toning(toned, ref_lab), match
     )
     fitted = tone_and_toning(in_lab, curve, split)
     strength = transport_strength * match
@@ -202,8 +217,13 @@ def fit(
     grid_lab = io.srgb_to_oklab(grid_srgb)
     prior_lab = tone_and_toning(grid_lab, curve, split)
 
-    # 4. Portrait mode: cap skin hue rotation.
+    # 4. Portrait mode: cap skin hue rotation, remembering how far it would
+    # have gone (for the report).
+    unprotected: float | None = None
     if portrait:
+        unprotected = skin.measure_skin_drift(
+            in_srgb, np.clip(io.oklab_to_srgb(target_lab), 0.0, 1.0)
+        ).p95_abs
         target_lab = skin.limit_skin_hue(in_lab, target_lab, skin.skin_mask(in_srgb))
         prior_lab = skin.limit_skin_hue(grid_lab, prior_lab, skin.skin_mask(grid_srgb))
 
@@ -217,12 +237,14 @@ def fit(
         title=name,
     )
 
-    drift = skin.measure_skin_drift(in_srgb, apply_lut(in_srgb, baked.cube))
+    out_srgb = apply_lut(in_srgb, baked.cube)
+    out_lab = io.srgb_to_oklab(out_srgb)
+    drift = skin.measure_skin_drift(in_srgb, out_srgb)
     photos = [
-        Photo.from_estimate(s.path, "reference", s.source, s.estimate, c)
+        Photo.from_estimate(s.path, "reference", s.source, s.estimate, c, s.size)
         for s, c in zip(refs, ref_corrections, strict=True)
     ] + [
-        Photo.from_estimate(s.path, "input", s.source, s.estimate, c)
+        Photo.from_estimate(s.path, "input", s.source, s.estimate, c, s.size)
         for s, c in zip(mine, in_corrections, strict=True)
     ]
     look = Look(
@@ -251,20 +273,35 @@ def fit(
         split_toning=split,
         metrics={
             "references_copied_from_inputs": copied,
+            "reference_tint_spread": neutral.spread,
             "scene_distance": distance,
             "scene_match": match,
             "transport_strength_used": strength,
             **{
                 f"toning_kept_{z}": float(k)
-                for z, k in zip(toning.ZONES, kept, strict=True)
+                for z, k in zip(toning.ZONES, neutral.kept, strict=True)
             },
+            "color_distance_before": metrics.sliced_wasserstein(
+                in_lab, ref_lab, seed=seed
+            ),
+            "color_distance_after": metrics.sliced_wasserstein(
+                out_lab, ref_lab, seed=seed
+            ),
+            "lightness_distance_before": metrics.lightness_distance(in_lab, ref_lab),
+            "lightness_distance_after": metrics.lightness_distance(out_lab, ref_lab),
             "lut_total_variation": baked.total_variation,
             "lut_coverage": baked.coverage,
             "lut_gray_monotonic": float(baked.gray_monotonic),
             "skin_fraction": drift.fraction,
             "skin_hue_drift_mean": drift.mean_abs,
             "skin_hue_drift_p95": drift.p95_abs,
+            **(
+                {}
+                if unprotected is None
+                else {"skin_hue_drift_p95_unprotected": unprotected}
+            ),
         },
     )
+    look.warnings = checks.check(look)
     look.validate()
     return FitResult(look=look, cube=baked.cube, bake=baked)

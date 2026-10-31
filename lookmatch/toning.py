@@ -183,12 +183,24 @@ def _from_array(theta: npt.NDArray[np.float64]) -> SplitToning:
     )
 
 
+@dataclass(frozen=True)
+class NeutralFit:
+    """Result of fit_neutral_toning."""
+
+    toning: SplitToning
+    kept: npt.NDArray[np.float64]  # factor (0 to 1) kept in each zone
+    # How much the reference photos disagree: the root mean square distance
+    # (OKLab a, b) of each photo's own tint from the average tint, over all
+    # zones. 0 with a single reference photo.
+    spread: float
+
+
 def fit_neutral_toning(
     input_lab: npt.ArrayLike,
     reference_labs: Sequence[npt.ArrayLike],
     radius: float = MODE_RADIUS,
     caution: float = CAUTION,
-) -> tuple[SplitToning, npt.NDArray[np.float64]]:
+) -> NeutralFit:
     """Fit split toning that holds up when the scenes differ.
 
     Two changes from fit_split_toning make it robust to scene content:
@@ -208,7 +220,6 @@ def fit_neutral_toning(
        kept unshrunk.
 
     ``reference_labs`` holds the OKLab samples of each reference photo.
-    Returns the toning and the factor (0 to 1) kept in each zone.
     """
     refs = [_check(r, "reference") for r in reference_labs]
     if not refs:
@@ -217,15 +228,17 @@ def fit_neutral_toning(
     n_ref, m_ref = _bin_modes(np.vstack(refs), radius)
     pooled = _fit_offsets(n_in, m_in, n_ref, m_ref)
     if len(refs) < 2:
-        return _from_array(pooled), np.ones(3)
+        return NeutralFit(_from_array(pooled), np.ones(3), 0.0)
 
     per_photo = np.stack(
         [_fit_offsets(n_in, m_in, *_bin_modes(r, radius)) for r in refs]
     )
-    noise = per_photo.var(axis=0, ddof=1).sum(axis=1) / len(refs)  # per zone
+    variance = per_photo.var(axis=0, ddof=1).sum(axis=1)  # per zone
+    noise = variance / len(refs)  # squared standard error of the mean
     signal = np.sum(pooled**2, axis=1)
     keep = signal / np.maximum(signal + caution * noise, 1e-30)
-    return _from_array(pooled * keep[:, None]), keep
+    spread = float(np.sqrt(variance.mean()))
+    return NeutralFit(_from_array(pooled * keep[:, None]), keep, spread)
 
 
 def blend_toning(safe: SplitToning, full: SplitToning, weight: float) -> SplitToning:

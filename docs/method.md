@@ -367,6 +367,55 @@ hue-selective changes: those can't yet be told apart from content. A look
 that is mostly contrast or saturation (bleach bypass) is barely learned from
 other scenes. References that show scenes like yours give the best result.
 
+## Checking the result
+
+After the fit, lookmatch measures the result and writes report.html.
+
+**Measurements** (`lookmatch/metrics.py`):
+
+| Measurement | How | Shown as |
+|---|---|---|
+| Colors | Sliced Wasserstein distance in OKLab (Rabin et al. 2011) between your photos and the references, before and after the look | "% closer" |
+| Brightness | Earth mover's distance between OKLab L of your photos and the references, before and after | "% closer" |
+| Skin tones | 95th percentile of OKLCh hue change on skin-colored pixels (see Skin tones) | degrees |
+| Picture quality | SSIM on OKLab L between each preview before and after (Wang et al. 2004; scikit-image, 7-pixel window) | 1 = untouched |
+| LUT smoothness | Total variation of the LUT (see Baking the LUT) | in look.json |
+
+**Warnings** (`lookmatch/checks.py`) are raised from what look.json records,
+so a look can be checked again later without the photos:
+
+| Code | When |
+|---|---|
+| `scenes_differ` | Scene match below 0.5: only the safe part of the look was learned |
+| `skin_drift` | At least 2% of pixels are skin-colored and their hue moves more than 6° (95th percentile), without portrait mode |
+| `skin_protected` | Portrait mode held back a skin hue change of more than 6° |
+| `reference_small` | A reference is under 800 pixels on its short side |
+| `reference_compressed` | A reference JPEG's estimated quality is below 70 |
+| `few_inputs` | Fewer than 5 of your photos |
+| `raw_inputs` | Your photos were RAW files decoded by lookmatch |
+| `mixed_inputs` | Your photos mix RAW files and exports |
+
+JPEG quality is estimated from the file's luminance quantization table: the
+average ratio to the example table of the JPEG standard (ITU-T T.81, Annex
+K) gives libjpeg's scale factor, which gives the quality. On files saved by
+Pillow at quality 30 to 90 the estimate is exact.
+
+**Not checked yet: whether the reference photos share one look.** The
+natural measure, how much the tint differs from one reference photo to the
+next, was tested on the benchmark photos. Sets with one look scattered more
+(median 0.045 OKLab) than sets mixing two different looks (median 0.048,
+lowest 0.025), because scene content moves the tint more than the look
+does. A warning built on it would be wrong as often as right, so the spread
+is recorded in look.json (`reference_tint_spread`) but not warned about.
+
+**report.html** is one self-contained file: previews embedded as JPEG (900
+pixels on the long side), the tone curve as inline SVG, system fonts, no
+scripts, light and dark mode, and a layout that stacks on a phone. Split
+toning is shown as the tint actually added at three brightness levels
+(OKLab L 0.25, 0.6 and 0.9), named by the nearest familiar hue and by
+strength (OKLab chroma under 0.005: none; under 0.015: subtle; under 0.03:
+moderate; above: strong).
+
 ## Baselines
 
 To know whether lookmatch helps, it is compared with simpler methods. Each
@@ -436,6 +485,11 @@ photos and 8 looks, and the fix is described in
 - J. Rabin, G. Peyré, J. Delon and M. Bernot, "Wasserstein barycenter and its
   application to texture mixing," Scale Space and Variational Methods in
   Computer Vision, 2011. (Sliced Wasserstein distance.)
+- Z. Wang, A. C. Bovik, H. R. Sheikh and E. P. Simoncelli, "Image quality
+  assessment: from error visibility to structural similarity," IEEE
+  Transactions on Image Processing 13(4), 2004. (SSIM.)
+- ITU-T T.81, Information technology: Digital compression and coding of
+  continuous-tone still images (JPEG), 1992. (Quantization tables.)
 - C. Spearman, "The proof and measurement of association between two
   things," American Journal of Psychology 15(1), 1904. (Rank correlation.)
 - ITU-R BT.601, Studio encoding parameters of digital television. (YCbCr.)

@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="generator" content="lookmatch {{ version }}">
+<title>{{ look.name }} · lookmatch report</title>
+<style>
+:root {
+  --bg: #ffffff; --bg-alt: #f5f5f7; --surface: #f5f5f7; --surface-alt: #ffffff;
+  --text: #1d1d1f; --text-2: #6e6e73; --text-3: #86868b;
+  --line: rgba(0, 0, 0, 0.08); --accent: #0071e3;
+  --warn-bg: #fff4e0; --warn-text: #9a5b00; --ok-bg: #e8f5ec; --ok-text: #1d7a3a;
+  --chart-grid: rgba(0, 0, 0, 0.07); --chart-diag: #86868b; --chart-curve: #1d1d1f;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #000000; --bg-alt: #0b0b0c; --surface: #1c1c1e; --surface-alt: #1c1c1e;
+    --text: #f5f5f7; --text-2: #a1a1a6; --text-3: #86868b;
+    --line: rgba(255, 255, 255, 0.12); --accent: #2997ff;
+    --warn-bg: #2b2112; --warn-text: #f5c26b; --ok-bg: #12261a; --ok-text: #6fd08c;
+    --chart-grid: rgba(255, 255, 255, 0.1); --chart-diag: #6e6e73; --chart-curve: #f5f5f7;
+  }
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font: 17px/1.5 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue",
+    "PingFang SC", "Hiragino Sans", "Microsoft YaHei", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.bar {
+  position: sticky; top: 0; z-index: 10; height: 48px;
+  background: color-mix(in srgb, var(--bg) 72%, transparent);
+  -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid var(--line);
+}
+.bar .wrap { display: flex; align-items: center; justify-content: space-between; height: 100%; }
+.bar b { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+.bar span { font-size: 13px; color: var(--text-2); }
+.wrap { max-width: 980px; margin: 0 auto; padding: 0 20px; }
+.wide { max-width: 1200px; }
+section { padding: 72px 0; }
+section.alt { background: var(--bg-alt); }
+h1 {
+  font-size: clamp(40px, 7vw, 80px); font-weight: 700; line-height: 1.05;
+  letter-spacing: -0.03em; margin: 0 0 16px; overflow-wrap: anywhere;
+}
+h2 {
+  font-size: clamp(28px, 4.5vw, 44px); font-weight: 600; line-height: 1.1;
+  letter-spacing: -0.02em; margin: 0 0 12px;
+}
+.lead { font-size: clamp(19px, 2.4vw, 24px); color: var(--text-2); line-height: 1.35; margin: 0; }
+.intro { color: var(--text-2); margin: 0 0 32px; max-width: 680px; }
+.hero { text-align: center; padding: 96px 0 72px; }
+.pills { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 28px; }
+.pill {
+  display: inline-block; padding: 6px 14px; border-radius: 9999px;
+  background: var(--surface); font-size: 13px; font-weight: 500; color: var(--text);
+}
+.notice { border-radius: 18px; padding: 24px 28px; margin: 0 0 12px; }
+.notice.warn { background: var(--warn-bg); }
+.notice.ok { background: var(--ok-bg); color: var(--ok-text); font-weight: 500; }
+.notice h3 {
+  margin: 0 0 6px; font-size: 13px; font-weight: 600; letter-spacing: 0.02em;
+  text-transform: uppercase; color: var(--warn-text);
+}
+.notice p { margin: 0; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 520px), 1fr)); gap: 20px; }
+.card { background: var(--surface-alt); border-radius: 18px; overflow: hidden; }
+.alt .card { background: var(--surface-alt); }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+.pair figure { margin: 0; position: relative; }
+.pair img { display: block; width: 100%; height: auto; }
+.pair figcaption {
+  position: absolute; left: 10px; top: 10px; padding: 3px 10px; border-radius: 9999px;
+  font-size: 12px; font-weight: 500; color: #1d1d1f; background: rgba(255, 255, 255, 0.82);
+}
+.card .name { padding: 12px 16px; font-size: 13px; color: var(--text-2); }
+.more { color: var(--text-2); font-size: 14px; margin: 20px 0 0; }
+.look { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; }
+.tile { background: var(--surface); border-radius: 24px; padding: 32px; }
+.alt .tile, .alt .files li { background: var(--surface-alt); }
+.tile h3 { margin: 0 0 4px; font-size: 21px; font-weight: 600; letter-spacing: -0.01em; }
+.tile p { margin: 0 0 20px; color: var(--text-2); font-size: 15px; }
+.tile svg { display: block; width: 100%; max-width: 320px; height: auto; margin: 0 auto; }
+svg .frame { fill: none; stroke: var(--line); }
+svg .grid { stroke: var(--chart-grid); stroke-width: 1; }
+svg .diagonal { stroke: var(--chart-diag); stroke-width: 1; stroke-dasharray: 4 4; }
+svg .curve { fill: none; stroke: var(--chart-curve); stroke-width: 2.5; stroke-linejoin: round; }
+.axis { display: flex; justify-content: space-between; max-width: 320px; margin: 8px auto 0; font-size: 12px; color: var(--text-3); }
+.zones { list-style: none; margin: 0; padding: 0; }
+.zones li { display: flex; align-items: center; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.zones li:last-child { border-bottom: 0; }
+.swatch { display: flex; flex: none; border-radius: 10px; overflow: hidden; }
+.swatch i { display: block; width: 40px; height: 40px; }
+.zones b { display: block; font-weight: 600; }
+.zones span { color: var(--text-2); font-size: 15px; }
+table { width: 100%; border-collapse: collapse; }
+td { padding: 18px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr:last-child td { border-bottom: 0; }
+td.k { width: 30%; font-weight: 600; padding-right: 16px; }
+td .v { display: block; font-weight: 600; }
+td .n { display: block; color: var(--text-2); font-size: 15px; margin-top: 2px; }
+.files { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+code, .mono { font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace; font-size: 13px; }
+.files li { padding: 8px 14px; border-radius: 12px; background: var(--surface); }
+details { margin-top: 32px; }
+summary { cursor: pointer; color: var(--accent); font-size: 15px; }
+details table td { padding: 8px 0; font-size: 13px; }
+details td.k { font-weight: 400; color: var(--text-2); }
+footer { padding: 40px 0 64px; color: var(--text-3); font-size: 13px; }
+footer a { color: var(--accent); text-decoration: none; }
+@media (max-width: 760px) {
+  section { padding: 56px 0; }
+  .hero { padding: 64px 0 48px; }
+  .look { grid-template-columns: minmax(0, 1fr); }
+  .tile { padding: 24px; }
+  td.k { width: 38%; }
+}
+@media print { .bar { position: static; } }
+</style>
+</head>
+<body>
+<header class="bar"><div class="wrap"><b>lookmatch</b><span>Report</span></div></header>
+
+<main>
+<section class="hero">
+  <div class="wrap">
+    <h1>{{ look.name }}</h1>
+    <p class="lead">Learned from {{ reference_count }} reference photo{{ "s" if reference_count != 1 }} and {{ input_count }} of your photo{{ "s" if input_count != 1 }}.</p>
+    <div class="pills">
+      <span class="pill">{{ scene }}</span>
+      <span class="pill">{{ rendering }}</span>
+      <span class="pill">Portrait mode {{ "on" if portrait else "off" }}</span>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <h2>Check these first</h2>
+    {% if look.warnings %}
+    <p class="intro">lookmatch found {{ look.warnings | length }} thing{{ "s" if look.warnings | length != 1 }} worth knowing about this look.</p>
+    {% for w in look.warnings %}
+    <div class="notice warn" data-code="{{ w.code }}"><h3>Note {{ loop.index }}</h3><p>{{ w.message }}</p></div>
+    {% endfor %}
+    {% else %}
+    <div class="notice ok">No problems found.</div>
+    {% endif %}
+  </div>
+</section>
+
+{% if previews %}
+<section>
+  <div class="wrap wide">
+    <h2>Your photos with the look</h2>
+    <p class="intro">Each pair shows one of your photos before and after the look, exactly as the LUT will apply it in your editing app.</p>
+    <div class="grid">
+      {% for p in previews %}
+      <div class="card">
+        <div class="pair">
+          <figure><img src="{{ p.before }}" alt="{{ p.name }} before the look" loading="lazy"><figcaption>Before</figcaption></figure>
+          <figure><img src="{{ p.after }}" alt="{{ p.name }} after the look" loading="lazy"><figcaption>After</figcaption></figure>
+        </div>
+        <div class="name">{{ p.name }}</div>
+      </div>
+      {% endfor %}
+    </div>
+    {% if more_previews %}<p class="more">{{ more_previews }} more photo{{ "s" if more_previews != 1 }} in the previews folder.</p>{% endif %}
+  </div>
+</section>
+{% endif %}
+
+<section class="alt">
+  <div class="wrap">
+    <h2>What the look does</h2>
+    <p class="intro">The main parts of the look, measured from the photos. The LUT also holds finer color changes that don't fit into a curve or three tints.</p>
+    <div class="look">
+      <div class="tile">
+        <h3>Tone curve</h3>
+        <p>Above the dashed line, that brightness gets lighter; below it, darker.</p>
+        {{ curve_svg | safe }}
+        <div class="axis"><span>Black</span><span>Your photo</span><span>White</span></div>
+      </div>
+      <div class="tile">
+        <h3>Split toning</h3>
+        <p>The tint added at each brightness. Left swatch: neutral gray. Right: with the tint.</p>
+        <ul class="zones">
+          {% for z in toning %}
+          <li><span class="swatch"><i style="background: {{ z.neutral }}"></i><i style="background: {{ z.tinted }}"></i></span><div><b>{{ z.zone }}</b><span>{{ z.words }}</span></div></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Measurements</h2>
+    <p class="intro">Every number here was measured from the photos. No AI model chose any part of the look.</p>
+    <table>
+      {% for m in measurements %}
+      <tr><td class="k">{{ m.name }}</td><td><span class="v">{{ m.value }}</span><span class="n">{{ m.note }}</span></td></tr>
+      {% endfor %}
+    </table>
+    <details>
+      <summary>All measurements and settings</summary>
+      <table>
+        {% for k, v in details %}<tr><td class="k mono">{{ k }}</td><td class="mono">{{ "%.6g" | format(v) }}</td></tr>{% endfor %}
+        {% for k, v in settings %}<tr><td class="k mono">{{ k }}</td><td class="mono">{{ v }}</td></tr>{% endfor %}
+      </table>
+    </details>
+  </div>
+</section>
+
+{% if files %}
+<section class="alt">
+  <div class="wrap">
+    <h2>Files</h2>
+    <p class="intro">Everything in this folder. See the README for how to load each one in your editing app.</p>
+    <ul class="files">{% for f in files %}<li class="mono">{{ f }}</li>{% endfor %}</ul>
+  </div>
+</section>
+{% endif %}
+</main>
+
+<footer>
+  <div class="wrap">
+    Made with lookmatch {{ version }}, seed {{ look.seed }}. The same photos and settings always give the same look; every value is in look.json.
+    <a href="https://github.com/ShadowSkeleton/lookmatch">How lookmatch works</a>
+  </div>
+</footer>
+</body>
+</html>

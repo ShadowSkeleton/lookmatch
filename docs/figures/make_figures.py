@@ -172,9 +172,10 @@ def chart_before_after() -> Path:
 # --- Figure: lookmatch learning a look from photos -----------------------------
 
 # The maintainer's own photos, approved for demos (landscapes, no people).
-DEMO_DIR = Path("/Users/jingrui_feng/Pictures/2026/2026-08-30")
-DEMO_PHOTOS = ["DSC08255", "DSC08549", "DSC08606"]
-DEMO_SHOWN = "DSC08255"
+# Three frames of Philadelphia City Hall, the maintainer's own photos.
+DEMO_DIR = Path.home() / "Desktop" / "lookmatch-qa" / "sony_photo"
+DEMO_PHOTOS = ["DSC01304", "DSC01305", "DSC01309"]
+DEMO_SHOWN = "DSC01309"
 DEMO_LOOKS = ["japanese_airy", "bold_teal_orange"]  # one row each
 
 

@@ -136,6 +136,9 @@ def test_look_records_everything(folders: tuple[Path, Path], tmp_path: Path) -> 
     assert look.split_toning is not None
     for key in ("lut_total_variation", "lut_coverage", "skin_hue_drift_mean"):
         assert key in look.metrics
+    m = look.metrics
+    assert m["color_distance_after"] < m["color_distance_before"]
+    assert m["lightness_distance_after"] < m["lightness_distance_before"]
     save_look(look, tmp_path / "look.json")
     assert load_look(tmp_path / "look.json") == look
     assert result.cube.title == "雪天人像"
@@ -195,3 +198,7 @@ def test_raw_inputs_are_marked(
     sources = {p.file: p.source for p in result.look.photos}
     assert sources["shot.ARW"] == "raw"
     assert sources["img_0.jpg"] == "rendered"
+    codes = [w.code for w in result.look.warnings]
+    assert "mixed_inputs" in codes
+    # The synthetic references are 360 x 240: smaller than a real photo.
+    assert "reference_small" in codes

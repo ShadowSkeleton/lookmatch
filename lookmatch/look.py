@@ -22,14 +22,15 @@ from typing import Any
 import numpy as np
 
 from lookmatch import __version__
-from lookmatch.io import DEFAULT_SEED
+from lookmatch.io import DEFAULT_SEED, jpeg_quality
 from lookmatch.neutralize import Correction, Estimate
 from lookmatch.toning import ZONES, SplitToning
 
 # Format history. Older files still load and are upgraded on save.
 #   1: photos, neutralization, tone curve
 #   2: + split_toning
-SCHEMA_VERSION = 2
+#   3: + photo width, height and jpeg_quality; warnings have a code
+SCHEMA_VERSION = 3
 TONE_CURVE_SAMPLES = 256
 
 ROLES = ("reference", "input")
@@ -65,6 +66,9 @@ class Photo:
     reliable: bool
     white_balance: list[float]  # correction gains toward the group average
     exposure: float  # correction gain toward the group average
+    width: int | None = None  # pixels, upright; None in files before format 3
+    height: int | None = None
+    jpeg_quality: int | None = None  # estimated, 1 to 100; None if not JPEG
 
     def __post_init__(self) -> None:
         """Validate the photo record."""
@@ -89,9 +93,14 @@ class Photo:
         source: str,
         estimate: Estimate,
         correction: Correction,
+        size: tuple[int, int] | None = None,
     ) -> "Photo":
-        """Build a record from a photo file and its neutralization."""
+        """Build a record from a photo file and its neutralization.
+
+        ``size`` is the photo's (width, height) in pixels, upright.
+        """
         path = Path(path)
+        width, height = size if size is not None else (None, None)
         return cls(
             file=path.name,
             sha256=sha256_file(path),
@@ -102,7 +111,18 @@ class Photo:
             reliable=estimate.reliable,
             white_balance=correction.white_balance.tolist(),
             exposure=correction.exposure,
+            width=width,
+            height=height,
+            jpeg_quality=jpeg_quality(path),
         )
+
+
+@dataclass(frozen=True)
+class LookWarning:
+    """A problem found during a run, for a person to read and act on."""
+
+    code: str  # stable identifier, for programs (see checks.py)
+    message: str  # plain words: what happened and what to do
 
 
 @dataclass
@@ -118,7 +138,7 @@ class Look:
     tone_curve: list[float] | None = None  # 256 samples of OKLab L, 0 to 1
     split_toning: SplitToning | None = None  # OKLab (a, b) offset per zone
     metrics: dict[str, float] = field(default_factory=dict)
-    warnings: list[str] = field(default_factory=list)
+    warnings: list[LookWarning] = field(default_factory=list)
 
     def validate(self) -> None:
         """Check the fitted values make sense, with a plain-language error."""
@@ -174,7 +194,7 @@ def look_to_dict(look: Look) -> dict[str, Any]:
         if look.split_toning is None
         else {z: [float(v) for v in getattr(look.split_toning, z)] for z in ZONES},
         "metrics": {k: float(v) for k, v in look.metrics.items()},
-        "warnings": list(look.warnings),
+        "warnings": [{"code": w.code, "message": w.message} for w in look.warnings],
     }
     assert list(data) == _ORDER
     return data
@@ -193,6 +213,12 @@ def save_look(look: Look, path: str | Path) -> None:
             "This is a bug in lookmatch; please report it."
         ) from None
     Path(path).write_text(text + "\n", encoding="utf-8")
+
+
+def _warning(item: Any) -> LookWarning:
+    if isinstance(item, str):  # format 2 and earlier: plain text
+        return LookWarning(code="note", message=item)
+    return LookWarning(code=str(item["code"]), message=str(item["message"]))
 
 
 def load_look(path: str | Path) -> Look:
@@ -238,7 +264,7 @@ def load_look(path: str | Path) -> Look:
             tone_curve=data.get("tone_curve"),
             split_toning=toning,
             metrics=data.get("metrics", {}),
-            warnings=data.get("warnings", []),
+            warnings=[_warning(w) for w in data.get("warnings", [])],
         )
     except (KeyError, TypeError, IndexError) as err:
         raise ValueError(f"{bad}: missing or wrong field ({err}).") from None

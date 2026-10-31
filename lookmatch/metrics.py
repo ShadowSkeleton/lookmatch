@@ -5,9 +5,19 @@ to people: below about 1 is invisible, 2 to 3 is barely noticeable side by
 side. It is computed with colour-science, from sRGB through CIE XYZ to
 CIELAB under D65, following Sharma, Wu and Dalal (2005).
 
-The sliced Wasserstein distance measures how different two sets of colors
-are as a whole; the pipeline uses it to tell how alike two sets of scenes
-are. The other metrics in the project brief are added in task 4.1.
+The other metrics:
+
+- Sliced Wasserstein distance (OKLab): how different two sets of colors are
+  as a whole. Used to tell how alike two sets of scenes are, and how close
+  your photos' colors come to the references' after the look.
+- Lightness histogram distance: the same idea for brightness alone, the
+  1-dimensional Wasserstein (earth mover's) distance between the OKLab L
+  values of two sets of pixels.
+- SSIM on lightness (Wang et al. 2004): whether applying the look damaged
+  the picture (banding, posterization, noise). A LUT that only changes
+  colors smoothly keeps SSIM near 1.
+- Skin hue drift and LUT smoothness live next to the code that uses them
+  (skin.measure_skin_drift and bake.total_variation).
 """
 
 from typing import Any
@@ -15,6 +25,10 @@ from typing import Any
 import colour
 import numpy as np
 import numpy.typing as npt
+from scipy.stats import wasserstein_distance
+from skimage.metrics import structural_similarity
+
+from lookmatch import io
 
 FloatArray = npt.NDArray[np.floating[Any]]
 
@@ -72,3 +86,39 @@ def sliced_wasserstein(
     qa = np.quantile(a @ d.T, SW_QUANTILES, axis=0)
     qb = np.quantile(b @ d.T, SW_QUANTILES, axis=0)
     return float(np.sqrt(np.mean((qa - qb) ** 2)))
+
+
+def lightness_distance(lab1: npt.ArrayLike, lab2: npt.ArrayLike) -> float:
+    """Return the earth mover's distance between two sets of OKLab lightness.
+
+    Both inputs are OKLab colors (..., 3); only L is compared. The result is
+    in L units: 0.05 means the brightness histograms are on average 5% of
+    the black-to-white range apart.
+    """
+    a = np.asarray(lab1, dtype=np.float64).reshape(-1, 3)[:, 0]
+    b = np.asarray(lab2, dtype=np.float64).reshape(-1, 3)[:, 0]
+    if a.size == 0 or b.size == 0:
+        raise ValueError("Both color sets need at least one color.")
+    return float(wasserstein_distance(a, b))
+
+
+def ssim_lightness(before_srgb: npt.ArrayLike, after_srgb: npt.ArrayLike) -> float:
+    """Return SSIM between the OKLab lightness of two images of equal size.
+
+    1 means the structure is untouched. A smooth tone change lowers it a
+    little; banding or noise lowers it a lot. Uses scikit-image's SSIM with
+    its default 7-pixel window and a data range of 1.
+    """
+    before = np.asarray(before_srgb, dtype=np.float64)
+    after = np.asarray(after_srgb, dtype=np.float64)
+    if before.shape != after.shape or before.ndim != 3 or before.shape[-1] != 3:
+        raise ValueError(
+            "SSIM needs two RGB images of the same size, got shapes "
+            f"{before.shape} and {after.shape}."
+        )
+    if min(before.shape[:2]) < 7:
+        raise ValueError("SSIM needs images at least 7 pixels on each side.")
+    l1 = io.srgb_to_oklab(np.clip(before, 0, 1))[..., 0]
+    l2 = io.srgb_to_oklab(np.clip(after, 0, 1))[..., 0]
+    ssim = structural_similarity(l1, l2, data_range=1.0)  # type: ignore[no-untyped-call]
+    return float(ssim)

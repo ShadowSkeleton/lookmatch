@@ -57,20 +57,21 @@ photos, with its default settings, applied to your photo. Top: a bright,
 airy Japanese style (日系清新): lifted shadows, soft contrast, pale colors,
 cool highlights. Bottom: a strong teal and orange.
 
-<img alt="Horseshoe Bend, two rows of three. Top row: the original; a pale, airy version with lifted shadows and a cool cyan cast; lookmatch's result, nearly identical to the airy target. Bottom row: the original; a teal-and-orange version with teal sky and water and orange rock; lookmatch's result, very close to that target." src="docs/figures/photo_match.jpg" width="100%">
+<img alt="Philadelphia City Hall, two rows of three. Top row: the original; a pale, airy version with lifted shadows and a cool cyan cast; lookmatch's result, practically identical to the airy target. Bottom row: the original; a teal-and-orange version with a deep teal sky, dark teal shadows and warm stone; lookmatch's result, practically identical to that target." src="docs/figures/photo_match.jpg" width="100%">
 
 | Look | Target vs. original | lookmatch vs. target |
 |---|---|---|
-| Japanese airy | ΔE 14.8 | **ΔE 0.8** (0.8 to 1.8 across the three demo photos) |
-| Teal and orange | ΔE 6.6 | **ΔE 2.7** (2.1 to 2.7) |
+| Japanese airy | ΔE 11.6 | **ΔE 0.3** (0.3 across all three demo photos) |
+| Teal and orange | ΔE 6.6 | **ΔE 0.8** (0.8 across all three) |
 
 ΔE 2000 measures visible color difference: below about 1 is invisible, 2 to
 3 is barely noticeable side by side. Both looks are made by lookmatch's own
 formulas ([bench/make_looks.py](bench/make_looks.py)), not taken from anyone's
-presets. This is the **easiest case**: the references are these same photos
-with the look applied, as when you edit a few of your own photos and want
-the rest to match. When the references show other scenes, results are less
-precise (see [Benchmark](#benchmark)).
+presets. This is the **easiest case**: the references are three photos from
+the same shoot with the look applied, as when you edit a few of your own
+photos and want the rest to match. When the references show other scenes,
+results are less precise (see [Benchmark](#benchmark)). A portrait example,
+with skin tones protected, is coming.
 
 **On a test chart.** A gray ramp, the 24-patch ColorChecker and pure
 primaries, before (left) and after (right).

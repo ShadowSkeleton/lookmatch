@@ -264,3 +264,24 @@ def test_load_unreadable_raw_explains(tmp_path: Path) -> None:
     path.write_bytes(b"not really a raw file")
     with pytest.raises(ValueError, match="Can't read the RAW file 'broken.NEF'"):
         io.load_image(path)
+
+
+@pytest.mark.parametrize("quality", [30, 50, 75, 90])
+def test_jpeg_quality_estimate(tmp_path: Path, quality: int) -> None:
+    from lookmatch.io import jpeg_quality
+
+    rng = np.random.default_rng(0)
+    path = tmp_path / "q.jpg"
+    Image.fromarray((rng.random((32, 32, 3)) * 255).astype(np.uint8)).save(
+        path, quality=quality
+    )
+    assert jpeg_quality(path) == quality
+
+
+def test_jpeg_quality_is_none_for_other_files(tmp_path: Path) -> None:
+    from lookmatch.io import jpeg_quality
+
+    Image.new("RGB", (8, 8)).save(tmp_path / "a.png")
+    (tmp_path / "b.arw").write_bytes(b"not an image")
+    assert jpeg_quality(tmp_path / "a.png") is None
+    assert jpeg_quality(tmp_path / "b.arw") is None

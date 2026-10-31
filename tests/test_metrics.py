@@ -43,3 +43,32 @@ def test_sliced_wasserstein() -> None:
     assert sliced_wasserstein(a, b) == sliced_wasserstein(a, b)  # repeatable
     with pytest.raises(ValueError):
         sliced_wasserstein(a, np.zeros((0, 3)))
+
+
+def test_lightness_distance() -> None:
+    from lookmatch.metrics import lightness_distance
+
+    rng = np.random.default_rng(0)
+    lab = np.column_stack([rng.random(10_000), np.zeros((10_000, 2))])
+    assert lightness_distance(lab, lab) == 0.0
+    shifted = lab + [0.05, 0.3, 0.3]  # color changes don't count
+    assert lightness_distance(lab, shifted) == pytest.approx(0.05)
+    with pytest.raises(ValueError):
+        lightness_distance(lab, np.zeros((0, 3)))
+
+
+def test_ssim_lightness() -> None:
+    from lookmatch.metrics import ssim_lightness
+
+    rng = np.random.default_rng(0)
+    y, x = np.mgrid[0:64, 0:96] / 96
+    photo = np.clip(np.stack([x, y, 0.5 * (x + y)], -1), 0, 1)
+    assert ssim_lightness(photo, photo) == pytest.approx(1.0)
+    gentle = np.clip(photo * 0.95 + 0.02, 0, 1)  # smooth tone change
+    noisy = np.clip(photo + rng.normal(0, 0.08, photo.shape), 0, 1)
+    banded = np.round(photo * 4) / 4  # posterized
+    assert ssim_lightness(photo, gentle) > 0.95
+    assert ssim_lightness(photo, noisy) < 0.5
+    assert ssim_lightness(photo, banded) < ssim_lightness(photo, gentle)
+    with pytest.raises(ValueError, match="same size"):
+        ssim_lightness(photo, photo[:10])

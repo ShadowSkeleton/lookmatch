@@ -48,6 +48,9 @@ version = { attr = "lookmatch.__version__" }
 [tool.setuptools.packages.find]
 include = ["lookmatch*"]
 
+[tool.setuptools.package-data]
+lookmatch = ["templates/*.html"]
+
 [tool.ruff]
 line-length = 88
 target-version = "py311"

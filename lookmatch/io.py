@@ -268,3 +268,48 @@ def sample_pixels(
         idx = np.sort(rng.choice(flat.shape[0], size=max_pixels, replace=False))
         flat = flat[idx]
     return flat.astype(np.float64)
+
+
+# --- JPEG quality --------------------------------------------------------------
+
+# The example luminance quantization table of the JPEG standard (ITU-T T.81,
+# Annex K, Table K.1), in row order. Encoders such as libjpeg
+# scale it by the quality setting.
+_JPEG_LUMA_TABLE = np.array(
+    [
+        [16, 11, 10, 16, 24, 40, 51, 61],
+        [12, 12, 14, 19, 26, 58, 60, 55],
+        [14, 13, 16, 24, 40, 57, 69, 56],
+        [14, 17, 22, 29, 51, 87, 80, 62],
+        [18, 22, 37, 56, 68, 109, 103, 77],
+        [24, 35, 55, 64, 81, 104, 113, 92],
+        [49, 64, 78, 87, 103, 121, 120, 101],
+        [72, 92, 95, 98, 112, 100, 103, 99],
+    ],
+    dtype=np.float64,
+)
+
+
+def jpeg_quality(path: str | Path) -> int | None:
+    """Estimate the quality setting (1 to 100) a JPEG was saved with.
+
+    Returns None for files that aren't JPEG or can't be read. libjpeg scales
+    the standard table by s = 5000 / q below quality 50 and s = 200 - 2 q
+    from 50 up, in percent; the average ratio of the file's luminance table
+    to the standard one gives s, and s gives the quality. Encoders with their own tables
+    (some cameras, Photoshop) land near the libjpeg quality with the same
+    file size, which is what matters for a warning about heavy compression.
+    """
+    try:
+        with Image.open(path) as im:
+            if im.format != "JPEG":
+                return None
+            tables = getattr(im, "quantization", None)
+    except OSError:  # includes files Pillow can't identify, such as RAW
+        return None
+    if not tables or 0 not in tables:
+        return None
+    luma = np.asarray(tables[0], dtype=np.float64).reshape(8, 8)  # row order
+    scale = float(np.mean(luma / _JPEG_LUMA_TABLE) * 100.0)
+    quality = 5000.0 / scale if scale > 100.0 else (200.0 - scale) / 2.0
+    return int(np.clip(round(quality), 1, 100))

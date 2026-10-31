@@ -128,9 +128,10 @@ def test_neutral_toning_recovers_tint_despite_colored_objects() -> None:
 
     mine = np.vstack(_photos(10, seed=1, cast=1.0))
     refs = [apply_split_toning(p, TEAL_AND_ORANGE) for p in _photos(8, 2, 1.0)]
-    fitted, keep = fit_neutral_toning(mine, refs)
-    _close(fitted, TEAL_AND_ORANGE, atol=0.004)
-    assert keep[0] > 0.9 and keep[2] > 0.9  # the references agree on the tint
+    fit = fit_neutral_toning(mine, refs)
+    _close(fit.toning, TEAL_AND_ORANGE, atol=0.004)
+    assert fit.kept[0] > 0.9 and fit.kept[2] > 0.9  # the references agree
+    assert fit.spread < 0.005
 
 
 def test_neutral_toning_shrinks_a_tint_the_references_disagree_on() -> None:
@@ -143,11 +144,14 @@ def test_neutral_toning_shrinks_a_tint_the_references_disagree_on() -> None:
     for p in _photos(6, seed=2):
         p[:, 1:] += rng.normal(0, 0.02, 2)
         refs.append(p)
-    raw, unshrunk = fit_neutral_toning(mine, refs, caution=0.0)
-    fitted, keep = fit_neutral_toning(mine, refs)
-    np.testing.assert_array_equal(unshrunk, 1.0)
-    assert np.all(keep < 0.7)
-    np.testing.assert_allclose(fitted.as_array(), raw.as_array() * keep[:, None])
+    raw = fit_neutral_toning(mine, refs, caution=0.0)
+    fit = fit_neutral_toning(mine, refs)
+    np.testing.assert_array_equal(raw.kept, 1.0)
+    assert np.all(fit.kept < 0.7)
+    np.testing.assert_allclose(
+        fit.toning.as_array(), raw.toning.as_array() * fit.kept[:, None]
+    )
+    assert fit.spread > 0.01  # the casts have a spread of 0.02 per channel
 
 
 def test_neutral_toning_single_reference_and_errors() -> None:
@@ -155,9 +159,10 @@ def test_neutral_toning_single_reference_and_errors() -> None:
 
     mine = np.vstack(_photos(3, seed=1))
     ref = apply_split_toning(_photos(1, seed=2)[0], TEAL_AND_ORANGE)
-    fitted, keep = fit_neutral_toning(mine, [ref])
-    np.testing.assert_array_equal(keep, 1.0)
-    _close(fitted, TEAL_AND_ORANGE, atol=0.004)
+    fit = fit_neutral_toning(mine, [ref])
+    np.testing.assert_array_equal(fit.kept, 1.0)
+    assert fit.spread == 0.0
+    _close(fit.toning, TEAL_AND_ORANGE, atol=0.004)
     with pytest.raises(ValueError, match="at least one reference"):
         fit_neutral_toning(mine, [])
 

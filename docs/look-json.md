@@ -22,7 +22,7 @@ differently, this file shows what changed.
 
 | Field | What it holds |
 |---|---|
-| `schema_version` | Version of this file format (currently 2) |
+| `schema_version` | Version of this file format (currently 3) |
 | `lookmatch_version` | The lookmatch version that made the look |
 | `seed` | The random seed used for pixel sampling (0) |
 | `name` | The look's name (any language, saved as UTF-8) |
@@ -30,8 +30,8 @@ differently, this file shows what changed.
 | `photos` | One entry per photo, see below |
 | `tone_curve` | The fitted tone curve: 256 lightness values (OKLab L) from shadows to highlights, never going down |
 | `split_toning` | The tint added to `shadows`, `midtones` and `highlights`: each an OKLab `[a, b]` offset (a: green to red, b: blue to yellow) |
-| `metrics` | How well the look matched (filled in by the verify step) |
-| `warnings` | Every warning shown during the run, in plain words |
+| `metrics` | Everything measured: how alike the scenes are, how much closer the colors came to the references, skin hue change, picture quality (SSIM) and LUT smoothness |
+| `warnings` | Every warning from the run: a `code` for programs (listed in `lookmatch/checks.py`) and a `message` in plain words |
 
 Each entry in `photos`:
 
@@ -44,10 +44,13 @@ Each entry in `photos`:
 | `median_luminance` | The photo's median brightness, used for exposure |
 | `reliable` | `false` if the photo had too little information to measure its light |
 | `white_balance`, `exposure` | The correction that moved this photo to its group's average (see [method.md](method.md)) |
+| `width`, `height` | The photo's size in pixels, upright |
+| `jpeg_quality` | Estimated JPEG quality, 1 to 100 (`null` if not a JPEG) |
 
 More fields are added as each fitting step is built. When the format
 changes, `schema_version` goes up: version 1 had photos and the tone curve,
-version 2 added `split_toning`. Older files still open and are upgraded when
+version 2 added `split_toning`, version 3 added photo sizes, JPEG quality
+and warning codes. Older files still open and are upgraded when
 saved. An older lookmatch refuses a newer file with a clear message instead
 of misreading it.
 
@@ -57,7 +60,7 @@ Shortened:
 
 ```json
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "lookmatch_version": "0.1.0.dev0",
   "seed": 0,
   "name": "雪天人像（日系）",
@@ -72,7 +75,10 @@ Shortened:
       "median_luminance": 0.155,
       "reliable": true,
       "white_balance": [1.0, 1.0, 1.0],
-      "exposure": 1.0
+      "exposure": 1.0,
+      "width": 4000,
+      "height": 6000,
+      "jpeg_quality": 92
     }
   ],
   "tone_curve": [0.0, 0.0041, "…"],
@@ -81,7 +87,12 @@ Shortened:
     "midtones": [-0.004, -0.0122],
     "highlights": [-0.0078, -0.0223]
   },
-  "metrics": {},
-  "warnings": []
+  "metrics": {"scene_match": 0.94, "color_distance_after": 0.012, "…": 0},
+  "warnings": [
+    {
+      "code": "few_inputs",
+      "message": "Only 3 of your photos were used. …"
+    }
+  ]
 }
 ```
