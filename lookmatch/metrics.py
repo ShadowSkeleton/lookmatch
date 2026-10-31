@@ -59,6 +59,7 @@ def delta_e_2000(srgb1: npt.ArrayLike, srgb2: npt.ArrayLike) -> FloatArray:
 
 SW_DIRECTIONS = 64
 SW_QUANTILES = np.linspace(0.005, 0.995, 199)
+SW_MAX_COLORS = 40_000  # per set; a fixed random subset beyond this
 
 
 def sliced_wasserstein(
@@ -81,11 +82,37 @@ def sliced_wasserstein(
     b = np.asarray(colors2, dtype=np.float64).reshape(-1, 3)
     if a.shape[0] == 0 or b.shape[0] == 0:
         raise ValueError("Both color sets need at least one color.")
-    d = np.random.default_rng(seed).normal(size=(directions, 3))
+    rng = np.random.default_rng(seed)
+    d = rng.normal(size=(directions, 3))
+    a, b = _subset(a, rng), _subset(b, rng)
     d /= np.linalg.norm(d, axis=1, keepdims=True)
-    qa = np.quantile(a @ d.T, SW_QUANTILES, axis=0)
-    qb = np.quantile(b @ d.T, SW_QUANTILES, axis=0)
+    qa, qb = _quantiles(d @ a.T), _quantiles(d @ b.T)
     return float(np.sqrt(np.mean((qa - qb) ** 2)))
+
+
+def _subset(
+    colors: npt.NDArray[np.float64], rng: np.random.Generator
+) -> npt.NDArray[np.float64]:
+    if colors.shape[0] <= SW_MAX_COLORS:
+        return colors
+    return colors[rng.choice(colors.shape[0], SW_MAX_COLORS, replace=False)]
+
+
+def _quantiles(values: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
+    """Return SW_QUANTILES of each row, like np.quantile but much faster.
+
+    One sort per row, then linear interpolation between neighbors (numpy's
+    default method), instead of one partial sort per quantile.
+    """
+    ordered = np.sort(values, axis=1)
+    position = SW_QUANTILES * (ordered.shape[1] - 1)
+    low = np.floor(position).astype(np.intp)
+    high = np.minimum(low + 1, ordered.shape[1] - 1)
+    weight = position - low
+    return np.asarray(
+        ordered[:, low] * (1.0 - weight) + ordered[:, high] * weight,
+        dtype=np.float64,
+    )
 
 
 def lightness_distance(lab1: npt.ArrayLike, lab2: npt.ArrayLike) -> float:
