@@ -197,6 +197,63 @@ detector would fix this, but even classic detectors are trained models,
 which lookmatch doesn't use. So the limit is opt-in: you know whether your
 photos are portraits; lookmatch can't tell from color alone.
 
+## Baking the LUT
+
+Baking turns the measured look, pairs of "this color in your photos" and
+"this color in the look", into the 33 x 33 x 33 LUT your apps load.
+
+The LUT is fitted by sparse least squares. The *prior* P is the LUT made
+from the tone curve and split toning alone; the fit looks for a correction
+D on top of it, so the final table is T = P + D:
+
+    minimize  (1/N) Σ |A_i T − y_i|²      hit the target colors
+            + (λ/n³) |L D|²               keep the correction smooth
+            + (μ/n³) |D|²                 keep the correction small
+
+- **A_i** holds the trilinear weights of each sample's 8 surrounding grid
+  points: the same interpolation lookmatch, Photoshop and Resolve use to
+  read a LUT (task 1.5 showed they agree), so the LUT is fitted exactly the
+  way it will be applied.
+- **L** is the 3D grid Laplacian (each grid point minus the average of its
+  neighbors). Penalizing it stops neighboring colors from jumping, which is
+  what shows up as banding.
+- **The last term** pulls the correction toward zero, so colors your photos
+  never contained fall back to the tone curve plus split toning, not to "no
+  change".
+
+The system is symmetric positive definite and is solved with conjugate
+gradient in about 1 second, once per channel. Afterwards, outputs are
+clipped to sRGB and lightness along the gray axis (black to white) is
+checked: it must never go down.
+
+**Choosing the smoothness λ.** Tested on a known look with 60,000 sample
+colors, with clean targets and with targets off by about 10 levels of random
+noise each (errors in 8-bit levels, for colors the photos contain):
+
+| λ | Clean: 95% / worst | Gray ramp, worst | Noisy: 95% | Roughness vs true look |
+|---|---|---|---|---|
+| 1.0 | 0.59 / 5.75 | 1.90 | 1.72 | 1.03 x |
+| **0.1** | **0.19 / 2.35** | **0.96** | **3.37** | **1.09 x** |
+| 0.01 | 0.13 / 1.69 | 0.53 | 6.32 | 1.47 x |
+| 0.001 | 0.15 / 4.41 | 0.41 | 9.53 | 2.36 x |
+
+λ = 1 blurs real curvature in the look; λ = 0.01 and below let noise
+through and make the LUT rough. lookmatch uses λ = 0.1 and μ = 0.01.
+
+**On a real photo.** The whole chain so far (tone curve, split toning,
+transport, bake) run on the maintainer's photo against the same photo with
+the test look applied:
+
+| Transport strength | Mean error | 95% of pixels | Worst pixel |
+|---|---|---|---|
+| 0 | 0.97 | 3.51 | 11.3 |
+| 0.5 | 0.53 | 1.82 | 8.5 |
+| 1.0 | 0.14 | 0.52 | 4.3 |
+
+(8-bit levels, comparing the baked LUT with the true look on every pixel.)
+This is the easy case, the same scene on both sides; the benchmark measures
+the hard ones.
+
 ## References
 
 - R. E. Barlow, D. J. Bartholomew, J. M. Bremner and H. D. Brunk,
