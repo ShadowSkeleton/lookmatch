@@ -1,3 +1,7 @@
+<p align="center">
+  <b>English</b> · <a href="README.zh-CN.md">简体中文</a>
+</p>
+
 # lookmatch
 
 [![CI](https://github.com/ShadowSkeleton/lookmatch/actions/workflows/ci.yml/badge.svg)](https://github.com/ShadowSkeleton/lookmatch/actions/workflows/ci.yml)
@@ -7,10 +11,11 @@ own photos. It measures both and builds one LUT that gives your camera's
 photos that look, including photos you take later. You get a LUT and presets
 you can use in Lightroom, Photoshop, DaVinci Resolve, and other editing apps.
 
-> **Status:** early development. The engine's building blocks (color math,
-> LUT files, LUT application) work and are tested. Fitting a look from your
-> photos is not built yet. Star the repo to hear when the first version is
-> ready.
+> **Status:** early development, not ready to use yet. The whole engine is
+> built and tested, and a LUT from lookmatch looks identical in Photoshop and
+> DaVinci Resolve. It matches a look well when the reference photos and your
+> photos show similar scenes. When they show different scenes, it doesn't
+> work yet: see [Benchmark](#benchmark). Star the repo to follow along.
 
 ## Built on measurement, not guessing
 
@@ -31,10 +36,9 @@ you can use in Lightroom, Photoshop, DaVinci Resolve, and other editing apps.
 
 ## See the engine work
 
-lookmatch can't fit a look from photos yet, so these figures check the engine
-with a **hand-made test look**: warmer shadows, cooler highlights and a
-gentle S-curve. Every figure is computed by lookmatch itself
-([docs/figures/make_figures.py](docs/figures/make_figures.py)).
+These figures check the engine with a **hand-made test look**: warmer
+shadows, cooler highlights and a gentle S-curve. Every figure is computed by
+lookmatch itself ([docs/figures/make_figures.py](docs/figures/make_figures.py)).
 
 **What the test look does, measured.** A gray ramp from black to white goes
 through the LUT, and lookmatch measures the result in OKLab, a color space
@@ -51,10 +55,14 @@ the test look applied by lookmatch.
 <img alt="Horseshoe Bend, before and after the test look. After, the shadows on the rocks are warmer and the clouds slightly cooler and brighter." src="docs/figures/photo_before_after.jpg" width="100%">
 
 **On a test chart.** A gray ramp, the 24-patch ColorChecker and pure
-primaries, before (left) and after (right). The same chart and LUT are used
-to check that lookmatch, DaVinci Resolve and Photoshop give the same result.
+primaries, before (left) and after (right).
 
 <img alt="Test chart before and after the test look." src="docs/figures/chart_before_after.png" width="100%">
+
+**Same result in your apps.** The same LUT, applied to the test chart in
+Photoshop and DaVinci Resolve, was measured on all 69 patches: Photoshop
+matches lookmatch exactly, and Resolve is within 1 level out of 255
+([results](bench/APP_CHECK_RESULTS.md)).
 
 ## How it's tested
 
@@ -65,20 +73,38 @@ to check that lookmatch, DaVinci Resolve and Photoshop give the same result.
 | Phone photos in Display P3 | colour-science conversion | 2 of 255 levels |
 | `.cube` LUT files | Write, then read back | Exact |
 | Applying a LUT | SciPy's interpolation | 0.000000000001 |
-| A LUT that changes nothing | Photo before and after | Unchanged |
-| Test look and test chart | Regenerated from their script | Exact |
+| Same LUT in Photoshop and Resolve | lookmatch's own result, 69 patches | 0 and 1 of 255 levels |
+| Color difference (ΔE 2000) | Published test data (Sharma et al. 2005) | 0.0001 |
+| Recovering a known tone curve | Synthetic photos | 0.41% |
 
 All tests run on Python 3.11 and 3.12 for every change
 ([CI](https://github.com/ShadowSkeleton/lookmatch/actions/workflows/ci.yml)).
 
-## Benchmark (coming)
+## Benchmark
 
-lookmatch will be scored on looks whose exact answer is known: a LUT is
-applied to one photo to make the reference, and to another photo to make the
-ground truth. The score is ΔE 2000, the standard measure of color
-difference (below about 1, people can't see it). lookmatch will be compared
-with doing nothing, Reinhard color transfer, and plain optimal transport. The
-results will be published here, failure cases included.
+To measure honestly, the benchmark uses looks whose exact answer is known: a
+look is applied to some photos to make the "reference" photos, each method
+builds a LUT from them, and the LUT is compared with the right answer on your
+other photos using **ΔE 2000**, the standard measure of visible color
+difference (below about 1, people can't see it). Details:
+[bench/README.md](bench/README.md).
+
+First results, on only 4 photos with 8 known looks
+([full table](bench/RESULTS.md)). Mean ΔE 2000, lower is better:
+
+| Method | Same scenes | Different scenes |
+|---|---|---|
+| No change | 4.67 | **4.67** |
+| Reinhard color transfer | 2.91 | 13.60 |
+| Plain optimal transport | **0.42** | 15.13 |
+| lookmatch | 1.26 | 14.23 |
+
+When the reference photos and your photos show the same scenes, matching
+works well. When they show different scenes, every method, lookmatch
+included, makes photos worse than doing nothing: it mistakes the difference
+between scenes for a look. This is the main open problem, and the benchmark
+exists to measure every attempt to solve it. With only 4 photos these numbers
+are a first signal, not a conclusion.
 
 ## License
 
