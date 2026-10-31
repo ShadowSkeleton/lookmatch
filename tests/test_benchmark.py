@@ -60,9 +60,18 @@ def test_every_method_scored(result) -> None:  # type: ignore[no-untyped-def]
 def test_no_change_score_is_the_looks_own_difference(result) -> None:  # type: ignore[no-untyped-def]
     scores, photos, looks = result
     s = next(x for x in scores if x.method == "no change")
-    image = dict(photos)[s.photo]
-    truth = apply_lut(image, looks[s.look])
-    assert s.mean_de == pytest.approx(float(delta_e_2000(image, truth).mean()))
+    pixels = bench.score_pixels(dict(photos)[s.photo])
+    truth = apply_lut(pixels, looks[s.look])
+    assert s.mean_de == pytest.approx(float(delta_e_2000(pixels, truth).mean()))
+
+
+def test_scoring_sample_matches_whole_photo(photo_dir: Path) -> None:
+    look = bench.builtin_looks()["teal_orange"]
+    _, image = bench.load_photos(photo_dir, max_side=400)[0]
+    whole = float(delta_e_2000(image, apply_lut(image, look)).mean())
+    pixels = bench.score_pixels(image)
+    sampled = float(delta_e_2000(pixels, apply_lut(pixels, look)).mean())
+    assert sampled == pytest.approx(whole, rel=0.02)
 
 
 def test_folds_never_share_photos() -> None:

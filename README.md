@@ -98,22 +98,27 @@ other photos using **ΔE 2000**, the standard measure of visible color
 difference (below about 1, people can't see it). Details:
 [bench/README.md](bench/README.md).
 
-First results, on only 4 photos with 8 known looks
-([full table](bench/RESULTS.md)). Mean ΔE 2000, lower is better:
+Results on 45 of the maintainer's photos (two Sony cameras; city, street,
+portraits, night, desert) with 8 known looks, 15 reference photos and 30
+input photos per test ([full table](bench/RESULTS.md)). Mean ΔE 2000, lower
+is better:
 
 | Method | Same scenes | Different scenes |
 |---|---|---|
-| No change | 4.67 | **4.67** |
-| Reinhard color transfer | 2.91 | 13.60 |
-| Plain optimal transport | **0.42** | 15.13 |
-| lookmatch | 1.26 | 14.23 |
+| No change | 4.51 | **4.51** |
+| Reinhard color transfer | 3.71 | 7.97 |
+| Plain optimal transport | **0.62** | 7.41 |
+| lookmatch | 1.14 | 7.04 |
 
 When the reference photos and your photos show the same scenes, matching
 works well. When they show different scenes, every method, lookmatch
-included, makes photos worse than doing nothing: it mistakes the difference
-between scenes for a look. This is the main open problem, and the benchmark
-exists to measure every attempt to solve it. With only 4 photos these numbers
-are a first signal, not a conclusion.
+included, still makes most photos worse than doing nothing (lookmatch: 75% of
+photos). They mistake the difference between two sets of scenes for a look:
+even for looks that barely change anything, every method adds about 7 ΔE of
+color change that isn't there. lookmatch is the closest of the three, and it
+beats doing nothing on the strongest look (golden hour: 7.34 vs 9.04). This
+is the main open problem, and the benchmark exists to measure every attempt
+to solve it.
 
 ## License
 

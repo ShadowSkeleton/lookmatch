@@ -53,6 +53,16 @@ import make_looks  # noqa: E402
 METHODS = ("no change", "Reinhard", "plain OT", "lookmatch")
 CONDITIONS = ("different scenes", "same scenes")
 BASELINE_SAMPLES = 50_000  # per photo, for the baselines' pooled samples
+# Each photo is scored on a fixed random sample of its pixels. A LUT changes
+# every pixel independently, so this measures the same thing as scoring the
+# whole photo, about 20 times faster (ΔE 2000 is the slow part).
+SCORE_PIXELS = 20_000
+
+
+def score_pixels(image: npt.ArrayLike) -> npt.NDArray[np.float64]:
+    """Return the fixed sample of a photo's pixels that it is scored on."""
+    return io.sample_pixels(image, max_pixels=SCORE_PIXELS, seed=1)
+
 
 Photo = tuple[str, npt.NDArray[np.float32]]
 
@@ -172,9 +182,10 @@ def run(
                     ).cube,
                 }
                 for name, im in inputs:
-                    truth = apply_lut(im, look)
+                    pixels = score_pixels(im)
+                    truth = apply_lut(pixels, look)
                     for method in METHODS:
-                        de = delta_e_2000(apply_lut(im, cubes[method]), truth)
+                        de = delta_e_2000(apply_lut(pixels, cubes[method]), truth)
                         scores.append(
                             Score(
                                 look_name,
