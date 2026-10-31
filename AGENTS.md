@@ -19,8 +19,11 @@ colors" to "the reference look", so it works on photos it has never seen.
   REFERENCE photos to learn the target look.
 - Each photo counts equally: every photo contributes the same number of
   samples (up to the cap), so one large or unusual photo can't dominate.
-- Neutralize each photo on its own (white balance, exposure) before pooling,
-  so the LUT learns the look, not each photo's lighting.
+- Neutralize each photo (white balance, exposure) before pooling, so the LUT
+  learns the look, not each photo's lighting. Correct each photo toward its
+  *group's* shared average (references as one group, inputs as another), not
+  toward absolute gray: that keeps a reference look's overall cast as part
+  of the look. A single photo is left unchanged.
 - Per-photo problems (one wrong white balance) are not the LUT's job; the
   user fixes those in their editor.
 
@@ -75,9 +78,11 @@ to learn it and use it.
 ## Pipeline steps
 0. Load + normalize: decode, convert to working spaces, sample pixels from
    every reference and input photo
-1. Neutralize: estimate and remove white balance (gray world + white patch,
-   blended) and exposure (median luminance) for each reference and input
-   photo, then pool the reference samples and the input samples
+1. Neutralize: estimate white balance (gray world + white patch, blended)
+   and exposure (median luminance) for each reference and input photo;
+   move each photo to its group's shared average (white balance fully,
+   exposure at half strength capped at 1 stop), then pool the reference
+   samples and the input samples. See docs/method.md.
 2. Decompose the look:
    a. Tone curve: histogram matching on OKLab L, then isotonic regression,
       then PCHIP interpolation, 256 samples, must be monotonic
