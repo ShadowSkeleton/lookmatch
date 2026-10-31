@@ -6,7 +6,7 @@ or more reference photos and builds a LUT that gives the user's photos that
 look. It exports the look to multiple editing apps. It has three interfaces
 over one engine:
 1. Python package (the engine, all real logic lives here)
-2. CLI: `lookmatch fit REFERENCE INPUTS --name NAME`
+2. CLI: `lookmatch fit REFERENCE INPUTS --name NAME [--portrait]`
    - REFERENCE: one photo, or a folder of photos that share the same look
      (for example one photographer's series, or one film stock)
    - INPUTS: a folder of the user's own photos
@@ -89,8 +89,12 @@ to learn it and use it.
    b. Split toning: weighted least squares fit of OKLab a/b offsets for
       shadows / midtones / highlights with smooth zone weights
    c. Residual color: sliced optimal transport in OKLab, strength in [0,1]
-   d. Skin constraint: YCbCr rule-based skin mask; penalty if skin hue in
-      OKLCh drifts more than a threshold (default 6 degrees)
+   d. Skin constraint (opt-in with `--portrait`, off by default): YCbCr
+      rule-based skin mask; skin hue in OKLCh may drift at most a threshold
+      (default 6 degrees). Off by default because a color-only rule can't
+      tell skin from skin-colored scenery: on desert landscapes it marked
+      40-68% of the pixels as skin. Skin hue drift is still measured and
+      reported on every run.
 3. Bake: 33x33x33 LUT fit by sparse least squares with trilinear
    interpolation weights + Laplacian smoothness term. Cells with no samples
    fall back to steps 2a+2b only (not identity). Check monotonic L, clip gamut.
@@ -117,7 +121,8 @@ to learn it and use it.
 ## Warnings the tool must raise
 - Reference and input scene content too different (color distribution distance
   above threshold, or very different luminance histograms)
-- Skin drift above threshold
+- Skin drift above threshold (without `--portrait`: suggest it if the
+  photos have people; with it: say how much was held back)
 - Reference looks heavily compressed or tiny (< 800 px short side)
 - Reference photos disagree with each other a lot (they may not share one look)
 - Too few input photos to generalize (default: fewer than 5)

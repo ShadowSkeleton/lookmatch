@@ -166,6 +166,37 @@ forcing one scene's colors into the other's. A matching distribution is not
 the same as the right look, so the default strength is chosen with the
 benchmark (known looks, measured with ΔE 2000), not by distribution distance.
 
+## Skin tones
+
+Strong looks often push skin toward green, gray or orange, and people notice
+skin hue more than any other color. lookmatch finds skin-colored pixels with
+a fixed color rule (no AI model), measures how far a look rotates their hue,
+and can cap that rotation.
+
+**Skin mask.** A pixel counts as skin when its YCbCr color (ITU-R BT.601,
+8-bit) falls in the box 77 ≤ Cb ≤ 127 and 133 ≤ Cr ≤ 173 (Chai and Ngan
+1999). lookmatch also skips near-black and near-white pixels (Y below 40 or
+above 235), whose color is mostly noise or clipping.
+
+**Hue drift.** The change in OKLCh hue, in degrees, wrapped to ±180°.
+Nearly gray pixels (chroma below 0.02) are skipped because their hue swings
+wildly with tiny changes. The report gives the mean and 95th percentile.
+
+**Limit (portrait mode only).** With `--portrait`, for skin pixels whose hue
+moved more than 6°, the hue is set back to 6° in the same direction, keeping
+the look's new lightness and saturation. Without it, skin hue drift is still
+measured and shown in the report, with a suggestion to use `--portrait` if
+the drift is large and the photos have people.
+
+**Limitation: color alone can't tell skin from skin-colored things.** On the
+test chart, only the two ColorChecker skin patches count as skin. But on the
+maintainer's desert landscapes, with no people at all, red rock and sand were
+counted as skin in 40%, 44% and 68% of the pixels. Capping "skin" hue there
+would stop a look from changing the main subject of the photo. A face
+detector would fix this, but even classic detectors are trained models,
+which lookmatch doesn't use. So the limit is opt-in: you know whether your
+photos are portraits; lookmatch can't tell from color alone.
+
 ## References
 
 - R. E. Barlow, D. J. Bartholomew, J. M. Bremner and H. D. Brunk,
@@ -178,6 +209,10 @@ benchmark (known looks, measured with ΔE 2000), not by distribution distance.
   2007.
 - F. Mezzadri, "How to generate random matrices from the classical compact
   groups," Notices of the AMS 54(5), 2007. (Uniform random rotations.)
+- D. Chai and K. N. Ngan, "Face segmentation using skin-color map in
+  videophone applications," IEEE Transactions on Circuits and Systems for
+  Video Technology 9(4), 1999.
+- ITU-R BT.601, Studio encoding parameters of digital television. (YCbCr.)
 - G. Buchsbaum, "A spatial processor model for object colour perception,"
   Journal of the Franklin Institute 310(1), 1980.
 - E. H. Land and J. J. McCann, "Lightness and retinex theory," Journal of the
