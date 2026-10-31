@@ -22,3 +22,8 @@ bench/data/
 
 # Local run outputs
 /output/
+
+# Built-in benchmark looks exported for viewing (rebuilt by bench/make_looks.py)
+bench/looks/generated/
+# Benchmark scratch files
+bench/work/

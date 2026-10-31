@@ -176,7 +176,8 @@ lookmatch/
     cli.py
     mcp_server.py
   skills/lookmatch/SKILL.md
-  bench/           synthetic benchmark scripts + results
+  bench/           benchmark.py (known looks, ΔE 2000), make_looks.py,
+                   RESULTS.md, app_check.py; see bench/README.md
   tests/           pytest, fixtures/
   docs/            method.md (math + citations), apps.md (per-app install)
     figures/       README figures + make_figures.py (real lookmatch output only)

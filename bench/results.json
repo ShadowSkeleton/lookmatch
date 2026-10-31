@@ -1,0 +1,5255 @@
+{
+ "setup": {
+  "date": "2026-10-31",
+  "lookmatch_version": "0.1.0.dev0",
+  "photos": 4,
+  "photo_size": "800 px long side",
+  "looks": "warm_cool_test, teal_orange, faded_film, cool_moody, golden_hour, bleach_bypass, green_to_teal, channel_mix",
+  "folds": 3,
+  "lookmatch_transport_strength": 0.5
+ },
+ "summary": [
+  {
+   "condition": "different scenes",
+   "method": "no change",
+   "mean_de": 4.673385306435905,
+   "p95_de": 7.005869375684317,
+   "worse_than_no_change": 0.0
+  },
+  {
+   "condition": "different scenes",
+   "method": "Reinhard",
+   "mean_de": 13.595002711108261,
+   "p95_de": 18.7612399290103,
+   "worse_than_no_change": 0.9027777777777778
+  },
+  {
+   "condition": "different scenes",
+   "method": "plain OT",
+   "mean_de": 15.125490146596961,
+   "p95_de": 24.31887069402302,
+   "worse_than_no_change": 0.9166666666666666
+  },
+  {
+   "condition": "different scenes",
+   "method": "lookmatch",
+   "mean_de": 14.22840190341246,
+   "p95_de": 23.27127170895011,
+   "worse_than_no_change": 0.9305555555555556
+  },
+  {
+   "condition": "same scenes",
+   "method": "no change",
+   "mean_de": 4.673385306435905,
+   "p95_de": 7.005869375684317,
+   "worse_than_no_change": 0.0
+  },
+  {
+   "condition": "same scenes",
+   "method": "Reinhard",
+   "mean_de": 2.90914727768559,
+   "p95_de": 5.685914773809219,
+   "worse_than_no_change": 0.3055555555555556
+  },
+  {
+   "condition": "same scenes",
+   "method": "plain OT",
+   "mean_de": 0.42451020048639065,
+   "p95_de": 1.148060772196671,
+   "worse_than_no_change": 0.09722222222222222
+  },
+  {
+   "condition": "same scenes",
+   "method": "lookmatch",
+   "mean_de": 1.259101340082033,
+   "p95_de": 2.503956221732608,
+   "worse_than_no_change": 0.125
+  }
+ ],
+ "scores": [
+  {
+   "look": "warm_cool_test",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08255.ARW",
+   "mean_de": 3.7349345688346385,
+   "p95_de": 7.241995116671908
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08255.ARW",
+   "mean_de": 16.346192981068654,
+   "p95_de": 26.141618738906203
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08255.ARW",
+   "mean_de": 20.820613533771766,
+   "p95_de": 31.367353162068394
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08255.ARW",
+   "mean_de": 18.02627034972039,
+   "p95_de": 29.396723485331236
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08549.ARW",
+   "mean_de": 2.6969585352280885,
+   "p95_de": 7.583257299588175
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08549.ARW",
+   "mean_de": 17.132318052226456,
+   "p95_de": 25.860987134260554
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08549.ARW",
+   "mean_de": 18.96519308119926,
+   "p95_de": 28.23748349361956
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08549.ARW",
+   "mean_de": 16.648151762648617,
+   "p95_de": 27.0449264099107
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 3.073495980847499,
+   "p95_de": 6.853113271338618
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 20.733880322075905,
+   "p95_de": 28.032219724834754
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 23.317894670414717,
+   "p95_de": 31.54535052316311
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 16.773957388785874,
+   "p95_de": 28.439185453994625
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08118.ARW",
+   "mean_de": 3.507810868423801,
+   "p95_de": 5.967747732089775
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08118.ARW",
+   "mean_de": 5.474214199939202,
+   "p95_de": 8.204273555262539
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08118.ARW",
+   "mean_de": 11.862237850552445,
+   "p95_de": 21.136680742500552
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08118.ARW",
+   "mean_de": 10.649212030401403,
+   "p95_de": 17.873461609548226
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08549.ARW",
+   "mean_de": 2.6969585352280885,
+   "p95_de": 7.583257299588175
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08549.ARW",
+   "mean_de": 6.779562916200667,
+   "p95_de": 9.277549271778208
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08549.ARW",
+   "mean_de": 5.239661748045913,
+   "p95_de": 10.815837345142931
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08549.ARW",
+   "mean_de": 7.59487494270884,
+   "p95_de": 12.074716246274996
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 3.073495980847499,
+   "p95_de": 6.853113271338618
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 6.795875536194436,
+   "p95_de": 9.213753534513602
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 11.01973232230098,
+   "p95_de": 20.256604453287476
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 9.753627989901073,
+   "p95_de": 15.59029062579923
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08118.ARW",
+   "mean_de": 3.507810868423801,
+   "p95_de": 5.967747732089775
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08118.ARW",
+   "mean_de": 18.68107843242623,
+   "p95_de": 21.30992808297386
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08118.ARW",
+   "mean_de": 24.02908259843872,
+   "p95_de": 36.56691441680706
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08118.ARW",
+   "mean_de": 25.35036629451402,
+   "p95_de": 33.952189700779805
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08255.ARW",
+   "mean_de": 3.7349345688346385,
+   "p95_de": 7.241995116671908
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08255.ARW",
+   "mean_de": 16.750252696197126,
+   "p95_de": 21.94850364843907
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08255.ARW",
+   "mean_de": 15.917061033742538,
+   "p95_de": 35.417420251704804
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08255.ARW",
+   "mean_de": 17.089536103907644,
+   "p95_de": 34.877954290933374
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 3.073495980847499,
+   "p95_de": 6.853113271338618
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 13.564967342034798,
+   "p95_de": 20.73493951829209
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 15.356167866696236,
+   "p95_de": 32.85665164727858
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 14.419892067681577,
+   "p95_de": 32.762177145541486
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08255.ARW",
+   "mean_de": 3.7349345688346385,
+   "p95_de": 7.241995116671908
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08255.ARW",
+   "mean_de": 4.714323171541071,
+   "p95_de": 8.576179324127567
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08255.ARW",
+   "mean_de": 0.4493468786253193,
+   "p95_de": 1.4587873828112223
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08255.ARW",
+   "mean_de": 1.282911571287993,
+   "p95_de": 2.4395243845124046
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08549.ARW",
+   "mean_de": 2.6969585352280885,
+   "p95_de": 7.583257299588175
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08549.ARW",
+   "mean_de": 4.003506078358327,
+   "p95_de": 9.442364037685303
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08549.ARW",
+   "mean_de": 0.26081095852054087,
+   "p95_de": 0.629547815537776
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08549.ARW",
+   "mean_de": 1.3435794915744799,
+   "p95_de": 2.6179656802278597
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 3.073495980847499,
+   "p95_de": 6.853113271338618
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 3.7589392838904034,
+   "p95_de": 9.141374993505757
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.3729729881159008,
+   "p95_de": 0.9123105795279041
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 1.2888606413009414,
+   "p95_de": 3.350740413866699
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08118.ARW",
+   "mean_de": 3.507810868423801,
+   "p95_de": 5.967747732089775
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08118.ARW",
+   "mean_de": 6.791673488861558,
+   "p95_de": 10.314546384163156
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08118.ARW",
+   "mean_de": 0.3616314919738278,
+   "p95_de": 0.8875678627511734
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08118.ARW",
+   "mean_de": 1.747902437528309,
+   "p95_de": 3.0949164364531643
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08549.ARW",
+   "mean_de": 2.6969585352280885,
+   "p95_de": 7.583257299588175
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08549.ARW",
+   "mean_de": 4.092177931390825,
+   "p95_de": 9.120319827823002
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08549.ARW",
+   "mean_de": 0.26532848525251274,
+   "p95_de": 0.6016283899973324
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08549.ARW",
+   "mean_de": 1.7854849353427382,
+   "p95_de": 3.6911946531863324
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 3.073495980847499,
+   "p95_de": 6.853113271338618
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 3.5457072412244797,
+   "p95_de": 8.042750444839195
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.33614931305581386,
+   "p95_de": 0.7783374946743102
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 1.2488346432611686,
+   "p95_de": 4.166852171174757
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08118.ARW",
+   "mean_de": 3.507810868423801,
+   "p95_de": 5.967747732089775
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08118.ARW",
+   "mean_de": 6.931895210576986,
+   "p95_de": 11.489557260476566
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08118.ARW",
+   "mean_de": 0.3428541924503251,
+   "p95_de": 0.8618929886651431
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08118.ARW",
+   "mean_de": 0.8837345511449954,
+   "p95_de": 1.7950633651520291
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08255.ARW",
+   "mean_de": 3.7349345688346385,
+   "p95_de": 7.241995116671908
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08255.ARW",
+   "mean_de": 5.069007600722569,
+   "p95_de": 8.957964099456605
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08255.ARW",
+   "mean_de": 0.3392925700785883,
+   "p95_de": 0.9382003859611698
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08255.ARW",
+   "mean_de": 0.9482555756159285,
+   "p95_de": 2.3027035295759166
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 3.073495980847499,
+   "p95_de": 6.853113271338618
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 3.938588988711759,
+   "p95_de": 10.097141178971066
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.26592475871137505,
+   "p95_de": 0.6782830880201608
+  },
+  {
+   "look": "warm_cool_test",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 1.2433586495013005,
+   "p95_de": 2.0826507748317145
+  },
+  {
+   "look": "teal_orange",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08255.ARW",
+   "mean_de": 6.152604967108899,
+   "p95_de": 12.034146746018834
+  },
+  {
+   "look": "teal_orange",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08255.ARW",
+   "mean_de": 17.526691027993312,
+   "p95_de": 24.96857337219878
+  },
+  {
+   "look": "teal_orange",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08255.ARW",
+   "mean_de": 18.985807408721435,
+   "p95_de": 27.389022762778595
+  },
+  {
+   "look": "teal_orange",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08255.ARW",
+   "mean_de": 17.079450472074047,
+   "p95_de": 26.318699103245596
+  },
+  {
+   "look": "teal_orange",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08549.ARW",
+   "mean_de": 7.4130882307408354,
+   "p95_de": 12.440067433973779
+  },
+  {
+   "look": "teal_orange",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08549.ARW",
+   "mean_de": 19.25416798288457,
+   "p95_de": 27.460294891032976
+  },
+  {
+   "look": "teal_orange",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08549.ARW",
+   "mean_de": 18.222209026922876,
+   "p95_de": 26.812144669143628
+  },
+  {
+   "look": "teal_orange",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08549.ARW",
+   "mean_de": 16.544844884593918,
+   "p95_de": 25.676338213972755
+  },
+  {
+   "look": "teal_orange",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 5.458300218118184,
+   "p95_de": 9.468456019899314
+  },
+  {
+   "look": "teal_orange",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 23.085978592964164,
+   "p95_de": 31.735751418007613
+  },
+  {
+   "look": "teal_orange",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 22.640873531725664,
+   "p95_de": 29.339085057800816
+  },
+  {
+   "look": "teal_orange",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 15.776953928565554,
+   "p95_de": 25.76715608093845
+  },
+  {
+   "look": "teal_orange",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08118.ARW",
+   "mean_de": 5.039124002744886,
+   "p95_de": 8.356027155172493
+  },
+  {
+   "look": "teal_orange",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08118.ARW",
+   "mean_de": 12.00578031129421,
+   "p95_de": 18.00688418970078
+  },
+  {
+   "look": "teal_orange",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08118.ARW",
+   "mean_de": 10.150914127476293,
+   "p95_de": 16.45478541203836
+  },
+  {
+   "look": "teal_orange",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08118.ARW",
+   "mean_de": 9.209241037378295,
+   "p95_de": 14.437521954542705
+  },
+  {
+   "look": "teal_orange",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08549.ARW",
+   "mean_de": 7.4130882307408354,
+   "p95_de": 12.440067433973779
+  },
+  {
+   "look": "teal_orange",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08549.ARW",
+   "mean_de": 14.371090093415198,
+   "p95_de": 23.9514220048176
+  },
+  {
+   "look": "teal_orange",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08549.ARW",
+   "mean_de": 5.841661243173684,
+   "p95_de": 10.973557365623527
+  },
+  {
+   "look": "teal_orange",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08549.ARW",
+   "mean_de": 6.324994969391835,
+   "p95_de": 11.806638337671274
+  },
+  {
+   "look": "teal_orange",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 5.458300218118184,
+   "p95_de": 9.468456019899314
+  },
+  {
+   "look": "teal_orange",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 9.61920282407232,
+   "p95_de": 19.399935130321417
+  },
+  {
+   "look": "teal_orange",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 10.674912035433726,
+   "p95_de": 20.855395200473396
+  },
+  {
+   "look": "teal_orange",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 9.314811810471175,
+   "p95_de": 16.413423836367656
+  },
+  {
+   "look": "teal_orange",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08118.ARW",
+   "mean_de": 5.039124002744886,
+   "p95_de": 8.356027155172493
+  },
+  {
+   "look": "teal_orange",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08118.ARW",
+   "mean_de": 17.285237388811908,
+   "p95_de": 20.430523511945974
+  },
+  {
+   "look": "teal_orange",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08118.ARW",
+   "mean_de": 22.680895968206748,
+   "p95_de": 31.804160029557718
+  },
+  {
+   "look": "teal_orange",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08118.ARW",
+   "mean_de": 25.21121502711926,
+   "p95_de": 32.15091839263127
+  },
+  {
+   "look": "teal_orange",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08255.ARW",
+   "mean_de": 6.152604967108899,
+   "p95_de": 12.034146746018834
+  },
+  {
+   "look": "teal_orange",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08255.ARW",
+   "mean_de": 16.59574501771357,
+   "p95_de": 20.47110636722573
+  },
+  {
+   "look": "teal_orange",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08255.ARW",
+   "mean_de": 17.698115965306602,
+   "p95_de": 29.426753681753578
+  },
+  {
+   "look": "teal_orange",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08255.ARW",
+   "mean_de": 18.45188417005906,
+   "p95_de": 32.34312032450148
+  },
+  {
+   "look": "teal_orange",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 5.458300218118184,
+   "p95_de": 9.468456019899314
+  },
+  {
+   "look": "teal_orange",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 16.344695986834065,
+   "p95_de": 20.658431567942987
+  },
+  {
+   "look": "teal_orange",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 16.803796277382688,
+   "p95_de": 27.515609738443384
+  },
+  {
+   "look": "teal_orange",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 15.53536758619733,
+   "p95_de": 30.701477549515555
+  },
+  {
+   "look": "teal_orange",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08255.ARW",
+   "mean_de": 6.152604967108899,
+   "p95_de": 12.034146746018834
+  },
+  {
+   "look": "teal_orange",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08255.ARW",
+   "mean_de": 6.886059235238291,
+   "p95_de": 14.101265967794872
+  },
+  {
+   "look": "teal_orange",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08255.ARW",
+   "mean_de": 0.7474111384262832,
+   "p95_de": 2.0671234540410532
+  },
+  {
+   "look": "teal_orange",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08255.ARW",
+   "mean_de": 1.3231377661692751,
+   "p95_de": 2.4972084796981067
+  },
+  {
+   "look": "teal_orange",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08549.ARW",
+   "mean_de": 7.4130882307408354,
+   "p95_de": 12.440067433973779
+  },
+  {
+   "look": "teal_orange",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08549.ARW",
+   "mean_de": 8.070660787690302,
+   "p95_de": 14.486524974773701
+  },
+  {
+   "look": "teal_orange",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08549.ARW",
+   "mean_de": 0.5042593307178298,
+   "p95_de": 1.4176671255724327
+  },
+  {
+   "look": "teal_orange",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08549.ARW",
+   "mean_de": 2.3930771502028674,
+   "p95_de": 5.990969338412835
+  },
+  {
+   "look": "teal_orange",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 5.458300218118184,
+   "p95_de": 9.468456019899314
+  },
+  {
+   "look": "teal_orange",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 4.956739367544988,
+   "p95_de": 10.687497459920547
+  },
+  {
+   "look": "teal_orange",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.7505693986778823,
+   "p95_de": 2.089492390417801
+  },
+  {
+   "look": "teal_orange",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 1.3928608556737156,
+   "p95_de": 2.7274866323858924
+  },
+  {
+   "look": "teal_orange",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08118.ARW",
+   "mean_de": 5.039124002744886,
+   "p95_de": 8.356027155172493
+  },
+  {
+   "look": "teal_orange",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08118.ARW",
+   "mean_de": 4.885223010202544,
+   "p95_de": 7.5714288560572
+  },
+  {
+   "look": "teal_orange",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08118.ARW",
+   "mean_de": 0.855208441935798,
+   "p95_de": 2.0538396711821747
+  },
+  {
+   "look": "teal_orange",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08118.ARW",
+   "mean_de": 1.8232174171377018,
+   "p95_de": 2.945259308683888
+  },
+  {
+   "look": "teal_orange",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08549.ARW",
+   "mean_de": 7.4130882307408354,
+   "p95_de": 12.440067433973779
+  },
+  {
+   "look": "teal_orange",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08549.ARW",
+   "mean_de": 6.9445091698935935,
+   "p95_de": 11.516967958302622
+  },
+  {
+   "look": "teal_orange",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08549.ARW",
+   "mean_de": 0.5725254019437264,
+   "p95_de": 1.39511240857721
+  },
+  {
+   "look": "teal_orange",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08549.ARW",
+   "mean_de": 3.249898778835799,
+   "p95_de": 5.7716299919325404
+  },
+  {
+   "look": "teal_orange",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 5.458300218118184,
+   "p95_de": 9.468456019899314
+  },
+  {
+   "look": "teal_orange",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 4.731516215841498,
+   "p95_de": 8.70941223235336
+  },
+  {
+   "look": "teal_orange",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.7678920310029537,
+   "p95_de": 1.905827118240477
+  },
+  {
+   "look": "teal_orange",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 1.639132915172136,
+   "p95_de": 4.165811052265518
+  },
+  {
+   "look": "teal_orange",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08118.ARW",
+   "mean_de": 5.039124002744886,
+   "p95_de": 8.356027155172493
+  },
+  {
+   "look": "teal_orange",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08118.ARW",
+   "mean_de": 5.819359635207612,
+   "p95_de": 9.984763866201657
+  },
+  {
+   "look": "teal_orange",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08118.ARW",
+   "mean_de": 0.7375885669305466,
+   "p95_de": 1.8673269849933598
+  },
+  {
+   "look": "teal_orange",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08118.ARW",
+   "mean_de": 1.1218406979766578,
+   "p95_de": 2.6375043102517375
+  },
+  {
+   "look": "teal_orange",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08255.ARW",
+   "mean_de": 6.152604967108899,
+   "p95_de": 12.034146746018834
+  },
+  {
+   "look": "teal_orange",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08255.ARW",
+   "mean_de": 6.77117676544483,
+   "p95_de": 14.38005863919169
+  },
+  {
+   "look": "teal_orange",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08255.ARW",
+   "mean_de": 0.7123234764777391,
+   "p95_de": 2.002796615302912
+  },
+  {
+   "look": "teal_orange",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08255.ARW",
+   "mean_de": 1.3934272857931156,
+   "p95_de": 5.058825583338251
+  },
+  {
+   "look": "teal_orange",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 5.458300218118184,
+   "p95_de": 9.468456019899314
+  },
+  {
+   "look": "teal_orange",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 4.828360716275933,
+   "p95_de": 10.538838833875118
+  },
+  {
+   "look": "teal_orange",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.6544662755074433,
+   "p95_de": 1.5729116107357017
+  },
+  {
+   "look": "teal_orange",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 1.7235990048444563,
+   "p95_de": 2.9571758845871288
+  },
+  {
+   "look": "faded_film",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08255.ARW",
+   "mean_de": 4.417876390771314,
+   "p95_de": 7.105339137837295
+  },
+  {
+   "look": "faded_film",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08255.ARW",
+   "mean_de": 13.683291313239767,
+   "p95_de": 19.2602670921956
+  },
+  {
+   "look": "faded_film",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08255.ARW",
+   "mean_de": 16.01688938043119,
+   "p95_de": 22.374475725228333
+  },
+  {
+   "look": "faded_film",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08255.ARW",
+   "mean_de": 14.204906438413502,
+   "p95_de": 20.847673366178476
+  },
+  {
+   "look": "faded_film",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08549.ARW",
+   "mean_de": 5.341705611180821,
+   "p95_de": 7.839492053049097
+  },
+  {
+   "look": "faded_film",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08549.ARW",
+   "mean_de": 15.890925339988328,
+   "p95_de": 20.187409774890636
+  },
+  {
+   "look": "faded_film",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08549.ARW",
+   "mean_de": 15.83296754728027,
+   "p95_de": 20.64656531739764
+  },
+  {
+   "look": "faded_film",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08549.ARW",
+   "mean_de": 14.295132147635774,
+   "p95_de": 19.254539469295207
+  },
+  {
+   "look": "faded_film",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 4.0568076505502075,
+   "p95_de": 5.453152595630499
+  },
+  {
+   "look": "faded_film",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 17.372736486704387,
+   "p95_de": 23.15208901414717
+  },
+  {
+   "look": "faded_film",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 18.25944215951701,
+   "p95_de": 25.18909222883114
+  },
+  {
+   "look": "faded_film",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 13.591185759427535,
+   "p95_de": 19.940847118702173
+  },
+  {
+   "look": "faded_film",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08118.ARW",
+   "mean_de": 3.647804146896285,
+   "p95_de": 5.121145858251944
+  },
+  {
+   "look": "faded_film",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08118.ARW",
+   "mean_de": 6.366746196808231,
+   "p95_de": 7.697626850211883
+  },
+  {
+   "look": "faded_film",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08118.ARW",
+   "mean_de": 9.292076481378086,
+   "p95_de": 16.236694234661197
+  },
+  {
+   "look": "faded_film",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08118.ARW",
+   "mean_de": 8.334689573739555,
+   "p95_de": 12.766599633812254
+  },
+  {
+   "look": "faded_film",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08549.ARW",
+   "mean_de": 5.341705611180821,
+   "p95_de": 7.839492053049097
+  },
+  {
+   "look": "faded_film",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08549.ARW",
+   "mean_de": 7.879755175793226,
+   "p95_de": 10.945584144040822
+  },
+  {
+   "look": "faded_film",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08549.ARW",
+   "mean_de": 4.306001643768055,
+   "p95_de": 9.254304911916497
+  },
+  {
+   "look": "faded_film",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08549.ARW",
+   "mean_de": 5.676007266363059,
+   "p95_de": 9.184093979190317
+  },
+  {
+   "look": "faded_film",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 4.0568076505502075,
+   "p95_de": 5.453152595630499
+  },
+  {
+   "look": "faded_film",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 5.8109702667468985,
+   "p95_de": 8.932606017507911
+  },
+  {
+   "look": "faded_film",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 9.646936156253835,
+   "p95_de": 16.767923924889487
+  },
+  {
+   "look": "faded_film",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 8.276331989347447,
+   "p95_de": 13.540410498182323
+  },
+  {
+   "look": "faded_film",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08118.ARW",
+   "mean_de": 3.647804146896285,
+   "p95_de": 5.121145858251944
+  },
+  {
+   "look": "faded_film",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08118.ARW",
+   "mean_de": 16.7378909825821,
+   "p95_de": 18.370719479972646
+  },
+  {
+   "look": "faded_film",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08118.ARW",
+   "mean_de": 20.974708433651184,
+   "p95_de": 28.705386137899513
+  },
+  {
+   "look": "faded_film",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08118.ARW",
+   "mean_de": 22.79192954279649,
+   "p95_de": 28.139198401241195
+  },
+  {
+   "look": "faded_film",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08255.ARW",
+   "mean_de": 4.417876390771314,
+   "p95_de": 7.105339137837295
+  },
+  {
+   "look": "faded_film",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08255.ARW",
+   "mean_de": 14.801687712701689,
+   "p95_de": 18.482136489751937
+  },
+  {
+   "look": "faded_film",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08255.ARW",
+   "mean_de": 13.890769703069475,
+   "p95_de": 27.294902034817127
+  },
+  {
+   "look": "faded_film",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08255.ARW",
+   "mean_de": 14.078239758274362,
+   "p95_de": 28.3221189250472
+  },
+  {
+   "look": "faded_film",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 4.0568076505502075,
+   "p95_de": 5.453152595630499
+  },
+  {
+   "look": "faded_film",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 12.328811136282336,
+   "p95_de": 18.285001469784714
+  },
+  {
+   "look": "faded_film",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 12.968466627642801,
+   "p95_de": 26.015322203099135
+  },
+  {
+   "look": "faded_film",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 12.847056977336726,
+   "p95_de": 27.35942629184643
+  },
+  {
+   "look": "faded_film",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08255.ARW",
+   "mean_de": 4.417876390771314,
+   "p95_de": 7.105339137837295
+  },
+  {
+   "look": "faded_film",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08255.ARW",
+   "mean_de": 1.3553096705157004,
+   "p95_de": 1.909680817845405
+  },
+  {
+   "look": "faded_film",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08255.ARW",
+   "mean_de": 0.22101803124343625,
+   "p95_de": 0.6358216385270561
+  },
+  {
+   "look": "faded_film",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08255.ARW",
+   "mean_de": 1.2492751206211117,
+   "p95_de": 2.1598889708357745
+  },
+  {
+   "look": "faded_film",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08549.ARW",
+   "mean_de": 5.341705611180821,
+   "p95_de": 7.839492053049097
+  },
+  {
+   "look": "faded_film",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08549.ARW",
+   "mean_de": 1.4967668967079215,
+   "p95_de": 2.1546616509908096
+  },
+  {
+   "look": "faded_film",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08549.ARW",
+   "mean_de": 0.17180207476849949,
+   "p95_de": 0.6008609889463824
+  },
+  {
+   "look": "faded_film",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08549.ARW",
+   "mean_de": 1.3544081321603114,
+   "p95_de": 2.799913922585774
+  },
+  {
+   "look": "faded_film",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 4.0568076505502075,
+   "p95_de": 5.453152595630499
+  },
+  {
+   "look": "faded_film",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 1.46435657982913,
+   "p95_de": 2.571565038527169
+  },
+  {
+   "look": "faded_film",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.261012568583552,
+   "p95_de": 0.7983042825094412
+  },
+  {
+   "look": "faded_film",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.84166645099881,
+   "p95_de": 1.3798775458567463
+  },
+  {
+   "look": "faded_film",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08118.ARW",
+   "mean_de": 3.647804146896285,
+   "p95_de": 5.121145858251944
+  },
+  {
+   "look": "faded_film",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08118.ARW",
+   "mean_de": 1.206250746427943,
+   "p95_de": 1.9141878471806635
+  },
+  {
+   "look": "faded_film",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08118.ARW",
+   "mean_de": 0.2767181494632905,
+   "p95_de": 0.6974296495615747
+  },
+  {
+   "look": "faded_film",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08118.ARW",
+   "mean_de": 1.389601608920495,
+   "p95_de": 2.096962480239587
+  },
+  {
+   "look": "faded_film",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08549.ARW",
+   "mean_de": 5.341705611180821,
+   "p95_de": 7.839492053049097
+  },
+  {
+   "look": "faded_film",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08549.ARW",
+   "mean_de": 1.5237892114842748,
+   "p95_de": 2.270338626725827
+  },
+  {
+   "look": "faded_film",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08549.ARW",
+   "mean_de": 0.1718026963645169,
+   "p95_de": 0.5126901515253631
+  },
+  {
+   "look": "faded_film",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08549.ARW",
+   "mean_de": 1.9114541151943765,
+   "p95_de": 3.853035651010774
+  },
+  {
+   "look": "faded_film",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 4.0568076505502075,
+   "p95_de": 5.453152595630499
+  },
+  {
+   "look": "faded_film",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 1.468996283045887,
+   "p95_de": 2.6267265740134262
+  },
+  {
+   "look": "faded_film",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.2419399633018464,
+   "p95_de": 0.6921727395071376
+  },
+  {
+   "look": "faded_film",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 1.0823474863268,
+   "p95_de": 1.6005499975707367
+  },
+  {
+   "look": "faded_film",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08118.ARW",
+   "mean_de": 3.647804146896285,
+   "p95_de": 5.121145858251944
+  },
+  {
+   "look": "faded_film",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08118.ARW",
+   "mean_de": 1.2258217166648782,
+   "p95_de": 2.02020664906193
+  },
+  {
+   "look": "faded_film",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08118.ARW",
+   "mean_de": 0.1891921300336042,
+   "p95_de": 0.49042633141266634
+  },
+  {
+   "look": "faded_film",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08118.ARW",
+   "mean_de": 1.3789147944725588,
+   "p95_de": 2.385233130488263
+  },
+  {
+   "look": "faded_film",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08255.ARW",
+   "mean_de": 4.417876390771314,
+   "p95_de": 7.105339137837295
+  },
+  {
+   "look": "faded_film",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08255.ARW",
+   "mean_de": 1.4477820019440817,
+   "p95_de": 2.303071029610328
+  },
+  {
+   "look": "faded_film",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08255.ARW",
+   "mean_de": 0.18303908191707566,
+   "p95_de": 0.4401986403637813
+  },
+  {
+   "look": "faded_film",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08255.ARW",
+   "mean_de": 1.2959654429312941,
+   "p95_de": 2.550027832908177
+  },
+  {
+   "look": "faded_film",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 4.0568076505502075,
+   "p95_de": 5.453152595630499
+  },
+  {
+   "look": "faded_film",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 1.5191974495778855,
+   "p95_de": 2.604454561053817
+  },
+  {
+   "look": "faded_film",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.17215350997871173,
+   "p95_de": 0.44832307935426086
+  },
+  {
+   "look": "faded_film",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.6648151790712996,
+   "p95_de": 1.073010636595563
+  },
+  {
+   "look": "cool_moody",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08255.ARW",
+   "mean_de": 5.856725822087244,
+   "p95_de": 9.084426952617035
+  },
+  {
+   "look": "cool_moody",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08255.ARW",
+   "mean_de": 15.475646384617143,
+   "p95_de": 20.831761582656583
+  },
+  {
+   "look": "cool_moody",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08255.ARW",
+   "mean_de": 17.980075384539788,
+   "p95_de": 22.75847072332727
+  },
+  {
+   "look": "cool_moody",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08255.ARW",
+   "mean_de": 16.16144088679917,
+   "p95_de": 21.818075582352765
+  },
+  {
+   "look": "cool_moody",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08549.ARW",
+   "mean_de": 5.433972814320515,
+   "p95_de": 9.761653174267883
+  },
+  {
+   "look": "cool_moody",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08549.ARW",
+   "mean_de": 18.33987286692897,
+   "p95_de": 23.415645052344814
+  },
+  {
+   "look": "cool_moody",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08549.ARW",
+   "mean_de": 19.122438963619583,
+   "p95_de": 23.7285768156988
+  },
+  {
+   "look": "cool_moody",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08549.ARW",
+   "mean_de": 17.102138905762423,
+   "p95_de": 21.27116739026229
+  },
+  {
+   "look": "cool_moody",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 8.24196272417952,
+   "p95_de": 10.836180253383498
+  },
+  {
+   "look": "cool_moody",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 18.918998340069916,
+   "p95_de": 25.450249021199312
+  },
+  {
+   "look": "cool_moody",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 19.274554148654076,
+   "p95_de": 24.513024834169446
+  },
+  {
+   "look": "cool_moody",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 13.788467793240633,
+   "p95_de": 21.41295992516048
+  },
+  {
+   "look": "cool_moody",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08118.ARW",
+   "mean_de": 6.0497002326654945,
+   "p95_de": 8.269156925821335
+  },
+  {
+   "look": "cool_moody",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08118.ARW",
+   "mean_de": 8.421506603482062,
+   "p95_de": 11.725642807858312
+  },
+  {
+   "look": "cool_moody",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08118.ARW",
+   "mean_de": 10.155670144239425,
+   "p95_de": 18.44395237403577
+  },
+  {
+   "look": "cool_moody",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08118.ARW",
+   "mean_de": 9.921968373144727,
+   "p95_de": 15.653156744453632
+  },
+  {
+   "look": "cool_moody",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08549.ARW",
+   "mean_de": 5.433972814320515,
+   "p95_de": 9.761653174267883
+  },
+  {
+   "look": "cool_moody",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08549.ARW",
+   "mean_de": 9.482806660281836,
+   "p95_de": 13.922887576437681
+  },
+  {
+   "look": "cool_moody",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08549.ARW",
+   "mean_de": 4.82531196159447,
+   "p95_de": 8.85646816596749
+  },
+  {
+   "look": "cool_moody",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08549.ARW",
+   "mean_de": 5.7260889125627115,
+   "p95_de": 10.285590887752258
+  },
+  {
+   "look": "cool_moody",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 8.24196272417952,
+   "p95_de": 10.836180253383498
+  },
+  {
+   "look": "cool_moody",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 7.348739451065299,
+   "p95_de": 12.996026318676861
+  },
+  {
+   "look": "cool_moody",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 8.672458722890948,
+   "p95_de": 15.598304805873937
+  },
+  {
+   "look": "cool_moody",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 7.157326814558825,
+   "p95_de": 13.753609482722444
+  },
+  {
+   "look": "cool_moody",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08118.ARW",
+   "mean_de": 6.0497002326654945,
+   "p95_de": 8.269156925821335
+  },
+  {
+   "look": "cool_moody",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08118.ARW",
+   "mean_de": 20.383459724490063,
+   "p95_de": 25.00104765140356
+  },
+  {
+   "look": "cool_moody",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08118.ARW",
+   "mean_de": 26.136991980658962,
+   "p95_de": 35.37463429883555
+  },
+  {
+   "look": "cool_moody",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08118.ARW",
+   "mean_de": 28.766306774876522,
+   "p95_de": 36.19835053028814
+  },
+  {
+   "look": "cool_moody",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08255.ARW",
+   "mean_de": 5.856725822087244,
+   "p95_de": 9.084426952617035
+  },
+  {
+   "look": "cool_moody",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08255.ARW",
+   "mean_de": 16.722488813151234,
+   "p95_de": 22.772666875525076
+  },
+  {
+   "look": "cool_moody",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08255.ARW",
+   "mean_de": 15.745664109544798,
+   "p95_de": 34.28567799843879
+  },
+  {
+   "look": "cool_moody",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08255.ARW",
+   "mean_de": 17.09721307522276,
+   "p95_de": 35.97408418846069
+  },
+  {
+   "look": "cool_moody",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 8.24196272417952,
+   "p95_de": 10.836180253383498
+  },
+  {
+   "look": "cool_moody",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 13.930234386389214,
+   "p95_de": 21.7836348100072
+  },
+  {
+   "look": "cool_moody",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 14.74385730630672,
+   "p95_de": 32.04487898738211
+  },
+  {
+   "look": "cool_moody",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 14.729437347209148,
+   "p95_de": 34.51815294715674
+  },
+  {
+   "look": "cool_moody",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08255.ARW",
+   "mean_de": 5.856725822087244,
+   "p95_de": 9.084426952617035
+  },
+  {
+   "look": "cool_moody",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08255.ARW",
+   "mean_de": 4.660416475744489,
+   "p95_de": 9.698739137447069
+  },
+  {
+   "look": "cool_moody",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08255.ARW",
+   "mean_de": 0.5926678032480646,
+   "p95_de": 1.7918700843502295
+  },
+  {
+   "look": "cool_moody",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08255.ARW",
+   "mean_de": 1.265053382709182,
+   "p95_de": 2.361906997182969
+  },
+  {
+   "look": "cool_moody",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08549.ARW",
+   "mean_de": 5.433972814320515,
+   "p95_de": 9.761653174267883
+  },
+  {
+   "look": "cool_moody",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08549.ARW",
+   "mean_de": 5.129282268157795,
+   "p95_de": 9.460546276339697
+  },
+  {
+   "look": "cool_moody",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08549.ARW",
+   "mean_de": 0.39614703328636486,
+   "p95_de": 1.1036098282679108
+  },
+  {
+   "look": "cool_moody",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08549.ARW",
+   "mean_de": 1.215042874955009,
+   "p95_de": 2.2899103051936054
+  },
+  {
+   "look": "cool_moody",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 8.24196272417952,
+   "p95_de": 10.836180253383498
+  },
+  {
+   "look": "cool_moody",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 4.297900002009955,
+   "p95_de": 8.953883388093242
+  },
+  {
+   "look": "cool_moody",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.5842000354722375,
+   "p95_de": 1.6206401595089277
+  },
+  {
+   "look": "cool_moody",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 1.121922387674299,
+   "p95_de": 2.0083307699624187
+  },
+  {
+   "look": "cool_moody",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08118.ARW",
+   "mean_de": 6.0497002326654945,
+   "p95_de": 8.269156925821335
+  },
+  {
+   "look": "cool_moody",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08118.ARW",
+   "mean_de": 4.897092391970088,
+   "p95_de": 7.4035075726565465
+  },
+  {
+   "look": "cool_moody",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08118.ARW",
+   "mean_de": 0.6131016661681368,
+   "p95_de": 1.5943053485073524
+  },
+  {
+   "look": "cool_moody",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08118.ARW",
+   "mean_de": 1.3583159860221772,
+   "p95_de": 2.3051599663387585
+  },
+  {
+   "look": "cool_moody",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08549.ARW",
+   "mean_de": 5.433972814320515,
+   "p95_de": 9.761653174267883
+  },
+  {
+   "look": "cool_moody",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08549.ARW",
+   "mean_de": 5.207551918738506,
+   "p95_de": 9.171962876726669
+  },
+  {
+   "look": "cool_moody",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08549.ARW",
+   "mean_de": 0.3884574167880004,
+   "p95_de": 1.0298171926940325
+  },
+  {
+   "look": "cool_moody",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08549.ARW",
+   "mean_de": 1.6780490368450827,
+   "p95_de": 2.7084301644676603
+  },
+  {
+   "look": "cool_moody",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 8.24196272417952,
+   "p95_de": 10.836180253383498
+  },
+  {
+   "look": "cool_moody",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 4.258892149359794,
+   "p95_de": 8.127127292718589
+  },
+  {
+   "look": "cool_moody",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.6073679548386707,
+   "p95_de": 1.5383632099535824
+  },
+  {
+   "look": "cool_moody",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 1.1087258931082766,
+   "p95_de": 2.1301923428437552
+  },
+  {
+   "look": "cool_moody",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08118.ARW",
+   "mean_de": 6.0497002326654945,
+   "p95_de": 8.269156925821335
+  },
+  {
+   "look": "cool_moody",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08118.ARW",
+   "mean_de": 5.141051533843796,
+   "p95_de": 7.832471772440931
+  },
+  {
+   "look": "cool_moody",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08118.ARW",
+   "mean_de": 0.5798055794599255,
+   "p95_de": 1.6593396150782844
+  },
+  {
+   "look": "cool_moody",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08118.ARW",
+   "mean_de": 1.6718530622435595,
+   "p95_de": 2.5298551880562323
+  },
+  {
+   "look": "cool_moody",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08255.ARW",
+   "mean_de": 5.856725822087244,
+   "p95_de": 9.084426952617035
+  },
+  {
+   "look": "cool_moody",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08255.ARW",
+   "mean_de": 4.613468941966581,
+   "p95_de": 9.728770078556156
+  },
+  {
+   "look": "cool_moody",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08255.ARW",
+   "mean_de": 0.5877274339187479,
+   "p95_de": 1.682366501133363
+  },
+  {
+   "look": "cool_moody",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08255.ARW",
+   "mean_de": 1.0747875760846686,
+   "p95_de": 2.0212894560953765
+  },
+  {
+   "look": "cool_moody",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 8.24196272417952,
+   "p95_de": 10.836180253383498
+  },
+  {
+   "look": "cool_moody",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 4.375756417245668,
+   "p95_de": 8.780885341402351
+  },
+  {
+   "look": "cool_moody",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.5100514335305533,
+   "p95_de": 1.3567119320274887
+  },
+  {
+   "look": "cool_moody",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 1.1686938206376178,
+   "p95_de": 1.90712023804875
+  },
+  {
+   "look": "golden_hour",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08255.ARW",
+   "mean_de": 9.08325065634661,
+   "p95_de": 10.513690900354964
+  },
+  {
+   "look": "golden_hour",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08255.ARW",
+   "mean_de": 15.11553101174624,
+   "p95_de": 22.39916716889891
+  },
+  {
+   "look": "golden_hour",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08255.ARW",
+   "mean_de": 18.511575096973555,
+   "p95_de": 28.90733666349731
+  },
+  {
+   "look": "golden_hour",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08255.ARW",
+   "mean_de": 15.84396962124353,
+   "p95_de": 25.580105775769216
+  },
+  {
+   "look": "golden_hour",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08549.ARW",
+   "mean_de": 8.850830091544227,
+   "p95_de": 9.85902943777609
+  },
+  {
+   "look": "golden_hour",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08549.ARW",
+   "mean_de": 16.986194815628277,
+   "p95_de": 24.46931655372493
+  },
+  {
+   "look": "golden_hour",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08549.ARW",
+   "mean_de": 17.55035946543078,
+   "p95_de": 24.664652580863148
+  },
+  {
+   "look": "golden_hour",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08549.ARW",
+   "mean_de": 15.666335500764283,
+   "p95_de": 23.288558034668895
+  },
+  {
+   "look": "golden_hour",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 8.963835863973452,
+   "p95_de": 10.000688702612392
+  },
+  {
+   "look": "golden_hour",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 20.011025751269845,
+   "p95_de": 28.736276926680397
+  },
+  {
+   "look": "golden_hour",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 21.8238973678588,
+   "p95_de": 31.196218212459733
+  },
+  {
+   "look": "golden_hour",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 15.677760475908471,
+   "p95_de": 24.21815669086539
+  },
+  {
+   "look": "golden_hour",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08118.ARW",
+   "mean_de": 8.724306100925347,
+   "p95_de": 10.000700225039884
+  },
+  {
+   "look": "golden_hour",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08118.ARW",
+   "mean_de": 6.282218739148731,
+   "p95_de": 7.7841901503258
+  },
+  {
+   "look": "golden_hour",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08118.ARW",
+   "mean_de": 11.149197678550356,
+   "p95_de": 19.494560369417048
+  },
+  {
+   "look": "golden_hour",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08118.ARW",
+   "mean_de": 9.834382600805656,
+   "p95_de": 15.065356437327372
+  },
+  {
+   "look": "golden_hour",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08549.ARW",
+   "mean_de": 8.850830091544227,
+   "p95_de": 9.85902943777609
+  },
+  {
+   "look": "golden_hour",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08549.ARW",
+   "mean_de": 6.197185586020912,
+   "p95_de": 8.150297163124634
+  },
+  {
+   "look": "golden_hour",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08549.ARW",
+   "mean_de": 5.1400994429184435,
+   "p95_de": 9.594640104529406
+  },
+  {
+   "look": "golden_hour",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08549.ARW",
+   "mean_de": 6.417151418095001,
+   "p95_de": 9.798371518976937
+  },
+  {
+   "look": "golden_hour",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 8.963835863973452,
+   "p95_de": 10.000688702612392
+  },
+  {
+   "look": "golden_hour",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 6.787556324067685,
+   "p95_de": 7.978915170395486
+  },
+  {
+   "look": "golden_hour",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 11.139440885104941,
+   "p95_de": 18.539144421373695
+  },
+  {
+   "look": "golden_hour",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 10.054635980056291,
+   "p95_de": 17.172969702380453
+  },
+  {
+   "look": "golden_hour",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08118.ARW",
+   "mean_de": 8.724306100925347,
+   "p95_de": 10.000700225039884
+  },
+  {
+   "look": "golden_hour",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08118.ARW",
+   "mean_de": 18.74521961711674,
+   "p95_de": 21.61684908586704
+  },
+  {
+   "look": "golden_hour",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08118.ARW",
+   "mean_de": 22.49658392798402,
+   "p95_de": 30.838272455899304
+  },
+  {
+   "look": "golden_hour",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08118.ARW",
+   "mean_de": 24.94760099150215,
+   "p95_de": 29.419912788417875
+  },
+  {
+   "look": "golden_hour",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08255.ARW",
+   "mean_de": 9.08325065634661,
+   "p95_de": 10.513690900354964
+  },
+  {
+   "look": "golden_hour",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08255.ARW",
+   "mean_de": 15.780691021853125,
+   "p95_de": 20.790930260553388
+  },
+  {
+   "look": "golden_hour",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08255.ARW",
+   "mean_de": 15.392217579074227,
+   "p95_de": 29.166383946433342
+  },
+  {
+   "look": "golden_hour",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08255.ARW",
+   "mean_de": 16.430908482679154,
+   "p95_de": 29.892141915542666
+  },
+  {
+   "look": "golden_hour",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 8.963835863973452,
+   "p95_de": 10.000688702612392
+  },
+  {
+   "look": "golden_hour",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 14.151039839433665,
+   "p95_de": 22.34500416048513
+  },
+  {
+   "look": "golden_hour",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 15.282236988060554,
+   "p95_de": 27.756736701255395
+  },
+  {
+   "look": "golden_hour",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 13.854586564636092,
+   "p95_de": 28.73367979988674
+  },
+  {
+   "look": "golden_hour",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08255.ARW",
+   "mean_de": 9.08325065634661,
+   "p95_de": 10.513690900354964
+  },
+  {
+   "look": "golden_hour",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08255.ARW",
+   "mean_de": 3.7291076703479304,
+   "p95_de": 8.229079192650877
+  },
+  {
+   "look": "golden_hour",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08255.ARW",
+   "mean_de": 0.30552577692232685,
+   "p95_de": 0.8275097781373926
+  },
+  {
+   "look": "golden_hour",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08255.ARW",
+   "mean_de": 0.889838449384423,
+   "p95_de": 2.1303191182987704
+  },
+  {
+   "look": "golden_hour",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08549.ARW",
+   "mean_de": 8.850830091544227,
+   "p95_de": 9.85902943777609
+  },
+  {
+   "look": "golden_hour",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08549.ARW",
+   "mean_de": 3.7647666312949344,
+   "p95_de": 6.140801945491555
+  },
+  {
+   "look": "golden_hour",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08549.ARW",
+   "mean_de": 0.22741496288415602,
+   "p95_de": 0.6786084507326104
+  },
+  {
+   "look": "golden_hour",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08549.ARW",
+   "mean_de": 1.1650417927278516,
+   "p95_de": 3.387350513717085
+  },
+  {
+   "look": "golden_hour",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 8.963835863973452,
+   "p95_de": 10.000688702612392
+  },
+  {
+   "look": "golden_hour",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 2.6843267243665605,
+   "p95_de": 5.072777010178537
+  },
+  {
+   "look": "golden_hour",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.37848555888679825,
+   "p95_de": 0.9845928479344518
+  },
+  {
+   "look": "golden_hour",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.5382136034764218,
+   "p95_de": 1.040678068979504
+  },
+  {
+   "look": "golden_hour",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08118.ARW",
+   "mean_de": 8.724306100925347,
+   "p95_de": 10.000700225039884
+  },
+  {
+   "look": "golden_hour",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08118.ARW",
+   "mean_de": 4.045317424245389,
+   "p95_de": 8.899388055229952
+  },
+  {
+   "look": "golden_hour",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08118.ARW",
+   "mean_de": 0.29566754112498483,
+   "p95_de": 0.8468347895812642
+  },
+  {
+   "look": "golden_hour",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08118.ARW",
+   "mean_de": 0.7623475495065424,
+   "p95_de": 1.7014526243646304
+  },
+  {
+   "look": "golden_hour",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08549.ARW",
+   "mean_de": 8.850830091544227,
+   "p95_de": 9.85902943777609
+  },
+  {
+   "look": "golden_hour",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08549.ARW",
+   "mean_de": 3.3884653065820456,
+   "p95_de": 5.8154125510316605
+  },
+  {
+   "look": "golden_hour",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08549.ARW",
+   "mean_de": 0.28697298528212184,
+   "p95_de": 0.8123488683877472
+  },
+  {
+   "look": "golden_hour",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08549.ARW",
+   "mean_de": 1.7090249057538447,
+   "p95_de": 3.749596348393237
+  },
+  {
+   "look": "golden_hour",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 8.963835863973452,
+   "p95_de": 10.000688702612392
+  },
+  {
+   "look": "golden_hour",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 2.681874084326879,
+   "p95_de": 4.78577053801858
+  },
+  {
+   "look": "golden_hour",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.3824343995852852,
+   "p95_de": 0.9323266362279394
+  },
+  {
+   "look": "golden_hour",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.6381566293313216,
+   "p95_de": 1.359693919580648
+  },
+  {
+   "look": "golden_hour",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08118.ARW",
+   "mean_de": 8.724306100925347,
+   "p95_de": 10.000700225039884
+  },
+  {
+   "look": "golden_hour",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08118.ARW",
+   "mean_de": 3.7481317814495267,
+   "p95_de": 7.338046218466768
+  },
+  {
+   "look": "golden_hour",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08118.ARW",
+   "mean_de": 0.24666996685326165,
+   "p95_de": 0.7058489089552283
+  },
+  {
+   "look": "golden_hour",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08118.ARW",
+   "mean_de": 0.7881533950362507,
+   "p95_de": 1.6160031354845625
+  },
+  {
+   "look": "golden_hour",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08255.ARW",
+   "mean_de": 9.08325065634661,
+   "p95_de": 10.513690900354964
+  },
+  {
+   "look": "golden_hour",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08255.ARW",
+   "mean_de": 3.8384336905653527,
+   "p95_de": 8.461633596542418
+  },
+  {
+   "look": "golden_hour",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08255.ARW",
+   "mean_de": 0.25040306992570666,
+   "p95_de": 0.6369335674180305
+  },
+  {
+   "look": "golden_hour",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08255.ARW",
+   "mean_de": 0.8707179895652152,
+   "p95_de": 1.9692209057125454
+  },
+  {
+   "look": "golden_hour",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 8.963835863973452,
+   "p95_de": 10.000688702612392
+  },
+  {
+   "look": "golden_hour",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 2.766459216809871,
+   "p95_de": 5.596117571172386
+  },
+  {
+   "look": "golden_hour",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.3263466039316571,
+   "p95_de": 0.7740700383897011
+  },
+  {
+   "look": "golden_hour",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.4629102731595319,
+   "p95_de": 0.8243940431510696
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08255.ARW",
+   "mean_de": 5.968645843980506,
+   "p95_de": 8.664032968673688
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08255.ARW",
+   "mean_de": 15.985622499168555,
+   "p95_de": 27.751072143149813
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08255.ARW",
+   "mean_de": 19.28021878012279,
+   "p95_de": 29.35404787173513
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08255.ARW",
+   "mean_de": 18.3667183822608,
+   "p95_de": 30.600555497714833
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08549.ARW",
+   "mean_de": 5.427473573810392,
+   "p95_de": 10.051761220545762
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08549.ARW",
+   "mean_de": 15.00764473698242,
+   "p95_de": 27.12862865944728
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08549.ARW",
+   "mean_de": 17.687851441674084,
+   "p95_de": 28.478716048421298
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08549.ARW",
+   "mean_de": 16.44612686620878,
+   "p95_de": 29.451425749504153
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 7.723624597852048,
+   "p95_de": 10.189254797682683
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 21.1217645243105,
+   "p95_de": 28.418389420485767
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 22.593625159496145,
+   "p95_de": 29.75045933864746
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 16.86683665663704,
+   "p95_de": 29.384489561365008
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08118.ARW",
+   "mean_de": 7.331241167476349,
+   "p95_de": 9.96385521084782
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08118.ARW",
+   "mean_de": 4.584689925519984,
+   "p95_de": 5.864876279028902
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08118.ARW",
+   "mean_de": 8.862136805652858,
+   "p95_de": 13.438192173483442
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08118.ARW",
+   "mean_de": 8.929206692088341,
+   "p95_de": 13.223817904557404
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08549.ARW",
+   "mean_de": 5.427473573810392,
+   "p95_de": 10.051761220545762
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08549.ARW",
+   "mean_de": 4.416106941784678,
+   "p95_de": 6.641075870562374
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08549.ARW",
+   "mean_de": 3.811723587453152,
+   "p95_de": 8.912322849627675
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08549.ARW",
+   "mean_de": 5.155857084689311,
+   "p95_de": 10.083157297820552
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 7.723624597852048,
+   "p95_de": 10.189254797682683
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 5.239935368299682,
+   "p95_de": 6.9526386273855225
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 7.153953526166789,
+   "p95_de": 12.16043796749855
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 5.695291161412228,
+   "p95_de": 10.539540164527367
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08118.ARW",
+   "mean_de": 7.331241167476349,
+   "p95_de": 9.96385521084782
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08118.ARW",
+   "mean_de": 15.736158638507275,
+   "p95_de": 21.146557680478324
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08118.ARW",
+   "mean_de": 20.543254072638973,
+   "p95_de": 31.867281291625883
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08118.ARW",
+   "mean_de": 22.620694129497068,
+   "p95_de": 33.59020099647258
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08255.ARW",
+   "mean_de": 5.968645843980506,
+   "p95_de": 8.664032968673688
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08255.ARW",
+   "mean_de": 13.914170383328095,
+   "p95_de": 20.130307980845185
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08255.ARW",
+   "mean_de": 13.276691208626461,
+   "p95_de": 29.525742358885747
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08255.ARW",
+   "mean_de": 14.9817974306803,
+   "p95_de": 32.6547731995885
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 7.723624597852048,
+   "p95_de": 10.189254797682683
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 12.926590123371838,
+   "p95_de": 19.606056964002104
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 13.926613336443568,
+   "p95_de": 27.01985151960127
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 12.996467327129983,
+   "p95_de": 30.4082229865598
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08255.ARW",
+   "mean_de": 5.968645843980506,
+   "p95_de": 8.664032968673688
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08255.ARW",
+   "mean_de": 2.3364700283484465,
+   "p95_de": 5.4887348068870105
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08255.ARW",
+   "mean_de": 1.0266809392518732,
+   "p95_de": 2.7476018560298305
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08255.ARW",
+   "mean_de": 2.9853436774591606,
+   "p95_de": 5.526958033406496
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08549.ARW",
+   "mean_de": 5.427473573810392,
+   "p95_de": 10.051761220545762
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08549.ARW",
+   "mean_de": 2.620589264617246,
+   "p95_de": 6.843358415595323
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08549.ARW",
+   "mean_de": 0.6144758495979208,
+   "p95_de": 1.9937768044515467
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08549.ARW",
+   "mean_de": 2.4206681050365764,
+   "p95_de": 4.871499714416045
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 7.723624597852048,
+   "p95_de": 10.189254797682683
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 1.5926331928476107,
+   "p95_de": 5.307620031247134
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.8992268804483099,
+   "p95_de": 2.364024872084762
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 1.8351798773445533,
+   "p95_de": 3.9437568851079696
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08118.ARW",
+   "mean_de": 7.331241167476349,
+   "p95_de": 9.96385521084782
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08118.ARW",
+   "mean_de": 2.9185232208246674,
+   "p95_de": 5.586542096957865
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08118.ARW",
+   "mean_de": 1.0287110813922662,
+   "p95_de": 2.9091052019998123
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08118.ARW",
+   "mean_de": 4.203046904768563,
+   "p95_de": 5.962248684666938
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08549.ARW",
+   "mean_de": 5.427473573810392,
+   "p95_de": 10.051761220545762
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08549.ARW",
+   "mean_de": 2.7715738411285193,
+   "p95_de": 5.977961344182599
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08549.ARW",
+   "mean_de": 0.7125745095038288,
+   "p95_de": 2.0419644224989413
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08549.ARW",
+   "mean_de": 2.58684509529283,
+   "p95_de": 5.796989939821641
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 7.723624597852048,
+   "p95_de": 10.189254797682683
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 1.325249631272605,
+   "p95_de": 4.250069458815768
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.9433914889502586,
+   "p95_de": 2.23705818987762
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 1.9836924033710228,
+   "p95_de": 4.431575691733742
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08118.ARW",
+   "mean_de": 7.331241167476349,
+   "p95_de": 9.96385521084782
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08118.ARW",
+   "mean_de": 2.2599292349969273,
+   "p95_de": 4.796360569963125
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08118.ARW",
+   "mean_de": 1.1528982396900171,
+   "p95_de": 3.1213228165402045
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08118.ARW",
+   "mean_de": 4.215525496680704,
+   "p95_de": 6.8371415319724775
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08255.ARW",
+   "mean_de": 5.968645843980506,
+   "p95_de": 8.664032968673688
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08255.ARW",
+   "mean_de": 2.8251650969284774,
+   "p95_de": 5.457278645754102
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08255.ARW",
+   "mean_de": 1.0516583761587468,
+   "p95_de": 2.686341567546899
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08255.ARW",
+   "mean_de": 2.8896616710631196,
+   "p95_de": 5.620159110219048
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 7.723624597852048,
+   "p95_de": 10.189254797682683
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 1.2741253128688244,
+   "p95_de": 3.9655780272226173
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.8868330693107229,
+   "p95_de": 2.293340109862287
+  },
+  {
+   "look": "bleach_bypass",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 1.820087315306144,
+   "p95_de": 3.6513080159295255
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08255.ARW",
+   "mean_de": 0.1501872425488957,
+   "p95_de": 0.7156404096434126
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08255.ARW",
+   "mean_de": 15.315145725486117,
+   "p95_de": 21.637596402003954
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08255.ARW",
+   "mean_de": 18.64921864116566,
+   "p95_de": 25.88531826087545
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08255.ARW",
+   "mean_de": 16.115169113142333,
+   "p95_de": 23.853080757065634
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08549.ARW",
+   "mean_de": 0.07534511182001485,
+   "p95_de": 0.25499170364207874
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08549.ARW",
+   "mean_de": 17.444662323525193,
+   "p95_de": 23.203148890620632
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08549.ARW",
+   "mean_de": 18.250436299152874,
+   "p95_de": 24.461677890590593
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08549.ARW",
+   "mean_de": 16.21890305362819,
+   "p95_de": 22.56206190366448
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.014138150517173535,
+   "p95_de": 0.11743776045063418
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 19.630368016972632,
+   "p95_de": 26.393914459126794
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 21.163100129230298,
+   "p95_de": 29.07804880244739
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 15.049034792735368,
+   "p95_de": 23.52929269157571
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08118.ARW",
+   "mean_de": 0.018106897905432285,
+   "p95_de": 0.004696254142196286
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08118.ARW",
+   "mean_de": 7.226675498161143,
+   "p95_de": 9.219049489283531
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08118.ARW",
+   "mean_de": 11.035695103385645,
+   "p95_de": 19.505967959159605
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08118.ARW",
+   "mean_de": 9.98931089708188,
+   "p95_de": 16.162762225240275
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08549.ARW",
+   "mean_de": 0.07534511182001485,
+   "p95_de": 0.25499170364207874
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08549.ARW",
+   "mean_de": 8.07546305327036,
+   "p95_de": 10.152174764295225
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08549.ARW",
+   "mean_de": 4.929043498186504,
+   "p95_de": 10.795095489006654
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08549.ARW",
+   "mean_de": 6.77668507924803,
+   "p95_de": 11.222299569258075
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.014138150517173535,
+   "p95_de": 0.11743776045063418
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 6.869329405074914,
+   "p95_de": 10.152174764295225
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 11.145745513396983,
+   "p95_de": 19.762798187725053
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 10.081676996412462,
+   "p95_de": 15.626231222774523
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08118.ARW",
+   "mean_de": 0.018106897905432285,
+   "p95_de": 0.004696254142196286
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08118.ARW",
+   "mean_de": 18.702172285891276,
+   "p95_de": 20.560908810372005
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08118.ARW",
+   "mean_de": 24.1981544611345,
+   "p95_de": 33.946704052421246
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08118.ARW",
+   "mean_de": 26.143077148761414,
+   "p95_de": 31.969926800578474
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08255.ARW",
+   "mean_de": 0.1501872425488957,
+   "p95_de": 0.7156404096434126
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08255.ARW",
+   "mean_de": 15.716068751540522,
+   "p95_de": 21.30186626911912
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08255.ARW",
+   "mean_de": 15.445897300559682,
+   "p95_de": 32.07101438186788
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08255.ARW",
+   "mean_de": 16.785430618307416,
+   "p95_de": 32.6026196168751
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.014138150517173535,
+   "p95_de": 0.11743776045063418
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 13.486445325903706,
+   "p95_de": 20.385388414606723
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 14.990416566804623,
+   "p95_de": 30.42140103596168
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 14.500960474294347,
+   "p95_de": 31.39076884720347
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08255.ARW",
+   "mean_de": 0.1501872425488957,
+   "p95_de": 0.7156404096434126
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08255.ARW",
+   "mean_de": 0.2573443741673807,
+   "p95_de": 0.5837778153125809
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08255.ARW",
+   "mean_de": 0.17868656182349085,
+   "p95_de": 0.7035014187978123
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08255.ARW",
+   "mean_de": 0.175731142277638,
+   "p95_de": 0.5844005089134825
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08549.ARW",
+   "mean_de": 0.07534511182001485,
+   "p95_de": 0.25499170364207874
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08549.ARW",
+   "mean_de": 0.1938306653196025,
+   "p95_de": 0.31295745748956477
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08549.ARW",
+   "mean_de": 0.06822751452359398,
+   "p95_de": 0.20063347944730878
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08549.ARW",
+   "mean_de": 0.10314508533588723,
+   "p95_de": 0.2592809985523159
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.014138150517173535,
+   "p95_de": 0.11743776045063418
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.0654788840103819,
+   "p95_de": 0.19122215403187456
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.05918012416584575,
+   "p95_de": 0.22051719732551128
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.06955433834735616,
+   "p95_de": 0.18133714441653015
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08118.ARW",
+   "mean_de": 0.018106897905432285,
+   "p95_de": 0.004696254142196286
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08118.ARW",
+   "mean_de": 0.059195548946166174,
+   "p95_de": 0.07604221248491702
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08118.ARW",
+   "mean_de": 0.032085775992367116,
+   "p95_de": 0.07578302263963403
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08118.ARW",
+   "mean_de": 0.027679376413374833,
+   "p95_de": 0.05009340166537861
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08549.ARW",
+   "mean_de": 0.07534511182001485,
+   "p95_de": 0.25499170364207874
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08549.ARW",
+   "mean_de": 0.10676048982923907,
+   "p95_de": 0.20667373866923644
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08549.ARW",
+   "mean_de": 0.03580719676835564,
+   "p95_de": 0.05968135017997338
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08549.ARW",
+   "mean_de": 0.08164113302254009,
+   "p95_de": 0.25084102478675624
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.014138150517173535,
+   "p95_de": 0.11743776045063418
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.0307878993392906,
+   "p95_de": 0.09635977021829467
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.01972890437493771,
+   "p95_de": 0.07160963712507123
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.03298715034474319,
+   "p95_de": 0.10760226856882066
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08118.ARW",
+   "mean_de": 0.018106897905432285,
+   "p95_de": 0.004696254142196286
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08118.ARW",
+   "mean_de": 0.118832084129244,
+   "p95_de": 0.18096120276530134
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08118.ARW",
+   "mean_de": 0.06290363706861335,
+   "p95_de": 0.16022118623093992
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08118.ARW",
+   "mean_de": 0.058153854558745784,
+   "p95_de": 0.10483056859304433
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08255.ARW",
+   "mean_de": 0.1501872425488957,
+   "p95_de": 0.7156404096434126
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08255.ARW",
+   "mean_de": 0.2401471403368475,
+   "p95_de": 0.604059880214377
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08255.ARW",
+   "mean_de": 0.1632697143695384,
+   "p95_de": 0.6306398575406927
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08255.ARW",
+   "mean_de": 0.17034093209244383,
+   "p95_de": 0.5844293414177335
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.014138150517173535,
+   "p95_de": 0.11743776045063418
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.05947631162722758,
+   "p95_de": 0.16433264517660226
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.055284511878234514,
+   "p95_de": 0.1937292897368518
+  },
+  {
+   "look": "green_to_teal",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.07062832011384558,
+   "p95_de": 0.15176034484483258
+  },
+  {
+   "look": "channel_mix",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08255.ARW",
+   "mean_de": 1.5661324418389961,
+   "p95_de": 2.9399842941723286
+  },
+  {
+   "look": "channel_mix",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08255.ARW",
+   "mean_de": 15.15030686247057,
+   "p95_de": 21.81320705867072
+  },
+  {
+   "look": "channel_mix",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08255.ARW",
+   "mean_de": 18.351403240366754,
+   "p95_de": 25.179270009613262
+  },
+  {
+   "look": "channel_mix",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08255.ARW",
+   "mean_de": 16.132116757005484,
+   "p95_de": 23.965209125149062
+  },
+  {
+   "look": "channel_mix",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08549.ARW",
+   "mean_de": 1.2610769536065611,
+   "p95_de": 2.4400673281284426
+  },
+  {
+   "look": "channel_mix",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08549.ARW",
+   "mean_de": 16.97652058087811,
+   "p95_de": 22.695571369841808
+  },
+  {
+   "look": "channel_mix",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08549.ARW",
+   "mean_de": 18.026751474133363,
+   "p95_de": 23.593559231122498
+  },
+  {
+   "look": "channel_mix",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08549.ARW",
+   "mean_de": 16.209580831951264,
+   "p95_de": 22.654422903954067
+  },
+  {
+   "look": "channel_mix",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 1.64744057199796,
+   "p95_de": 2.2372537296867807
+  },
+  {
+   "look": "channel_mix",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 19.226258285889934,
+   "p95_de": 25.42474961902432
+  },
+  {
+   "look": "channel_mix",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 20.438215920832832,
+   "p95_de": 27.37353154565837
+  },
+  {
+   "look": "channel_mix",
+   "condition": "different scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 14.652099877320152,
+   "p95_de": 23.355038691172417
+  },
+  {
+   "look": "channel_mix",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08118.ARW",
+   "mean_de": 1.7235601218323608,
+   "p95_de": 3.2650862902825746
+  },
+  {
+   "look": "channel_mix",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08118.ARW",
+   "mean_de": 6.6409476248468975,
+   "p95_de": 8.584910665762141
+  },
+  {
+   "look": "channel_mix",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08118.ARW",
+   "mean_de": 10.588026900391208,
+   "p95_de": 18.718657460072023
+  },
+  {
+   "look": "channel_mix",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08118.ARW",
+   "mean_de": 9.806270965389349,
+   "p95_de": 15.484791527796032
+  },
+  {
+   "look": "channel_mix",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08549.ARW",
+   "mean_de": 1.2610769536065611,
+   "p95_de": 2.4400673281284426
+  },
+  {
+   "look": "channel_mix",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08549.ARW",
+   "mean_de": 7.542797021221026,
+   "p95_de": 9.388382547018313
+  },
+  {
+   "look": "channel_mix",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08549.ARW",
+   "mean_de": 4.662948759291841,
+   "p95_de": 9.639118662191468
+  },
+  {
+   "look": "channel_mix",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08549.ARW",
+   "mean_de": 6.207792843342284,
+   "p95_de": 10.36869971770899
+  },
+  {
+   "look": "channel_mix",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 1.64744057199796,
+   "p95_de": 2.2372537296867807
+  },
+  {
+   "look": "channel_mix",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 6.4923001108943446,
+   "p95_de": 9.387884445298047
+  },
+  {
+   "look": "channel_mix",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 10.336404682840131,
+   "p95_de": 18.27557257045552
+  },
+  {
+   "look": "channel_mix",
+   "condition": "different scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 9.088680472603864,
+   "p95_de": 14.402499935556193
+  },
+  {
+   "look": "channel_mix",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08118.ARW",
+   "mean_de": 1.7235601218323608,
+   "p95_de": 3.2650862902825746
+  },
+  {
+   "look": "channel_mix",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08118.ARW",
+   "mean_de": 18.54580655341522,
+   "p95_de": 20.77740283803612
+  },
+  {
+   "look": "channel_mix",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08118.ARW",
+   "mean_de": 23.75258302194809,
+   "p95_de": 33.4261273523332
+  },
+  {
+   "look": "channel_mix",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08118.ARW",
+   "mean_de": 25.606008143999993,
+   "p95_de": 32.0024044028472
+  },
+  {
+   "look": "channel_mix",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08255.ARW",
+   "mean_de": 1.5661324418389961,
+   "p95_de": 2.9399842941723286
+  },
+  {
+   "look": "channel_mix",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08255.ARW",
+   "mean_de": 15.297085007640169,
+   "p95_de": 20.612793831157937
+  },
+  {
+   "look": "channel_mix",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08255.ARW",
+   "mean_de": 14.799377523431534,
+   "p95_de": 31.521001181784587
+  },
+  {
+   "look": "channel_mix",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08255.ARW",
+   "mean_de": 15.920225349855182,
+   "p95_de": 32.370859261032834
+  },
+  {
+   "look": "channel_mix",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 1.64744057199796,
+   "p95_de": 2.2372537296867807
+  },
+  {
+   "look": "channel_mix",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 13.26899737348496,
+   "p95_de": 20.187902293700667
+  },
+  {
+   "look": "channel_mix",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 14.578084023945415,
+   "p95_de": 29.779363345461515
+  },
+  {
+   "look": "channel_mix",
+   "condition": "different scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 14.075065111492169,
+   "p95_de": 31.036183699404255
+  },
+  {
+   "look": "channel_mix",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08255.ARW",
+   "mean_de": 1.5661324418389961,
+   "p95_de": 2.9399842941723286
+  },
+  {
+   "look": "channel_mix",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08255.ARW",
+   "mean_de": 0.6624040119947374,
+   "p95_de": 1.714239419045157
+  },
+  {
+   "look": "channel_mix",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08255.ARW",
+   "mean_de": 0.323905206132431,
+   "p95_de": 0.9414685662572543
+  },
+  {
+   "look": "channel_mix",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08255.ARW",
+   "mean_de": 0.7842912797506635,
+   "p95_de": 1.8153991706395927
+  },
+  {
+   "look": "channel_mix",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08549.ARW",
+   "mean_de": 1.2610769536065611,
+   "p95_de": 2.4400673281284426
+  },
+  {
+   "look": "channel_mix",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08549.ARW",
+   "mean_de": 0.6651464835646206,
+   "p95_de": 1.1701563607038434
+  },
+  {
+   "look": "channel_mix",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08549.ARW",
+   "mean_de": 0.18162157607079202,
+   "p95_de": 0.5152338189775407
+  },
+  {
+   "look": "channel_mix",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08549.ARW",
+   "mean_de": 0.620253998744812,
+   "p95_de": 1.2515979085363593
+  },
+  {
+   "look": "channel_mix",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 1.64744057199796,
+   "p95_de": 2.2372537296867807
+  },
+  {
+   "look": "channel_mix",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.34308291198060226,
+   "p95_de": 0.8142107627824511
+  },
+  {
+   "look": "channel_mix",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.27727382472719797,
+   "p95_de": 0.7663959378325778
+  },
+  {
+   "look": "channel_mix",
+   "condition": "same scenes",
+   "fold": 0,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.4239981617431853,
+   "p95_de": 0.8395782509612332
+  },
+  {
+   "look": "channel_mix",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08118.ARW",
+   "mean_de": 1.7235601218323608,
+   "p95_de": 3.2650862902825746
+  },
+  {
+   "look": "channel_mix",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08118.ARW",
+   "mean_de": 1.0023196756071524,
+   "p95_de": 2.0624829140048693
+  },
+  {
+   "look": "channel_mix",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08118.ARW",
+   "mean_de": 0.40585086475038784,
+   "p95_de": 1.0950022656496485
+  },
+  {
+   "look": "channel_mix",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08118.ARW",
+   "mean_de": 0.986088754055629,
+   "p95_de": 1.8567289690555395
+  },
+  {
+   "look": "channel_mix",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08549.ARW",
+   "mean_de": 1.2610769536065611,
+   "p95_de": 2.4400673281284426
+  },
+  {
+   "look": "channel_mix",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08549.ARW",
+   "mean_de": 0.6370202082333304,
+   "p95_de": 1.101257414718694
+  },
+  {
+   "look": "channel_mix",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08549.ARW",
+   "mean_de": 0.2254714471211372,
+   "p95_de": 0.6747662517010914
+  },
+  {
+   "look": "channel_mix",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08549.ARW",
+   "mean_de": 0.594244136022361,
+   "p95_de": 1.7082387655554774
+  },
+  {
+   "look": "channel_mix",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 1.64744057199796,
+   "p95_de": 2.2372537296867807
+  },
+  {
+   "look": "channel_mix",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.378052261804137,
+   "p95_de": 0.8369930788792403
+  },
+  {
+   "look": "channel_mix",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.3206222574765389,
+   "p95_de": 0.8576180514724412
+  },
+  {
+   "look": "channel_mix",
+   "condition": "same scenes",
+   "fold": 1,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.4292025206649423,
+   "p95_de": 0.8687072941972473
+  },
+  {
+   "look": "channel_mix",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08118.ARW",
+   "mean_de": 1.7235601218323608,
+   "p95_de": 3.2650862902825746
+  },
+  {
+   "look": "channel_mix",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08118.ARW",
+   "mean_de": 1.0007582671337716,
+   "p95_de": 1.9306446470294902
+  },
+  {
+   "look": "channel_mix",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08118.ARW",
+   "mean_de": 0.43985464740905633,
+   "p95_de": 1.185175455498917
+  },
+  {
+   "look": "channel_mix",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08118.ARW",
+   "mean_de": 1.3846407105696437,
+   "p95_de": 2.293137023393658
+  },
+  {
+   "look": "channel_mix",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08255.ARW",
+   "mean_de": 1.5661324418389961,
+   "p95_de": 2.9399842941723286
+  },
+  {
+   "look": "channel_mix",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08255.ARW",
+   "mean_de": 0.6599621095789551,
+   "p95_de": 1.6622585303845405
+  },
+  {
+   "look": "channel_mix",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08255.ARW",
+   "mean_de": 0.36250866851746055,
+   "p95_de": 1.1405854725753204
+  },
+  {
+   "look": "channel_mix",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08255.ARW",
+   "mean_de": 0.8131465987312555,
+   "p95_de": 1.70892404915375
+  },
+  {
+   "look": "channel_mix",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "no change",
+   "photo": "DSC08606.ARW",
+   "mean_de": 1.64744057199796,
+   "p95_de": 2.2372537296867807
+  },
+  {
+   "look": "channel_mix",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "Reinhard",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.37775675808604525,
+   "p95_de": 0.9729607640347806
+  },
+  {
+   "look": "channel_mix",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "plain OT",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.29132044138026686,
+   "p95_de": 0.7622988722772929
+  },
+  {
+   "look": "channel_mix",
+   "condition": "same scenes",
+   "fold": 2,
+   "method": "lookmatch",
+   "photo": "DSC08606.ARW",
+   "mean_de": 0.4011071395127182,
+   "p95_de": 0.7934370597223802
+  }
+ ]
+}
