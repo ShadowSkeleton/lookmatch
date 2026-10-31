@@ -13,9 +13,11 @@ you can use in Lightroom, Photoshop, DaVinci Resolve, and other editing apps.
 
 > **Status:** early development, not ready to use yet. The whole engine is
 > built and tested, and a LUT from lookmatch looks identical in Photoshop and
-> DaVinci Resolve. It matches a look well when the reference photos and your
-> photos show similar scenes. When they show different scenes, it doesn't
-> work yet: see [Benchmark](#benchmark). Star the repo to follow along.
+> DaVinci Resolve. It matches a look closely when the reference photos show
+> the same or similar scenes as your photos. When they show different
+> scenes, it learns the safe part of the look (black and white points and
+> color tint) and leaves the rest alone: see [Benchmark](#benchmark). Star
+> the repo to follow along.
 
 ## Built on measurement, not guessing
 
@@ -50,18 +52,25 @@ built to match how people see color differences.
 </picture>
 
 **Learning a look from photos.** Left: your photo (the camera's own JPEG).
-Middle: the target, a known teal-and-orange look. Right: the look lookmatch
-learned from reference photos, with its default settings, applied to your
-photo.
+Middle: the target look. Right: the look lookmatch learned from reference
+photos, with its default settings, applied to your photo. Top: a bright,
+airy Japanese style (日系清新): lifted shadows, soft contrast, pale colors,
+cool highlights. Bottom: a strong teal and orange.
 
-<img alt="Three versions of Horseshoe Bend. Left, the original. Middle, a teal-and-orange look with warm, peach-colored clouds. Right, lookmatch's result, nearly the same as the middle, with clouds a little less orange." src="docs/figures/photo_match.jpg" width="100%">
+<img alt="Horseshoe Bend, two rows of three. Top row: the original; a pale, airy version with lifted shadows and a cool cyan cast; lookmatch's result, nearly identical to the airy target. Bottom row: the original; a teal-and-orange version with teal sky and water and orange rock; lookmatch's result, very close to that target." src="docs/figures/photo_match.jpg" width="100%">
 
-The target look is ΔE 6.15 away from the original; lookmatch's result is
-ΔE 1.30 away from the target, which is barely noticeable even side by side
-(1.30 to 2.35 across the three demo photos). This is the **easy case**: the
-reference photos were these same scenes with the look applied. When the
-references show different scenes, lookmatch doesn't work yet (see
-[Benchmark](#benchmark)).
+| Look | Target vs. original | lookmatch vs. target |
+|---|---|---|
+| Japanese airy | ΔE 14.8 | **ΔE 0.8** (0.8 to 1.8 across the three demo photos) |
+| Teal and orange | ΔE 6.6 | **ΔE 2.7** (2.1 to 2.7) |
+
+ΔE 2000 measures visible color difference: below about 1 is invisible, 2 to
+3 is barely noticeable side by side. Both looks are made by lookmatch's own
+formulas ([bench/make_looks.py](bench/make_looks.py)), not taken from anyone's
+presets. This is the **easiest case**: the references are these same photos
+with the look applied, as when you edit a few of your own photos and want
+the rest to match. When the references show other scenes, results are less
+precise (see [Benchmark](#benchmark)).
 
 **On a test chart.** A gray ramp, the 24-patch ColorChecker and pure
 primaries, before (left) and after (right).
@@ -103,22 +112,26 @@ portraits, night, desert) with 8 known looks, 15 reference photos and 30
 input photos per test ([full table](bench/RESULTS.md)). Mean ΔE 2000, lower
 is better:
 
-| Method | Same scenes | Different scenes |
-|---|---|---|
-| No change | 4.51 | **4.51** |
-| Reinhard color transfer | 3.71 | 7.97 |
-| Plain optimal transport | **0.62** | 7.41 |
-| lookmatch | 1.14 | 7.04 |
+| Method | Same scenes | Different scenes | Photos made worse (different scenes) |
+|---|---|---|---|
+| No change | 4.51 | 4.51 | – |
+| Reinhard color transfer | 3.71 | 7.97 | 84% |
+| Plain optimal transport | **0.62** | 7.41 | 77% |
+| lookmatch | 0.99 | **3.88** | 41% |
 
-When the reference photos and your photos show the same scenes, matching
-works well. When they show different scenes, every method, lookmatch
-included, still makes most photos worse than doing nothing (lookmatch: 75% of
-photos). They mistake the difference between two sets of scenes for a look:
-even for looks that barely change anything, every method adds about 7 ΔE of
-color change that isn't there. lookmatch is the closest of the three, and it
-beats doing nothing on the strongest look (golden hour: 7.34 vs 9.04). This
-is the main open problem, and the benchmark exists to measure every attempt
-to solve it.
+With the same scenes, lookmatch gets within about 1 ΔE of the right answer.
+With different scenes, the classic methods make most photos worse than doing
+nothing: they mistake the difference between two sets of scenes for a look
+(a set of dark canyon photos teaches "darken everything"). lookmatch avoids
+this by measuring how alike the scenes are and, when they differ, learning
+only what holds up across scenes: black and white points and the color tint
+that all the reference photos agree on. That makes it the only method that
+beats doing nothing on average, and on 6 of 8 looks. On the two looks that
+barely change anything, it still adds about 2 ΔE that isn't there (down
+from 7). What it can't learn yet from other
+scenes is midtone contrast, saturation and hue-selective changes, so
+references that resemble your photos still give the best result. How it
+works: [docs/method.md](docs/method.md#when-the-scenes-differ).
 
 ## License
 

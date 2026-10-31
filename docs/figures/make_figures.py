@@ -175,7 +175,7 @@ def chart_before_after() -> Path:
 DEMO_DIR = Path("/Users/jingrui_feng/Pictures/2026/2026-08-30")
 DEMO_PHOTOS = ["DSC08255", "DSC08549", "DSC08606"]
 DEMO_SHOWN = "DSC08255"
-DEMO_LOOK = "teal_orange"
+DEMO_LOOKS = ["japanese_airy", "bold_teal_orange"]  # one row each
 
 
 def _camera_jpeg(name: str) -> npt.NDArray[np.float32]:
@@ -190,41 +190,45 @@ def _camera_jpeg(name: str) -> npt.NDArray[np.float32]:
 def photo_match() -> Path | None:
     """Show your photo, the target look, and the look lookmatch learned.
 
-    A known look (teal_orange from the benchmark) is applied to the three
-    demo photos to make the references. lookmatch then learns the look from
-    those references and the original photos, with its default settings.
-    This is the same-scenes case: the references show the same scenes as
-    the inputs. Prints the ΔE 2000 numbers quoted in the README. Skipped if
-    the RAW files aren't on disk.
+    For each showcase look (bench/make_looks.py), the look is applied to the
+    three demo photos to make the references. lookmatch then learns the look
+    from those references and the original photos, with its default
+    settings. This is the same-photos case: the references are graded copies
+    of the inputs. Prints the ΔE 2000 numbers quoted in the README. Skipped
+    if the RAW files aren't on disk.
     """
     if not all((DEMO_DIR / f"{n}.ARW").is_file() for n in DEMO_PHOTOS):
         print(f"Skipping photo figure: demo photos not found in {DEMO_DIR}")
         return None
-    look = make_looks.make_look(DEMO_LOOK)
     photos = {n: _camera_jpeg(n) for n in DEMO_PHOTOS}
-    with TemporaryDirectory() as tmp:
-        refs, mine = Path(tmp, "refs"), Path(tmp, "mine")
-        refs.mkdir()
-        mine.mkdir()
-        for name, image in photos.items():
-            _save_png(refs / f"{name}.png", apply_lut(image, look))
-            _save_png(mine / f"{name}.png", image)
-        learned = fit(refs, mine, name="learned").cube
-
-    for name, image in photos.items():
-        target = apply_lut(image, look)
-        look_size = delta_e_2000(image, target).mean()
-        miss = delta_e_2000(apply_lut(image, learned), target).mean()
-        print(
-            f"  {name}: target vs original ΔE {look_size:.2f}, vs lookmatch {miss:.2f}"
-        )
-
     shown = photos[DEMO_SHOWN]
-    panels = [shown, apply_lut(shown, look), apply_lut(shown, learned)]
     gap = np.full((shown.shape[0], 16, 3), 1.0, dtype=np.float32)
-    row = np.concatenate([panels[0], gap, panels[1], gap, panels[2]], axis=1)
+    rows = []
+    for look_name in DEMO_LOOKS:
+        look = make_looks.make_look(look_name)
+        with TemporaryDirectory() as tmp:
+            refs, mine = Path(tmp, "refs"), Path(tmp, "mine")
+            refs.mkdir()
+            mine.mkdir()
+            for name, image in photos.items():
+                _save_png(refs / f"{name}.png", apply_lut(image, look))
+                _save_png(mine / f"{name}.png", image)
+            learned = fit(refs, mine, name="learned").cube
+        print(f"  {look_name}:")
+        for name, image in photos.items():
+            target = apply_lut(image, look)
+            look_size = delta_e_2000(image, target).mean()
+            miss = delta_e_2000(apply_lut(image, learned), target).mean()
+            print(
+                f"    {name}: target vs original ΔE {look_size:.2f}, "
+                f"vs lookmatch {miss:.2f}"
+            )
+        panels = [shown, apply_lut(shown, look), apply_lut(shown, learned)]
+        rows.append(np.concatenate([panels[0], gap, panels[1], gap, panels[2]], 1))
+    space = np.full((16, rows[0].shape[1], 3), 1.0, dtype=np.float32)
+    grid = np.concatenate([rows[0], space, rows[1]], axis=0)
     path = OUT / "photo_match.jpg"
-    Image.fromarray(np.round(np.clip(row, 0, 1) * 255).astype(np.uint8)).save(
+    Image.fromarray(np.round(np.clip(grid, 0, 1) * 255).astype(np.uint8)).save(
         path, quality=88, optimize=True
     )
     return path

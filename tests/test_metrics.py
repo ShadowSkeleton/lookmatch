@@ -26,3 +26,20 @@ def test_one_level_difference_is_small() -> None:
 def test_shape() -> None:
     a = np.zeros((4, 5, 3))
     assert delta_e_2000(a, a).shape == (4, 5)
+
+
+def test_sliced_wasserstein() -> None:
+    from lookmatch.metrics import sliced_wasserstein
+
+    rng = np.random.default_rng(0)
+    a = rng.normal(0, 0.05, (20_000, 3))
+    b = rng.normal(0, 0.05, (20_000, 3))
+    assert sliced_wasserstein(a, a) == 0.0
+    assert sliced_wasserstein(a, b) < 0.003  # same distribution
+    # A shift by s along a direction d: 1D shift s (d . u) on direction u,
+    # whose RMS over random directions is s / sqrt(3).
+    shifted = sliced_wasserstein(a, a + [0.06, 0, 0])
+    assert shifted == pytest.approx(0.06 / np.sqrt(3), rel=0.15)
+    assert sliced_wasserstein(a, b) == sliced_wasserstein(a, b)  # repeatable
+    with pytest.raises(ValueError):
+        sliced_wasserstein(a, np.zeros((0, 3)))

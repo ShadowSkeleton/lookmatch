@@ -5,8 +5,9 @@ to people: below about 1 is invisible, 2 to 3 is barely noticeable side by
 side. It is computed with colour-science, from sRGB through CIE XYZ to
 CIELAB under D65, following Sharma, Wu and Dalal (2005).
 
-The other metrics in the project brief are added in task 4.1. ΔE 2000 is
-added early because the benchmark needs it.
+The sliced Wasserstein distance measures how different two sets of colors
+are as a whole; the pipeline uses it to tell how alike two sets of scenes
+are. The other metrics in the project brief are added in task 4.1.
 """
 
 from typing import Any
@@ -40,3 +41,34 @@ def delta_e_2000(srgb1: npt.ArrayLike, srgb2: npt.ArrayLike) -> FloatArray:
     Output shape is the input shape without the last (color) axis.
     """
     return delta_e_2000_lab(_srgb_to_lab(srgb1), _srgb_to_lab(srgb2))
+
+
+SW_DIRECTIONS = 64
+SW_QUANTILES = np.linspace(0.005, 0.995, 199)
+
+
+def sliced_wasserstein(
+    colors1: npt.ArrayLike,
+    colors2: npt.ArrayLike,
+    directions: int = SW_DIRECTIONS,
+    seed: int = 0,
+) -> float:
+    """Return the sliced Wasserstein distance between two sets of colors.
+
+    Both sets are projected onto the same random directions; on each line,
+    the distance is the root mean square gap between matching quantiles
+    (the 2-Wasserstein distance in one dimension). The result is the root
+    mean square over directions (Rabin et al. 2011), in the units of the
+    colors (OKLab for lookmatch). 0 means the two sets have the same color
+    distribution. The directions come from a fixed seed, so it is
+    repeatable.
+    """
+    a = np.asarray(colors1, dtype=np.float64).reshape(-1, 3)
+    b = np.asarray(colors2, dtype=np.float64).reshape(-1, 3)
+    if a.shape[0] == 0 or b.shape[0] == 0:
+        raise ValueError("Both color sets need at least one color.")
+    d = np.random.default_rng(seed).normal(size=(directions, 3))
+    d /= np.linalg.norm(d, axis=1, keepdims=True)
+    qa = np.quantile(a @ d.T, SW_QUANTILES, axis=0)
+    qb = np.quantile(b @ d.T, SW_QUANTILES, axis=0)
+    return float(np.sqrt(np.mean((qa - qb) ** 2)))

@@ -8,8 +8,13 @@ from PIL import Image
 
 from lookmatch import io
 from lookmatch.apply import apply_lut
+from lookmatch.export.cube import Cube
 from lookmatch.look import load_look, save_look
-from lookmatch.pipeline import DEFAULT_TRANSPORT_STRENGTH, collect_photos, fit
+from lookmatch.pipeline import (
+    DEFAULT_TRANSPORT_STRENGTH,
+    collect_photos,
+    fit,
+)
 
 sys.path.insert(0, str(Path(__file__).parent / "fixtures"))
 import make_fixtures  # noqa: E402
@@ -55,13 +60,49 @@ def folders(tmp_path: Path) -> tuple[Path, Path]:
     return refs, inputs
 
 
-def test_fit_learns_the_look(folders: tuple[Path, Path]) -> None:
+def _error(cube: Cube, truth: Cube) -> tuple[float, float]:
+    """Mean error on a held-out photo, and the error of not applying any look."""
+    held_out = _scene(999)  # a photo used by neither side
+    want = apply_lut(held_out, truth)
+    error = np.abs(apply_lut(held_out, cube) - want) * 255
+    return float(error.mean()), float(np.abs(held_out - want).mean() * 255)
+
+
+def test_fit_learns_the_look_from_other_scenes(folders: tuple[Path, Path]) -> None:
     refs, inputs = folders
     result = fit(refs, inputs, name="test look")
-    held_out = _scene(999)  # a photo used by neither side
-    error = np.abs(apply_lut(held_out, result.cube) - apply_lut(held_out, LOOK)) * 255
-    no_look = np.abs(held_out - apply_lut(held_out, LOOK)) * 255
-    assert error.mean() < 0.5 * no_look.mean(), (error.mean(), no_look.mean())
+    error, no_look = _error(result.cube, LOOK)
+    assert error < 0.6 * no_look, (error, no_look)
+
+
+def test_fit_learns_the_look_closely_from_the_same_scenes(tmp_path: Path) -> None:
+    refs, inputs = tmp_path / "refs", tmp_path / "mine"
+    refs.mkdir()
+    inputs.mkdir()
+    for i in range(5):
+        _save(inputs / f"img_{i}.png", _scene(200 + i))
+        _save(refs / f"ref_{i}.png", apply_lut(_scene(200 + i), LOOK))
+    result = fit(refs, inputs)
+    error, no_look = _error(result.cube, LOOK)
+    assert error < 0.2 * no_look, (error, no_look)
+    assert result.look.metrics["references_copied_from_inputs"] == 1.0
+    assert result.look.metrics["scene_match"] == 1.0
+
+
+def test_other_scenes_without_a_look_change_little(tmp_path: Path) -> None:
+    # References with no look at all, showing other scenes: the LUT should
+    # stay close to no change instead of copying the other scenes' colors.
+    refs, inputs = tmp_path / "refs", tmp_path / "mine"
+    refs.mkdir()
+    inputs.mkdir()
+    for i in range(3):
+        _save(refs / f"ref_{i}.png", _scene(100 + i))
+    for i in range(5):
+        _save(inputs / f"img_{i}.png", _scene(200 + i))
+    result = fit(refs, inputs)
+    held_out = _scene(999)
+    change = np.abs(apply_lut(held_out, result.cube) - held_out).mean() * 255
+    assert change < 3.0, change
 
 
 def test_fit_is_fast(folders: tuple[Path, Path]) -> None:

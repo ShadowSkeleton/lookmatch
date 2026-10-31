@@ -97,8 +97,9 @@ it is 0.05%.
 contain similar things. If the reference scene is simply brighter (a bright
 sky against your canyon), that difference is read as part of the look. On the
 maintainer's photos, a bright-sky reference made the fitted curve lift the
-midtones to 0.64 where the true look gives 0.50. Pooling several photos on
-each side and the "scenes too different" warning exist for this reason.
+midtones to 0.64 where the true look gives 0.50. See
+[When the scenes differ](#when-the-scenes-differ) for how lookmatch handles
+this.
 
 ## Split toning
 
@@ -129,8 +130,8 @@ finds the warm shadows and cool highlights the test look adds.
 **Limitation.** Like the tone curve, this assumes both sides contain similar
 things. With a red canyon as the reference and a different scene as input,
 the red rock in the reference's shadows was read as a strong orange shadow
-tint. The "scenes too different" warning and pooling several photos are the
-defenses; the benchmark will measure how much it matters.
+tint. See [When the scenes differ](#when-the-scenes-differ) for how
+lookmatch handles this.
 
 ## Residual color: sliced optimal transport
 
@@ -163,8 +164,9 @@ after split toning, 0.01 after transport.
 match whether or not the scenes match. With two different scenes, full
 strength also drove the distance to almost zero (9.39 to 0.05), which means
 forcing one scene's colors into the other's. A matching distribution is not
-the same as the right look, so the default strength is chosen with the
-benchmark (known looks, measured with ΔE 2000), not by distribution distance.
+the same as the right look, so transport runs at full strength only when the
+scenes match, and fades out as they differ (see
+[When the scenes differ](#when-the-scenes-differ)).
 
 ## Skin tones
 
@@ -264,35 +266,106 @@ of samples, the total per side is capped at 200,000 so large folders stay
 fast, and one fixed seed makes the result exactly repeatable. On small test
 photos it takes about 3 seconds.
 
-The transport strength defaults to 0.5. That is a cautious starting value,
-not a tuned one: the benchmark will choose it from measured results.
+Transport runs at full strength when the scenes match and fades out as
+they differ (next section).
 
-**Results on the maintainer's photos, and the open problem.** The test look
-was applied to some photos to make "reference" photos, and the LUT that
-lookmatch fitted was compared with the true look on all four photos (mean
-error in 8-bit levels; "nothing" means not applying any look):
+## When the scenes differ
 
-| Setup | DSC08118 | DSC08255 | DSC08549 | DSC08606 |
-|---|---|---|---|---|
-| Doing nothing | 7.6 | 7.1 | 5.4 | 7.5 |
-| Same 4 scenes on both sides | 4.2 | 2.3 | 1.7 | 2.0 |
-| Different scenes on each side | 26.0 | 35.9 | 28.4 | 22.9 |
+The tone curve, average split toning and transport all compare the two
+*distributions* of color. When the references show other scenes, that
+comparison can't tell the look from the content: a set of dark canyon photos
+teaches "darken everything", red rock teaches "add orange". On the
+benchmark (45 photos, references and inputs from different shoots), this
+made every method worse than doing nothing, about 7 ΔE 2000 off the right
+answer even for looks that change almost nothing.
 
-With the same scenes on both sides, the fitted LUT gets every photo closer to
-the true look. With different scenes on each side (references: a cloudy
-canyon trail and a dark slot canyon; inputs: a bright desert path and
-Horseshoe Bend), it is 3 to 5 times *worse* than doing nothing. The fitted
-tone curve took midtones to 0.30 instead of 0.50, because the reference set
-contains a dark canyon, and split toning added a strong orange shadow tint
-taken from the canyon's red rock. Transport strength made almost no
-difference, so the cause is the tone curve and split toning, which compare
-distributions and can't tell scene content from the look.
+To find where it came from, each step was fitted alone with a look that
+changes nothing (so any change is invented). Mean ΔE 2000 over 3 splits,
+photos at 600 px:
 
-This is the central problem for using other photographers' photos as
-references, and it is not solved yet. The next steps are to measure it with
-the benchmark (many scenes, known answers) and then to test ways to separate
-the look from the scene. Until then, lookmatch works best when the
-references and your photos show similar kinds of scenes.
+| Step fitted | Invented change |
+|---|---|
+| Whole pipeline | 7.1 |
+| Tone curve only | 4.8 |
+| Split toning only | 4.2 |
+| Transport only (strength 0.5) | 3.8 |
+
+lookmatch therefore fits the look in two versions and blends them.
+
+**1. The safe fit**, which holds up on other scenes:
+
+- **Black and white points only.** The darkest 0.5% and brightest 0.5% of
+  your photos map to those of the references, with a straight line between.
+  Nearly every photo has a near-black and a near-white, so these points say
+  more about the look (lifted blacks, soft whites) than about the scene.
+- **The tint of the most common colors.** In each lightness bin, the most
+  common (a, b) color is found by mean shift (Fukunaga and Hostetler 1975):
+  starting at the median, move to the average of the colors within 0.02
+  OKLab units until it settles. In most photos the most common color is a
+  near-neutral (sky, walls, road, shade), and a tint moves it exactly, while
+  one large colored object pulls an average but not the most common color.
+  The three zone offsets are then fitted as before.
+- **Kept only as far as the references agree.** The tint is also fitted from
+  each reference photo alone. A look tints every photo the same way;
+  content differs from photo to photo. Each zone's tint t is multiplied by
+  |t|² / (|t|² + 2 se²), where se is the standard error of the per-photo
+  tints (empirical Bayes shrinkage, Efron and Morris 1975). A tint every
+  reference agrees on is kept; one they scatter around is shrunk toward
+  none. With a single reference photo there is nothing to compare, and the
+  tint is kept.
+
+**2. How alike are the scenes?** Two measurements; the larger one wins.
+
+- *Same photos.* If a reference is a graded copy of one of your photos (you
+  edited a few of your own photos and want the rest to match), the two share
+  their structure: which areas are darker and which lighter. A color grade
+  changes how bright each area is but almost never their order, so lookmatch
+  compares the ranks of a 48 by 48 lightness thumbnail (Spearman rank
+  correlation). On the maintainer's 45 photos, graded copies scored 0.994 or
+  more under every benchmark look; two different photos scored at most 0.895
+  (two frames of one burst). Above 0.97, with the same aspect ratio, a
+  reference counts as a copy. This match is the fraction of references that
+  are copies.
+- *Similar scenes.* After the safe fit is applied to your photos, the sliced
+  Wasserstein distance d to the reference colors is measured in OKLab (64
+  directions, Rabin et al. 2011). This match is exp(-(d / 0.02)²): 1 for
+  identical colors, near 0 for very different scenes.
+
+**3. The blend.** The full tone curve and the average-based split toning are
+blended in by the scene match, and transport runs at that strength. Same
+scenes get the full, precise fit; other scenes get the safe one.
+
+On the benchmark splits (600 px, 9 looks including one that changes
+nothing; mean ΔE 2000):
+
+| Fit | Same scenes | Different scenes | No look, different scenes |
+|---|---|---|---|
+| No change | 4.01 | 4.01 | 0.00 |
+| Safe fit only | 2.51 | 3.56 | 2.33 |
+| Safe + full, blended by scene match | **1.15** | **3.72** | 2.65 |
+
+The previous pipeline invented 7.12 on the look that changes nothing. On the
+full benchmark (45 photos at 800 px, 8 looks, 3 splits), lookmatch went from
+7.04 to 3.88 on different scenes (doing nothing: 4.51; photos made worse:
+75% to 41%) and from 1.14 to 0.99 on the same scenes. Measuring graded
+copies (step 2) took the same-scenes result from 1.31 to 0.99. Full results:
+[bench/RESULTS.md](../bench/RESULTS.md).
+
+The scale 0.02 was chosen from 0.01, 0.015 and 0.02 on these splits: the
+distance was 0 to 0.02 for same-scene splits and 0.011 to 0.076 for
+different-scene ones. Two things were tried and dropped: matching saturation
+(the spread of colors) made results worse, because how colorful a set of
+scenes is depends mostly on what they show; and average-based split toning
+with the same shrinkage was worse than the most-common-color version (4.22
+vs 3.56). The look's scene distance, scene match and how much tint was kept
+per zone are recorded in look.json, along with the fraction of references
+that were copies of your photos.
+
+**What is still missing.** On other scenes, lookmatch now learns black and
+white points and tints, but not contrast in the midtones, saturation, or
+hue-selective changes: those can't yet be told apart from content. A look
+that is mostly contrast or saturation (bleach bypass) is barely learned from
+other scenes. References that show scenes like yours give the best result.
 
 ## Baselines
 
@@ -327,8 +400,9 @@ and lookmatch's cautious 0.5 strength costs accuracy. With different scenes,
 *every* method is far worse than doing nothing; lookmatch is the least bad,
 but still harmful. So the cross-scene problem is not a bug in one step: it
 is the limit of matching color distributions, shared by the classic methods.
-Four photos are too few to tune anything; the benchmark will repeat this on
-many scenes and looks.
+Four photos are too few to tune anything; the benchmark repeated this on 45
+photos and 8 looks, and the fix is described in
+[When the scenes differ](#when-the-scenes-differ).
 
 ## References
 
@@ -353,6 +427,17 @@ many scenes and looks.
 - D. Chai and K. N. Ngan, "Face segmentation using skin-color map in
   videophone applications," IEEE Transactions on Circuits and Systems for
   Video Technology 9(4), 1999.
+- K. Fukunaga and L. Hostetler, "The estimation of the gradient of a density
+  function, with applications in pattern recognition," IEEE Transactions on
+  Information Theory 21(1), 1975. (Mean shift.)
+- B. Efron and C. Morris, "Data analysis using Stein's estimator and its
+  generalizations," Journal of the American Statistical Association 70(350),
+  1975. (Empirical Bayes shrinkage.)
+- J. Rabin, G. Peyré, J. Delon and M. Bernot, "Wasserstein barycenter and its
+  application to texture mixing," Scale Space and Variational Methods in
+  Computer Vision, 2011. (Sliced Wasserstein distance.)
+- C. Spearman, "The proof and measurement of association between two
+  things," American Journal of Psychology 15(1), 1904. (Rank correlation.)
 - ITU-R BT.601, Studio encoding parameters of digital television. (YCbCr.)
 - G. Buchsbaum, "A spatial processor model for object colour perception,"
   Journal of the Franklin Institute 310(1), 1980.

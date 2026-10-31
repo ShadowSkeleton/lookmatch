@@ -26,6 +26,7 @@ def _load(name: str) -> ModuleType:
 
 
 bench = _load("benchmark")
+make_looks = _load("make_looks")
 
 
 @pytest.fixture(scope="module")
@@ -111,3 +112,13 @@ def test_too_few_photos(tmp_path: Path) -> None:
     Image.new("RGB", (10, 10)).save(tmp_path / "only.png")
     with pytest.raises(ValueError, match="at least"):
         bench.run(bench.load_photos(tmp_path), bench.builtin_looks(), workdir=tmp_path)
+
+
+@pytest.mark.parametrize("name", ["japanese_airy", "bold_teal_orange"])
+def test_showcase_looks_are_strong_and_not_in_the_benchmark(name: str) -> None:
+    look = make_looks.make_look(name)
+    gray = look.table[np.arange(33), np.arange(33), np.arange(33)]
+    assert np.all(np.diff(gray.mean(axis=1)) >= -1e-6)  # gray stays in order
+    identity = np.stack(np.meshgrid(*[np.linspace(0, 1, 33)] * 3, indexing="ij"), -1)
+    assert np.abs(look.table - identity).mean() > 0.03  # clearly visible
+    assert name not in make_looks.ALL_LOOKS

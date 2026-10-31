@@ -17,6 +17,14 @@ The benchmark always uses its built-in looks, defined as formulas in
 Looks built from the same pieces lookmatch fits may flatter it, so the
 benchmark reports every look separately.
 
+Two stronger **showcase looks** are used for the README figure, not for the
+benchmark (so benchmark results stay comparable over time):
+
+| Look | What it does |
+|---|---|
+| `japanese_airy` | Bright and airy (日系清新): lifted blacks, brighter midtones, soft contrast, pale colors, cool cyan-green highlights |
+| `bold_teal_orange` | Warm hues pulled to orange, cool hues (sky, water) to teal, teal shadows, punchy contrast |
+
 ## Adding your own looks
 
 Put `.cube` files you made yourself in this folder (for example graded in

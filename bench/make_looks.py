@@ -112,6 +112,56 @@ def channel_mix(lab: Lab) -> Lab:
     return np.asarray(io.linear_srgb_to_oklab(linear), dtype=np.float64)
 
 
+def japanese_airy(lab: Lab) -> Lab:
+    """Showcase: bright and airy, soft contrast, muted, cyan-green highlights.
+
+    In the spirit of Japanese airy photography (日系清新): lifted blacks,
+    brighter midtones, gentle highlights, pale colors and a cool, slightly
+    green cast in the light parts.
+    """
+    out = lab.copy()
+    t = np.clip(lab[:, 0], 0, 1)
+    out[:, 0] = 0.16 + 0.8 * t**0.75
+    out = _saturation(out, 0.62)
+    out = _tint(out, (0.0, 0.012), (-0.022, -0.012))
+    out[:, 1] -= 0.006  # a touch of green throughout
+    return out
+
+
+def _pull_hue(lch: Lab, center: float, width: float, to: float, keep: float) -> Lab:
+    """Pull hues within ``width`` degrees of ``center`` toward hue ``to``.
+
+    ``keep`` is how much of each hue's distance from ``to`` remains (0 puts
+    them all on ``to``); the pull fades out smoothly at the window's edge.
+    """
+    distance = np.abs(((lch[:, 2] - center) + 180.0) % 360.0 - 180.0)
+    w = np.clip((width - distance) / (0.5 * width), 0.0, 1.0)
+    offset = ((lch[:, 2] - to) + 180.0) % 360.0 - 180.0
+    out = lch.copy()
+    out[:, 2] = lch[:, 2] - w * (1.0 - keep) * offset
+    return out
+
+
+def bold_teal_orange(lab: Lab) -> Lab:
+    """Showcase: a strong teal-and-orange grade with punchy contrast.
+
+    Warm hues (reds to yellows) are pulled to orange, cool hues (greens to
+    blues) to teal, with teal shadows and more contrast and saturation.
+    """
+    out = lab.copy()
+    out[:, 0] = _s_curve(lab[:, 0], 0.05)
+    lch = io.oklab_to_oklch(_saturation(out, 1.25))
+    lch = _pull_hue(lch, center=55.0, width=60.0, to=60.0, keep=0.4)
+    lch = _pull_hue(lch, center=210.0, width=90.0, to=205.0, keep=0.3)
+    out = np.asarray(io.oklch_to_oklab(lch), dtype=np.float64)
+    return _tint(out, (-0.045, -0.03), (0.008, 0.012))
+
+
+SHOWCASE: dict[str, Callable[[Lab], Lab]] = {
+    "japanese_airy": japanese_airy,
+    "bold_teal_orange": bold_teal_orange,
+}
+
 LOOKS: dict[str, Callable[[Lab], Lab]] = {
     "teal_orange": teal_orange,
     "faded_film": faded_film,
@@ -128,7 +178,8 @@ def make_look(name: str) -> Cube:
     if name == "warm_cool_test":
         return make_fixtures.make_test_look()
     grid: Any = io.srgb_to_oklab(identity_table(SIZE).reshape(-1, 3))
-    table = np.clip(io.oklab_to_srgb(LOOKS[name](grid)), 0.0, 1.0)
+    formula = LOOKS.get(name) or SHOWCASE[name]
+    table = np.clip(io.oklab_to_srgb(formula(grid)), 0.0, 1.0)
     return Cube(table.reshape(SIZE, SIZE, SIZE, 3), title=name.replace("_", " "))
 
 

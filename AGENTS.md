@@ -83,12 +83,22 @@ to learn it and use it.
    move each photo to its group's shared average (white balance fully,
    exposure at half strength capped at 1 stop), then pool the reference
    samples and the input samples. See docs/method.md.
-2. Decompose the look:
-   a. Tone curve: histogram matching on OKLab L, then isotonic regression,
-      then PCHIP interpolation, 256 samples, must be monotonic
+2. Decompose the look. Each part has a safe fit (holds up when the
+   references show other scenes) and a full fit (precise for similar
+   scenes); they are blended by the scene match (scenes.py): the larger of
+   the fraction of references that are graded copies of input photos
+   (rank correlation of lightness thumbnails >= 0.97) and
+   exp(-(d/0.02)^2), where d is the OKLab sliced Wasserstein distance after
+   the safe fit. See "When the scenes differ" in docs/method.md.
+   a. Tone curve: safe = black and white points only (0.5% / 99.5%
+      quantiles); full = histogram matching on OKLab L, then isotonic
+      regression, then PCHIP interpolation. 256 samples, must be monotonic
    b. Split toning: weighted least squares fit of OKLab a/b offsets for
-      shadows / midtones / highlights with smooth zone weights
-   c. Residual color: sliced optimal transport in OKLab, strength in [0,1]
+      shadows / midtones / highlights with smooth zone weights. Safe = per
+      bin most common color (mean shift), shrunk by how much the reference
+      photos agree (empirical Bayes); full = per bin average color
+   c. Residual color: sliced optimal transport in OKLab, strength =
+      scene match (only the full fit)
    d. Skin constraint (opt-in with `--portrait`, off by default): YCbCr
       rule-based skin mask; skin hue in OKLCh may drift at most a threshold
       (default 6 degrees). Off by default because a color-only rule can't
@@ -170,6 +180,7 @@ lookmatch/
     report.py      report.html
     look.py        Look dataclass + look.json read/write
     pipeline.py    fit(): every step in order, returns Look + LUT
+    scenes.py      scene match: graded copies + color distance
     baselines.py   no change, Reinhard, plain OT (for the benchmark)
     export/
       cube.py  hald.py  lr_preset.py  lr_profile_guide.py

@@ -20,8 +20,15 @@ keeps a zone with no pixels near zero instead of guessing.
 
 The input's lightness should already have the tone curve applied, so each
 bin compares pixels that end up equally bright.
+
+Averages assume both sides show similar scenes: red rock in the references
+reads as an orange tint. fit_neutral_toning() is the robust alternative for
+other scenes; it compares the most common colors instead and shrinks a tint
+the reference photos disagree on. The pipeline blends the two by how alike
+the scenes are.
 """
 
+from collections.abc import Sequence
 from dataclasses import dataclass
 from typing import Any
 
@@ -35,6 +42,9 @@ ZONES = ("shadows", "midtones", "highlights")
 BINS = 32
 MIN_BIN_PIXELS = 20  # a bin needs this many pixels on both sides to count
 RIDGE = 1e-3  # relative strength of the pull toward zero
+MODE_RADIUS = 0.02  # OKLab (a, b) window for finding the most common color
+MODE_ITERATIONS = 20
+CAUTION = 2.0  # how strongly disagreement between references shrinks a tint
 
 
 @dataclass(frozen=True)
@@ -95,28 +105,10 @@ def fit_split_toning(
     n_in, a_in, b_in = _bin_means(_check(input_lab, "input"))
     n_ref, a_ref, b_ref = _bin_means(_check(reference_lab, "reference"))
 
-    usable = (n_in >= MIN_BIN_PIXELS) & (n_ref >= MIN_BIN_PIXELS)
-    if not np.any(usable):
-        return SplitToning()
-
-    # Weight each bin like the inverse variance of a difference of two means,
-    # as fractions so the total pixel count doesn't matter.
-    f_in, f_ref = n_in / n_in.sum(), n_ref / n_ref.sum()
-    weight = np.where(usable, f_in * f_ref / np.maximum(f_in + f_ref, 1e-12), 0.0)
-
-    centers = (np.arange(BINS) + 0.5) / BINS
-    basis = zone_weights(centers)  # (BINS, 3)
-    diff = np.stack([a_ref - a_in, b_ref - b_in], axis=-1)  # (BINS, 2)
-
-    # Weighted least squares with a small ridge: (X'WX + lambda I) theta = X'W d
-    xtw = basis.T * weight
-    lam = RIDGE * weight.sum()
-    theta = np.linalg.solve(xtw @ basis + lam * np.eye(3), xtw @ diff)  # (3, 2)
-
-    s, m, h = (tuple(float(v) for v in row) for row in theta)
-    return SplitToning(
-        shadows=(s[0], s[1]), midtones=(m[0], m[1]), highlights=(h[0], h[1])
+    diff = _fit_offsets(
+        n_in, np.stack([a_in, b_in], axis=-1), n_ref, np.stack([a_ref, b_ref], axis=-1)
     )
+    return _from_array(diff)
 
 
 def apply_split_toning(lab: npt.ArrayLike, toning: SplitToning) -> FloatArray:
@@ -127,3 +119,116 @@ def apply_split_toning(lab: npt.ArrayLike, toning: SplitToning) -> FloatArray:
     out = v.copy()
     out[..., 1:] += zone_weights(v[..., 0]) @ toning.as_array()
     return out
+
+
+def _mode_ab(ab: npt.NDArray[np.float64], radius: float) -> npt.NDArray[np.float64]:
+    """Find the most common (a, b) color by mean shift from the median.
+
+    Mean shift (Fukunaga and Hostetler 1975) with a flat window moves to the
+    mean of the colors within ``radius`` until it settles on the densest
+    point. It moves exactly with a tint added to every pixel, so the
+    difference between two modes measures a tint without being pulled by a
+    few large colored objects the way a mean is.
+    """
+    center = np.median(ab, axis=0)
+    for _ in range(MODE_ITERATIONS):
+        near = np.sum((ab - center) ** 2, axis=1) < radius**2
+        if np.count_nonzero(near) < MIN_BIN_PIXELS:
+            break
+        new = ab[near].mean(axis=0)
+        if np.allclose(new, center, atol=1e-6):
+            break
+        center = new
+    return np.asarray(center, dtype=np.float64)
+
+
+def _bin_modes(
+    lab: npt.NDArray[np.float64], radius: float
+) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+    """Pixel count and most common (a, b) in each lightness bin."""
+    idx = np.clip((lab[:, 0] * BINS).astype(np.intp), 0, BINS - 1)
+    count = np.bincount(idx, minlength=BINS).astype(np.float64)
+    modes = np.zeros((BINS, 2))
+    for b in np.flatnonzero(count >= MIN_BIN_PIXELS):
+        modes[b] = _mode_ab(lab[idx == b, 1:], radius)
+    return count, modes
+
+
+def _fit_offsets(
+    n_in: npt.NDArray[np.float64],
+    c_in: npt.NDArray[np.float64],
+    n_ref: npt.NDArray[np.float64],
+    c_ref: npt.NDArray[np.float64],
+) -> npt.NDArray[np.float64]:
+    """Zone offsets (3, 2) from per-bin colors of both sides (see module doc)."""
+    usable = (n_in >= MIN_BIN_PIXELS) & (n_ref >= MIN_BIN_PIXELS)
+    if not np.any(usable):
+        return np.zeros((3, 2))
+    # Weight each bin like the inverse variance of a difference of two means,
+    # as fractions so the total pixel count doesn't matter.
+    f_in, f_ref = n_in / n_in.sum(), n_ref / n_ref.sum()
+    weight = np.where(usable, f_in * f_ref / np.maximum(f_in + f_ref, 1e-12), 0.0)
+    basis = zone_weights((np.arange(BINS) + 0.5) / BINS)
+    xtw = basis.T * weight
+    # Weighted least squares with a small ridge: (X'WX + lambda I) theta = X'W d
+    lam = RIDGE * weight.sum()
+    out = np.linalg.solve(xtw @ basis + lam * np.eye(3), xtw @ (c_ref - c_in))
+    return np.asarray(out, dtype=np.float64)
+
+
+def _from_array(theta: npt.NDArray[np.float64]) -> SplitToning:
+    s, m, h = (tuple(float(v) for v in row) for row in theta)
+    return SplitToning(
+        shadows=(s[0], s[1]), midtones=(m[0], m[1]), highlights=(h[0], h[1])
+    )
+
+
+def fit_neutral_toning(
+    input_lab: npt.ArrayLike,
+    reference_labs: Sequence[npt.ArrayLike],
+    radius: float = MODE_RADIUS,
+    caution: float = CAUTION,
+) -> tuple[SplitToning, npt.NDArray[np.float64]]:
+    """Fit split toning that holds up when the scenes differ.
+
+    Two changes from fit_split_toning make it robust to scene content:
+
+    1. Each lightness bin is summarized by its most common color (the mode)
+       instead of the average. In most photos the most common color is a
+       near-neutral (sky, walls, road, shade), so the modes measure how the
+       look tints neutrals, while the average is pulled by whatever large
+       colored object the scene contains.
+    2. The tint is also fitted from each reference photo alone. A look tints
+       every photo the same way, so the photos agree; content differs from
+       photo to photo, so they scatter. Each zone's tint is shrunk toward
+       zero by signal / (signal + caution * noise), where signal is the
+       squared pooled tint and noise is the squared standard error of the
+       per-photo tints (an empirical Bayes shrinkage, Efron and Morris
+       1975). A single reference photo can't show agreement, so its tint is
+       kept unshrunk.
+
+    ``reference_labs`` holds the OKLab samples of each reference photo.
+    Returns the toning and the factor (0 to 1) kept in each zone.
+    """
+    refs = [_check(r, "reference") for r in reference_labs]
+    if not refs:
+        raise ValueError("Need at least one reference photo to fit split toning.")
+    n_in, m_in = _bin_modes(_check(input_lab, "input"), radius)
+    n_ref, m_ref = _bin_modes(np.vstack(refs), radius)
+    pooled = _fit_offsets(n_in, m_in, n_ref, m_ref)
+    if len(refs) < 2:
+        return _from_array(pooled), np.ones(3)
+
+    per_photo = np.stack(
+        [_fit_offsets(n_in, m_in, *_bin_modes(r, radius)) for r in refs]
+    )
+    noise = per_photo.var(axis=0, ddof=1).sum(axis=1) / len(refs)  # per zone
+    signal = np.sum(pooled**2, axis=1)
+    keep = signal / np.maximum(signal + caution * noise, 1e-30)
+    return _from_array(pooled * keep[:, None]), keep
+
+
+def blend_toning(safe: SplitToning, full: SplitToning, weight: float) -> SplitToning:
+    """Blend two toning fits: weight 0 gives ``safe``, 1 gives ``full``."""
+    a = safe.as_array()
+    return _from_array(a + float(weight) * (full.as_array() - a))

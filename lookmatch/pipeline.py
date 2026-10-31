@@ -7,10 +7,17 @@ fit() runs every step in order (see docs/method.md for each one):
 1. Neutralize: measure each photo's light and exposure, and move each photo
    toward its own group's average (references as one group, yours as the
    other).
-2. Fit the look on the pooled samples: tone curve, then split toning, then
-   sliced optimal transport for what remains.
-3. In portrait mode only, cap how far skin hue may rotate.
-4. Bake the 33-point LUT, falling back to tone curve plus split toning for
+2. Fit the safe part of the look, which holds up even when the references
+   show other scenes: black and white points, and the tint of the most
+   common colors, kept only as far as the reference photos agree on it.
+3. Measure how alike the two sets of scenes are (see scenes.py): are the
+   references graded copies of your photos, and how close are the colors
+   after the safe fit? The full fit (whole tone
+   curve, average tint, sliced optimal transport) is blended in only as far
+   as they are, because on other scenes it copies their content as if it
+   were the look.
+4. In portrait mode only, cap how far skin hue may rotate.
+5. Bake the 33-point LUT, falling back to tone curve plus split toning for
    colors your photos never contain.
 
 Every photo contributes the same number of samples, the total per side is
@@ -26,16 +33,14 @@ from typing import Any
 import numpy as np
 import numpy.typing as npt
 
-from lookmatch import io, neutralize, skin, tone, toning, transport
+from lookmatch import io, metrics, neutralize, scenes, skin, tone, toning, transport
 from lookmatch.apply import apply_lut
 from lookmatch.bake import LUT_SIZE, PRIOR_PULL, SMOOTHNESS, BakeResult, bake_lut
 from lookmatch.export.cube import Cube, identity_table
 from lookmatch.look import Look, Photo
 
-# Not yet tuned: the benchmark (Phase 6) will choose this from measured
-# results. 0.5 is a cautious start, because full strength forces one
-# scene's colors onto another when the scenes differ (docs/method.md).
-DEFAULT_TRANSPORT_STRENGTH = 0.5
+# Transport strength when the scenes match; it fades out as they differ.
+DEFAULT_TRANSPORT_STRENGTH = 1.0
 MAX_POOLED_SAMPLES = 200_000  # per side, split evenly between photos
 
 FloatArray = npt.NDArray[np.floating[Any]]
@@ -58,6 +63,8 @@ class _Sampled:
     source: str  # "raw" or "rendered"
     pixels: FloatArray  # sRGB samples
     estimate: neutralize.Estimate
+    structure: npt.NDArray[np.float64]  # see scenes.structure
+    aspect: float
 
 
 def collect_photos(source: PhotoSource) -> list[Path]:
@@ -98,23 +105,28 @@ def _sample_group(
     for path in paths:
         image = io.load_image(path)
         pixels = io.sample_pixels(image, max_pixels=per_photo, seed=seed)
-        del image  # keep memory low: only the samples are needed
+        shape = (scenes.structure(image), scenes.aspect(image))
+        del image  # keep memory low: only the samples and structure are needed
         source = "raw" if path.suffix.lower() in io.RAW_EXTENSIONS else "rendered"
-        sampled.append(_Sampled(path, source, pixels, neutralize.estimate(pixels)))
+        sampled.append(
+            _Sampled(path, source, pixels, neutralize.estimate(pixels), *shape)
+        )
     return sampled, per_photo
 
 
 def _neutralized(
     group: list[_Sampled],
-) -> tuple[npt.NDArray[np.float64], list[neutralize.Correction]]:
+) -> tuple[list[npt.NDArray[np.float64]], list[neutralize.Correction]]:
+    """Each photo's samples moved to the group's shared light and exposure."""
     corrections = neutralize.group_corrections([s.estimate for s in group])
-    pooled = np.vstack(
-        [
-            np.clip(neutralize.apply_correction(s.pixels, c), 0.0, 1.0)
-            for s, c in zip(group, corrections, strict=True)
-        ]
-    )
-    return np.asarray(pooled, dtype=np.float64), corrections
+    photos = [
+        np.asarray(
+            np.clip(neutralize.apply_correction(s.pixels, c), 0.0, 1.0),
+            dtype=np.float64,
+        )
+        for s, c in zip(group, corrections, strict=True)
+    ]
+    return photos, corrections
 
 
 def fit(
@@ -138,35 +150,64 @@ def fit(
     mine, per_input = _sample_group(collect_photos(inputs), "input photos", seed)
 
     # 1. Neutralize within each group, then pool.
-    ref_srgb, ref_corrections = _neutralized(refs)
-    in_srgb, in_corrections = _neutralized(mine)
+    ref_photos, ref_corrections = _neutralized(refs)
+    in_photos, in_corrections = _neutralized(mine)
+    ref_srgb, in_srgb = np.vstack(ref_photos), np.vstack(in_photos)
     ref_lab, in_lab = io.srgb_to_oklab(ref_srgb), io.srgb_to_oklab(in_srgb)
+    ref_labs = [io.srgb_to_oklab(p) for p in ref_photos]
 
-    # 2. Tone curve, split toning, then transport for the rest.
-    curve = tone.fit_tone_curve(in_lab[:, 0], ref_lab[:, 0])
-
-    def tone_and_toning(lab: FloatArray, tint: toning.SplitToning | None) -> FloatArray:
+    def tone_and_toning(
+        lab: FloatArray, curve: FloatArray, tint: toning.SplitToning | None
+    ) -> FloatArray:
         out = lab.copy()
         out[..., 0] = tone.apply_tone_curve(lab[..., 0], curve)
         return out if tint is None else toning.apply_split_toning(out, tint)
 
-    split = toning.fit_split_toning(tone_and_toning(in_lab, None), ref_lab)
-    fitted = tone_and_toning(in_lab, split)
-    target_lab = transport.sliced_transport(
-        fitted, ref_lab, strength=transport_strength, seed=seed
+    # 2. The safe part of the look: black and white points, and the tint of
+    # the most common colors, kept only as far as the references agree.
+    safe_curve = tone.fit_end_points(in_lab[:, 0], ref_lab[:, 0])
+    safe_split, _ = toning.fit_neutral_toning(
+        tone_and_toning(in_lab, safe_curve, None), ref_labs
+    )
+
+    # 3. How alike are the scenes? The full fit (whole tone curve, average
+    # tint, transport) is used only as far as they are: on other scenes it
+    # mistakes the difference in content for a look (docs/method.md).
+    copied = scenes.copied_fraction(
+        [(s.structure, s.aspect) for s in refs],
+        [(s.structure, s.aspect) for s in mine],
+    )
+    distance = metrics.sliced_wasserstein(
+        tone_and_toning(in_lab, safe_curve, safe_split), ref_lab, seed=seed
+    )
+    match = scenes.scene_match(copied, distance)
+    curve = tone.blend_curves(
+        safe_curve, tone.fit_tone_curve(in_lab[:, 0], ref_lab[:, 0]), match
+    )
+    toned = tone_and_toning(in_lab, curve, None)
+    neutral_split, kept = toning.fit_neutral_toning(toned, ref_labs)
+    split = toning.blend_toning(
+        neutral_split, toning.fit_split_toning(toned, ref_lab), match
+    )
+    fitted = tone_and_toning(in_lab, curve, split)
+    strength = transport_strength * match
+    target_lab = (
+        transport.sliced_transport(fitted, ref_lab, strength=strength, seed=seed)
+        if strength > 0
+        else fitted
     )
 
     # The prior: what colors no photo contains fall back to.
     grid_srgb = identity_table(LUT_SIZE).reshape(-1, 3)
     grid_lab = io.srgb_to_oklab(grid_srgb)
-    prior_lab = tone_and_toning(grid_lab, split)
+    prior_lab = tone_and_toning(grid_lab, curve, split)
 
-    # 3. Portrait mode: cap skin hue rotation.
+    # 4. Portrait mode: cap skin hue rotation.
     if portrait:
         target_lab = skin.limit_skin_hue(in_lab, target_lab, skin.skin_mask(in_srgb))
         prior_lab = skin.limit_skin_hue(grid_lab, prior_lab, skin.skin_mask(grid_srgb))
 
-    # 4. Bake.
+    # 5. Bake.
     prior = np.clip(io.oklab_to_srgb(prior_lab), 0.0, 1.0)
     target = np.clip(io.oklab_to_srgb(target_lab), 0.0, 1.0)
     baked = bake_lut(
@@ -195,6 +236,10 @@ def fit(
             "exposure_strength": neutralize.EXPOSURE_STRENGTH,
             "max_exposure_stops": neutralize.MAX_EXPOSURE_STOPS,
             "transport_strength": transport_strength,
+            "scene_scale": scenes.SCENE_SCALE,
+            "same_photo_correlation": scenes.SAME_PHOTO,
+            "toning_mode_radius": toning.MODE_RADIUS,
+            "toning_caution": toning.CAUTION,
             "transport_iterations": transport.ITERATIONS,
             "smoothness": SMOOTHNESS,
             "prior_pull": PRIOR_PULL,
@@ -205,6 +250,14 @@ def fit(
         tone_curve=curve.tolist(),
         split_toning=split,
         metrics={
+            "references_copied_from_inputs": copied,
+            "scene_distance": distance,
+            "scene_match": match,
+            "transport_strength_used": strength,
+            **{
+                f"toning_kept_{z}": float(k)
+                for z, k in zip(toning.ZONES, kept, strict=True)
+            },
             "lut_total_variation": baked.total_variation,
             "lut_coverage": baked.coverage,
             "lut_gray_monotonic": float(baked.gray_monotonic),

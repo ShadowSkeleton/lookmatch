@@ -105,3 +105,68 @@ def test_rejects_bad_input() -> None:
         fit_split_toning(np.zeros((0, 3)), _lab())
     with pytest.raises(ValueError, match="3 color channels"):
         fit_split_toning(np.zeros((10, 2)), _lab())
+
+
+def _photos(count: int, seed: int, cast: float = 0.0) -> list[np.ndarray]:
+    """Photos of mostly near-neutral pixels plus one big colored object each.
+
+    The object's color differs from photo to photo; ``cast`` scales it.
+    """
+    rng = np.random.default_rng(seed)
+    out = []
+    for _ in range(count):
+        lab = _lab(20_000, seed=int(rng.integers(1 << 30)))
+        lab[:, 1:] *= 0.15  # most pixels near neutral
+        obj = rng.random(lab.shape[0]) < 0.3
+        lab[obj, 1:] += cast * rng.normal(0, 0.06, 2)
+        out.append(lab)
+    return out
+
+
+def test_neutral_toning_recovers_tint_despite_colored_objects() -> None:
+    from lookmatch.toning import fit_neutral_toning
+
+    mine = np.vstack(_photos(10, seed=1, cast=1.0))
+    refs = [apply_split_toning(p, TEAL_AND_ORANGE) for p in _photos(8, 2, 1.0)]
+    fitted, keep = fit_neutral_toning(mine, refs)
+    _close(fitted, TEAL_AND_ORANGE, atol=0.004)
+    assert keep[0] > 0.9 and keep[2] > 0.9  # the references agree on the tint
+
+
+def test_neutral_toning_shrinks_a_tint_the_references_disagree_on() -> None:
+    from lookmatch.toning import fit_neutral_toning
+
+    # No look at all; each reference photo has its own color cast.
+    rng = np.random.default_rng(5)
+    mine = np.vstack(_photos(10, seed=1))
+    refs = []
+    for p in _photos(6, seed=2):
+        p[:, 1:] += rng.normal(0, 0.02, 2)
+        refs.append(p)
+    raw, unshrunk = fit_neutral_toning(mine, refs, caution=0.0)
+    fitted, keep = fit_neutral_toning(mine, refs)
+    np.testing.assert_array_equal(unshrunk, 1.0)
+    assert np.all(keep < 0.7)
+    np.testing.assert_allclose(fitted.as_array(), raw.as_array() * keep[:, None])
+
+
+def test_neutral_toning_single_reference_and_errors() -> None:
+    from lookmatch.toning import fit_neutral_toning
+
+    mine = np.vstack(_photos(3, seed=1))
+    ref = apply_split_toning(_photos(1, seed=2)[0], TEAL_AND_ORANGE)
+    fitted, keep = fit_neutral_toning(mine, [ref])
+    np.testing.assert_array_equal(keep, 1.0)
+    _close(fitted, TEAL_AND_ORANGE, atol=0.004)
+    with pytest.raises(ValueError, match="at least one reference"):
+        fit_neutral_toning(mine, [])
+
+
+def test_blend_toning() -> None:
+    from lookmatch.toning import blend_toning
+
+    zero = SplitToning()
+    _close(blend_toning(zero, TEAL_AND_ORANGE, 1.0), TEAL_AND_ORANGE, 1e-12)
+    _close(blend_toning(TEAL_AND_ORANGE, zero, 1.0), zero, 1e-12)
+    half = blend_toning(zero, TEAL_AND_ORANGE, 0.5)
+    np.testing.assert_allclose(half.as_array(), TEAL_AND_ORANGE.as_array() / 2)

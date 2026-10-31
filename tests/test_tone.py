@@ -106,3 +106,39 @@ def test_rejects_bad_input() -> None:
     bad[3] = np.nan
     with pytest.raises(ValueError, match="NaN"):
         fit_tone_curve(bad, _lightness())
+
+
+def test_end_points_recover_black_and_white_points() -> None:
+    from lookmatch.tone import fit_end_points
+
+    faded = KNOWN_CURVES["faded film"]  # a straight line: end points say it all
+    inputs = _lightness(seed=1)
+    curve = fit_end_points(inputs, faded(_lightness(seed=2)))
+    lo, hi = np.percentile(inputs, [1, 99])
+    covered = (GRID >= lo) & (GRID <= hi)
+    assert np.abs(curve[covered] - faded(GRID[covered])).max() < 0.01
+
+
+def test_end_points_ignore_how_bright_the_scenes_are() -> None:
+    from lookmatch.tone import fit_end_points
+
+    # Same black and white, but the reference scenes are mostly bright.
+    rng = np.random.default_rng(0)
+    inputs = np.concatenate([[0.0, 1.0] * 1000, rng.beta(2, 2, 100_000)])
+    bright = np.concatenate([[0.0, 1.0] * 1000, rng.beta(5, 2, 100_000)])
+    curve = fit_end_points(inputs, bright)
+    assert np.abs(curve - GRID).max() < 0.01  # unchanged
+    assert np.abs(fit_tone_curve(inputs, bright) - GRID).max() > 0.1  # full fit
+
+
+def test_end_points_and_blend_never_decrease() -> None:
+    from lookmatch.tone import blend_curves, fit_end_points
+
+    rng = np.random.default_rng(3)
+    safe = fit_end_points(rng.random(1000), rng.random(1000) ** 3)
+    full = fit_tone_curve(rng.random(1000), rng.random(1000) ** 3)
+    for w in (0.0, 0.3, 1.0):
+        assert np.all(np.diff(blend_curves(safe, full, w)) >= 0)
+    np.testing.assert_allclose(blend_curves(safe, full, 0.0), safe)
+    np.testing.assert_allclose(blend_curves(safe, full, 1.0), full)
+    np.testing.assert_allclose(fit_end_points(np.full(10, 0.5), rng.random(10)), GRID)

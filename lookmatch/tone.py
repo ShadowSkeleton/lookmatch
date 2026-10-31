@@ -18,6 +18,11 @@ highlights?" It is fitted in three steps:
 
 Outside the lightness range seen in the user's photos, the curve continues
 at slope 1 (no extra contrast) from its ends, clipped to [0, 1].
+
+Histogram matching assumes both sides show similar scenes: a set of dark
+canyon photos would teach it to darken everything. fit_end_points() is the
+safe alternative used when the scenes differ: it only matches the black and
+white points. The pipeline blends the two by how alike the scenes are.
 """
 
 from typing import Any
@@ -33,6 +38,7 @@ SAMPLES = 256
 GRID = np.linspace(0.0, 1.0, SAMPLES)  # input lightness of each curve sample
 QUANTILES = 1000
 KNOT_GROUP = 20  # quantile pairs averaged into one knot (about 50 knots)
+END_LOW, END_HIGH = 0.005, 0.995  # quantiles used as black and white points
 
 
 def _lightness(values: npt.ArrayLike, what: str) -> npt.NDArray[np.float64]:
@@ -78,6 +84,47 @@ def fit_tone_curve(
     fitted = np.where(GRID > x1, y1 + (GRID - x1), fitted)
     curve = np.clip(fitted, 0.0, 1.0)
     return np.maximum.accumulate(curve)  # remove float rounding wiggles
+
+
+def fit_end_points(
+    input_lightness: npt.ArrayLike,
+    reference_lightness: npt.ArrayLike,
+    low: float = END_LOW,
+    high: float = END_HIGH,
+) -> npt.NDArray[np.float64]:
+    """Fit only the black and white points: the safe curve for other scenes.
+
+    The darkest 0.5% and brightest 0.5% of your photos are mapped to those
+    of the reference (lifted or crushed blacks, softened or clipped
+    whites), with a straight line in between and slope 1 beyond. Most
+    photos have a near-black and a near-white somewhere, so these points
+    say more about the look than about the scene, while the full histogram
+    in between mostly says how bright the scenes were. Returns 256 samples
+    like fit_tone_curve.
+    """
+    x = _lightness(input_lightness, "input")
+    y = _lightness(reference_lightness, "reference")
+    x0, x1 = np.quantile(x, [low, high])
+    y0, y1 = np.quantile(y, [low, high])
+    if x1 - x0 < 1e-6:  # every input pixel had about the same lightness
+        return GRID.copy()
+    curve = np.interp(
+        GRID,
+        [0.0, x0, x1, 1.0],
+        [max(0.0, y0 - x0), y0, y1, min(1.0, 1.0 + y1 - x1)],
+    )
+    return np.maximum.accumulate(np.clip(curve, 0.0, 1.0))
+
+
+def blend_curves(
+    safe: npt.ArrayLike, full: npt.ArrayLike, weight: float
+) -> npt.NDArray[np.float64]:
+    """Blend two curves: weight 0 gives ``safe``, 1 gives ``full``.
+
+    A blend of two never-decreasing curves never decreases either.
+    """
+    a = np.asarray(safe, dtype=np.float64)
+    return a + float(weight) * (np.asarray(full, dtype=np.float64) - a)
 
 
 def _knots(
