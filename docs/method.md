@@ -100,6 +100,38 @@ maintainer's photos, a bright-sky reference made the fitted curve lift the
 midtones to 0.64 where the true look gives 0.50. Pooling several photos on
 each side and the "scenes too different" warning exist for this reason.
 
+## Split toning
+
+Split toning is the color tint a look adds at each brightness, like the three
+Color Grading wheels in Lightroom (for example teal shadows and warm
+highlights). lookmatch models it as an OKLab (a, b) offset that changes
+smoothly with lightness L:
+
+    offset(L) = (1 - L)^2 * shadows + 2 L (1 - L) * midtones + L^2 * highlights
+
+The three weights (the quadratic Bernstein basis) are never negative, always
+add up to 1, and peak at black, middle gray and white, so the tint blends
+smoothly with no visible band between zones.
+
+**Fitting.** The tone curve is applied to your photos first, so both sides
+are compared at the brightness they end up at. Both sides are split into 32
+lightness bins, and the average (a, b) is taken in each. The difference
+between the two sides in each bin is the tint at that brightness. The three
+zone offsets are the weighted least squares fit of those differences: bins
+with more pixels count more, and a small ridge term keeps a zone with no
+pixels (say, no highlights at all) near zero instead of guessing.
+
+**Accuracy.** On synthetic photos with a known teal-and-orange toning, every
+offset is recovered within 0.002 OKLab units (about a tenth of a typical
+tint). On a real photo against itself with the test look applied, lookmatch
+finds the warm shadows and cool highlights the test look adds.
+
+**Limitation.** Like the tone curve, this assumes both sides contain similar
+things. With a red canyon as the reference and a different scene as input,
+the red rock in the reference's shadows was read as a strong orange shadow
+tint. The "scenes too different" warning and pooling several photos are the
+defenses; the benchmark will measure how much it matters.
+
 ## References
 
 - R. E. Barlow, D. J. Bartholomew, J. M. Bremner and H. D. Brunk,

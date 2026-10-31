@@ -24,8 +24,12 @@ import numpy as np
 from lookmatch import __version__
 from lookmatch.io import DEFAULT_SEED
 from lookmatch.neutralize import Correction, Estimate
+from lookmatch.toning import ZONES, SplitToning
 
-SCHEMA_VERSION = 1
+# Format history. Older files still load and are upgraded on save.
+#   1: photos, neutralization, tone curve
+#   2: + split_toning
+SCHEMA_VERSION = 2
 TONE_CURVE_SAMPLES = 256
 
 ROLES = ("reference", "input")
@@ -112,6 +116,7 @@ class Look:
     settings: dict[str, Any] = field(default_factory=dict)
     photos: list[Photo] = field(default_factory=list)
     tone_curve: list[float] | None = None  # 256 samples of OKLab L, 0 to 1
+    split_toning: SplitToning | None = None  # OKLab (a, b) offset per zone
     metrics: dict[str, float] = field(default_factory=dict)
     warnings: list[str] = field(default_factory=list)
 
@@ -131,6 +136,10 @@ class Look:
                     "The tone curve must never go down: a brighter input must "
                     "never come out darker."
                 )
+        if self.split_toning is not None and not np.all(
+            np.isfinite(self.split_toning.as_array())
+        ):
+            raise ValueError("The split toning contains NaN or infinite values.")
 
 
 _ORDER = [
@@ -141,6 +150,7 @@ _ORDER = [
     "settings",
     "photos",
     "tone_curve",
+    "split_toning",
     "metrics",
     "warnings",
 ]
@@ -160,6 +170,9 @@ def look_to_dict(look: Look) -> dict[str, Any]:
         "tone_curve": None
         if look.tone_curve is None
         else [float(v) for v in look.tone_curve],
+        "split_toning": None
+        if look.split_toning is None
+        else {z: [float(v) for v in getattr(look.split_toning, z)] for z in ZONES},
         "metrics": {k: float(v) for k, v in look.metrics.items()},
         "warnings": list(look.warnings),
     }
@@ -210,18 +223,24 @@ def load_look(path: str | Path) -> Look:
 
     try:
         photos = [Photo(**p) for p in data.get("photos", [])]
+        toning = data.get("split_toning")
+        if toning is not None:
+            toning = SplitToning(
+                **{z: (float(toning[z][0]), float(toning[z][1])) for z in ZONES}
+            )
         look = Look(
             name=data["name"],
             seed=data["seed"],
             lookmatch_version=data["lookmatch_version"],
-            schema_version=version,
+            schema_version=SCHEMA_VERSION,  # older files are upgraded
             settings=data.get("settings", {}),
             photos=photos,
             tone_curve=data.get("tone_curve"),
+            split_toning=toning,
             metrics=data.get("metrics", {}),
             warnings=data.get("warnings", []),
         )
-    except (KeyError, TypeError) as err:
+    except (KeyError, TypeError, IndexError) as err:
         raise ValueError(f"{bad}: missing or wrong field ({err}).") from None
     look.validate()
     return look

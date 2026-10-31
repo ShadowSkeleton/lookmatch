@@ -8,6 +8,7 @@ import pytest
 import lookmatch
 from lookmatch.look import SCHEMA_VERSION, Look, Photo, load_look, save_look
 from lookmatch.neutralize import Correction, Estimate
+from lookmatch.toning import SplitToning
 
 
 def _photo(tmp_path: Path, name: str = "DSC0001.jpg", role: str = "input") -> Photo:
@@ -27,6 +28,7 @@ def _look(tmp_path: Path) -> Look:
         settings={"lut_size": 33, "transport_strength": 0.5, "rendering": "rendered"},
         photos=[_photo(tmp_path, "ref.jpg", "reference"), _photo(tmp_path)],
         tone_curve=curve,
+        split_toning=SplitToning((-0.02, -0.03), (0.0, 0.001), (0.012, 0.03)),
         metrics={"sliced_wasserstein": 0.0123},
         warnings=["Only 1 input photo."],
     )
@@ -142,6 +144,28 @@ def test_damaged_file_explains(tmp_path: Path) -> None:
         load_look(path)
     with pytest.raises(ValueError, match="isn't a valid look.json"):
         load_look(_write(tmp_path, [1, 2, 3]))
+
+
+def test_version_1_file_still_loads(tmp_path: Path) -> None:
+    path = tmp_path / "look.json"
+    save_look(_look(tmp_path), path)
+    data = json.loads(path.read_text())
+    data["schema_version"] = 1
+    del data["split_toning"]
+    look = load_look(_write(tmp_path, data))
+    assert look.split_toning is None
+    assert look.schema_version == SCHEMA_VERSION  # upgraded when saved again
+
+
+def test_split_toning_is_saved_as_named_zones(tmp_path: Path) -> None:
+    path = tmp_path / "look.json"
+    save_look(_look(tmp_path), path)
+    toning = json.loads(path.read_text())["split_toning"]
+    assert toning == {
+        "shadows": [-0.02, -0.03],
+        "midtones": [0.0, 0.001],
+        "highlights": [0.012, 0.03],
+    }
 
 
 def test_missing_file(tmp_path: Path) -> None:

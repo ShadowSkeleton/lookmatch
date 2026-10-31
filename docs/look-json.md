@@ -22,13 +22,14 @@ differently, this file shows what changed.
 
 | Field | What it holds |
 |---|---|
-| `schema_version` | Version of this file format (currently 1) |
+| `schema_version` | Version of this file format (currently 2) |
 | `lookmatch_version` | The lookmatch version that made the look |
 | `seed` | The random seed used for pixel sampling (0) |
 | `name` | The look's name (any language, saved as UTF-8) |
 | `settings` | Every setting used, such as LUT size |
 | `photos` | One entry per photo, see below |
 | `tone_curve` | The fitted tone curve: 256 lightness values (OKLab L) from shadows to highlights, never going down |
+| `split_toning` | The tint added to `shadows`, `midtones` and `highlights`: each an OKLab `[a, b]` offset (a: green to red, b: blue to yellow) |
 | `metrics` | How well the look matched (filled in by the verify step) |
 | `warnings` | Every warning shown during the run, in plain words |
 
@@ -44,9 +45,11 @@ Each entry in `photos`:
 | `reliable` | `false` if the photo had too little information to measure its light |
 | `white_balance`, `exposure` | The correction that moved this photo to its group's average (see [method.md](method.md)) |
 
-More fields are added as each fitting step is built (split toning, color
-matching). When the format changes, `schema_version` goes up. An older
-lookmatch refuses a newer file with a clear message instead of misreading it.
+More fields are added as each fitting step is built. When the format
+changes, `schema_version` goes up: version 1 had photos and the tone curve,
+version 2 added `split_toning`. Older files still open and are upgraded when
+saved. An older lookmatch refuses a newer file with a clear message instead
+of misreading it.
 
 ## Example
 
@@ -54,7 +57,7 @@ Shortened:
 
 ```json
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "lookmatch_version": "0.1.0.dev0",
   "seed": 0,
   "name": "雪天人像（日系）",
@@ -73,6 +76,11 @@ Shortened:
     }
   ],
   "tone_curve": [0.0, 0.0041, "…"],
+  "split_toning": {
+    "shadows": [0.0137, 0.0404],
+    "midtones": [-0.004, -0.0122],
+    "highlights": [-0.0078, -0.0223]
+  },
   "metrics": {},
   "warnings": []
 }
