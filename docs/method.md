@@ -67,8 +67,46 @@ stop. The median can't tell a dark scene from an underexposed one: on the
 maintainer's test photos, a full correction pushed a correctly exposed slot
 canyon +2.3 stops and a bright sky -1.8 stops.
 
+## Tone curve
+
+The tone curve says how the look maps shadows, midtones and highlights. It is
+fitted on OKLab lightness L, pooled from all of your photos and all reference
+photos (after neutralizing), in three steps:
+
+1. **Histogram matching.** Each side is summarized by 1000 quantiles, and
+   quantile is matched to quantile: the darkest 1% of your photos maps to
+   the darkest 1% of the reference, and so on. The photos don't need to show
+   the same scene.
+2. **Isotonic regression** (Barlow et al. 1972). Repeated values, such as
+   many clipped white pixels, can make neighboring pairs disagree. Isotonic
+   regression finds the closest curve that never goes down, so a brighter
+   input never comes out darker.
+3. **PCHIP interpolation** (Fritsch and Carlson 1980). The pairs are averaged
+   into about 50 points and joined by a smooth curve that follows their shape
+   without overshooting, then sampled at 256 evenly spaced values of L.
+
+Outside the lightness range your photos actually contain, the curve continues
+at slope 1 from its ends (no added contrast), clipped to [0, 1].
+
+**Accuracy.** On synthetic photos with a known curve (S-curve, brighter,
+darker, faded film, crushed blacks), the largest error is 0.41% of the
+lightness range. On a real photo against itself with the test look applied,
+it is 0.05%.
+
+**Limitation.** Histogram matching assumes the reference and your photos
+contain similar things. If the reference scene is simply brighter (a bright
+sky against your canyon), that difference is read as part of the look. On the
+maintainer's photos, a bright-sky reference made the fitted curve lift the
+midtones to 0.64 where the true look gives 0.50. Pooling several photos on
+each side and the "scenes too different" warning exist for this reason.
+
 ## References
 
+- R. E. Barlow, D. J. Bartholomew, J. M. Bremner and H. D. Brunk,
+  *Statistical Inference under Order Restrictions*, Wiley, 1972.
+  (Isotonic regression.)
+- F. N. Fritsch and R. E. Carlson, "Monotone piecewise cubic interpolation,"
+  SIAM Journal on Numerical Analysis 17(2), 1980. (PCHIP.)
 - G. Buchsbaum, "A spatial processor model for object colour perception,"
   Journal of the Franklin Institute 310(1), 1980.
 - E. H. Land and J. J. McCann, "Lightness and retinex theory," Journal of the
