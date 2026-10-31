@@ -132,6 +132,40 @@ the red rock in the reference's shadows was read as a strong orange shadow
 tint. The "scenes too different" warning and pooling several photos are the
 defenses; the benchmark will measure how much it matters.
 
+## Residual color: sliced optimal transport
+
+After the tone curve and split toning, some color differences remain, such as
+how a look treats particular hues (skies pushed toward teal, greens muted).
+Optimal transport moves each of your colors so that the whole set matches the
+reference's color distribution, while moving colors as little as possible.
+
+lookmatch uses iterative distribution transfer (Pitié, Kokaram and Dahyot
+2007), implemented from the paper. Each of 20 iterations picks a random
+rotation of OKLab space, projects both color sets onto the three rotated
+axes, matches each axis exactly (in one dimension, optimal transport sends
+the k-th smallest value to the same quantile on the other side), and rotates
+the moves back. The rotations come from a fixed seed, so the result is
+exactly repeatable.
+
+A **strength** from 0 to 1 blends between no change and the full transport.
+
+**Accuracy.** On a synthetic pair with a nonlinear grade, 97% of the color
+distribution distance (sliced Wasserstein, measured with the independent POT
+library) is removed in about 1 second for 100,000 pixels. Moving a set onto a
+shifted copy of itself moves every color by exactly that shift, as optimal
+transport should.
+
+On a real photo against itself with the test look, each step closes more of
+the gap (distance x100): 1.47 at the start, 0.83 after the tone curve, 0.21
+after split toning, 0.01 after transport.
+
+**Limitation, and why strength matters.** Transport makes the distributions
+match whether or not the scenes match. With two different scenes, full
+strength also drove the distance to almost zero (9.39 to 0.05), which means
+forcing one scene's colors into the other's. A matching distribution is not
+the same as the right look, so the default strength is chosen with the
+benchmark (known looks, measured with ΔE 2000), not by distribution distance.
+
 ## References
 
 - R. E. Barlow, D. J. Bartholomew, J. M. Bremner and H. D. Brunk,
@@ -139,6 +173,11 @@ defenses; the benchmark will measure how much it matters.
   (Isotonic regression.)
 - F. N. Fritsch and R. E. Carlson, "Monotone piecewise cubic interpolation,"
   SIAM Journal on Numerical Analysis 17(2), 1980. (PCHIP.)
+- F. Pitié, A. Kokaram and R. Dahyot, "Automated colour grading using colour
+  distribution transfer," Computer Vision and Image Understanding 107(1-2),
+  2007.
+- F. Mezzadri, "How to generate random matrices from the classical compact
+  groups," Notices of the AMS 54(5), 2007. (Uniform random rotations.)
 - G. Buchsbaum, "A spatial processor model for object colour perception,"
   Journal of the Franklin Institute 310(1), 1980.
 - E. H. Land and J. J. McCann, "Lightness and retinex theory," Journal of the
