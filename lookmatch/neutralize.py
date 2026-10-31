@@ -97,7 +97,7 @@ def estimate(srgb: npt.ArrayLike, blend: float = BLEND) -> Estimate:
     illuminant = _unit_luminance(gray_world**blend * white_patch ** (1 - blend))
 
     # A cast stronger than MAX_CAST is almost surely scene color, not light.
-    floor = illuminant.max() / MAX_CAST
+    floor = float(np.max(illuminant)) / MAX_CAST
     reliable = bool(np.all(illuminant >= floor))
     if not reliable:
         illuminant = _unit_luminance(np.maximum(illuminant, floor))
