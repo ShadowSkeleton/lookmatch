@@ -294,6 +294,42 @@ the benchmark (many scenes, known answers) and then to test ways to separate
 the look from the scene. Until then, lookmatch works best when the
 references and your photos show similar kinds of scenes.
 
+## Baselines
+
+To know whether lookmatch helps, it is compared with simpler methods. Each
+one produces a 33-point LUT, so all are judged the same way: applied to
+photos, then compared with the true look.
+
+- **No change** (identity LUT). Any method that scores worse than this
+  makes photos worse.
+- **Reinhard color transfer** (Reinhard et al. 2001), implemented from the
+  paper: convert to the l-alpha-beta color space of Ruderman et al. (1998),
+  then shift and scale each channel so its mean and spread match the
+  reference. The paper doesn't say whether its RGB is linear; lookmatch
+  applies the paper's matrix to linear sRGB.
+- **Plain optimal transport**: the transport step at full strength on raw
+  samples, with no neutralizing, tone curve, split toning or skin step, and
+  almost no smoothing (just enough to define colors with no samples).
+
+**First comparison** on the maintainer's 4 photos, with the test look as the
+known answer. Mean ΔE 2000 against the true look (below about 1 is
+invisible; lower is better):
+
+| Method | Same scenes on both sides | Different scenes on each side |
+|---|---|---|
+| No change | 3.25 | 3.25 |
+| Reinhard | 4.51 | 15.28 |
+| Plain optimal transport | **0.35** | 13.44 |
+| lookmatch (transport at 0.5) | 1.20 | **11.50** |
+
+Two lessons. With the same scenes, full-strength transport is nearly exact,
+and lookmatch's cautious 0.5 strength costs accuracy. With different scenes,
+*every* method is far worse than doing nothing; lookmatch is the least bad,
+but still harmful. So the cross-scene problem is not a bug in one step: it
+is the limit of matching color distributions, shared by the classic methods.
+Four photos are too few to tune anything; the benchmark will repeat this on
+many scenes and looks.
+
 ## References
 
 - R. E. Barlow, D. J. Bartholomew, J. M. Bremner and H. D. Brunk,
@@ -301,6 +337,14 @@ references and your photos show similar kinds of scenes.
   (Isotonic regression.)
 - F. N. Fritsch and R. E. Carlson, "Monotone piecewise cubic interpolation,"
   SIAM Journal on Numerical Analysis 17(2), 1980. (PCHIP.)
+- E. Reinhard, M. Ashikhmin, B. Gooch and P. Shirley, "Color transfer
+  between images," IEEE Computer Graphics and Applications 21(5), 2001.
+- D. L. Ruderman, T. W. Cronin and C.-C. Chiao, "Statistics of cone
+  responses to natural images: implications for visual coding," Journal of
+  the Optical Society of America A 15(8), 1998. (l-alpha-beta space.)
+- G. Sharma, W. Wu and E. N. Dalal, "The CIEDE2000 color-difference formula:
+  implementation notes, supplementary test data, and mathematical
+  observations," Color Research and Application 30(1), 2005. (ΔE 2000.)
 - F. Pitié, A. Kokaram and R. Dahyot, "Automated colour grading using colour
   distribution transfer," Computer Vision and Image Understanding 107(1-2),
   2007.
