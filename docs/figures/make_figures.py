@@ -12,22 +12,28 @@ import re
 import sys
 from io import BytesIO
 from pathlib import Path
+from tempfile import TemporaryDirectory
 
 import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np  # noqa: E402
+import numpy.typing as npt  # noqa: E402
 import rawpy  # noqa: E402
 from PIL import Image, ImageOps  # noqa: E402
 
 from lookmatch import io  # noqa: E402
 from lookmatch.apply import apply_lut  # noqa: E402
+from lookmatch.metrics import delta_e_2000  # noqa: E402
+from lookmatch.pipeline import fit  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = Path(__file__).parent
 sys.path.insert(0, str(ROOT / "tests" / "fixtures"))
+sys.path.insert(0, str(ROOT / "bench"))
 import make_fixtures  # noqa: E402
+import make_looks  # noqa: E402
 
 FONT_STACK = "-apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif"
 
@@ -85,7 +91,12 @@ def tone_response(theme: str) -> Path:
     warmth = (lab_out[:, 2] - lab_in[:, 2]) * 100
 
     plt.rcParams.update(
-        {"svg.fonttype": "none", "font.family": "Helvetica Neue", "font.size": 11}
+        {
+            "svg.fonttype": "none",
+            "svg.hashsalt": "lookmatch",  # same internal IDs on every run
+            "font.family": "Helvetica Neue",
+            "font.size": 11,
+        }
     )
     fig, ax = plt.subplots(figsize=(8.8, 3.8), dpi=100)
     fig.subplots_adjust(left=0.09, right=0.97, top=0.80, bottom=0.16)
@@ -135,7 +146,7 @@ def tone_response(theme: str) -> Path:
         text.set_color(t["text"])
 
     path = OUT / f"tone_response_{theme}.svg"
-    fig.savefig(path, transparent=True)
+    fig.savefig(path, transparent=True, metadata={"Date": None})  # no timestamp
     plt.close(fig)
     _svg_fonts(path)
     return path
@@ -158,34 +169,70 @@ def chart_before_after() -> Path:
     return path
 
 
-# --- Figure: a real photo before and after the test look -----------------------
+# --- Figure: lookmatch learning a look from photos -----------------------------
 
-# The maintainer's own photo, approved for demos (landscape, no people).
-DEMO_RAW = Path("/Users/jingrui_feng/Pictures/2026/2026-08-30/DSC08255.ARW")
+# The maintainer's own photos, approved for demos (landscapes, no people).
+DEMO_DIR = Path("/Users/jingrui_feng/Pictures/2026/2026-08-30")
+DEMO_PHOTOS = ["DSC08255", "DSC08549", "DSC08606"]
+DEMO_SHOWN = "DSC08255"
+DEMO_LOOK = "teal_orange"
 
 
-def photo_before_after() -> Path | None:
-    """Apply the test LUT to the camera's own JPEG rendering of a demo photo.
-
-    The camera JPEG stands in for "your photo as your editor renders it",
-    which is the recommended input path. Skipped if the RAW isn't on disk.
-    """
-    if not DEMO_RAW.is_file():
-        print(f"Skipping photo figure: {DEMO_RAW} not found")
-        return None
-    with rawpy.imread(str(DEMO_RAW)) as raw:
+def _camera_jpeg(name: str) -> npt.NDArray[np.float32]:
+    """Return the camera's own JPEG rendering of a demo RAW, 640 px long side."""
+    with rawpy.imread(str(DEMO_DIR / f"{name}.ARW")) as raw:
         jpeg = raw.extract_thumb().data
     photo = ImageOps.exif_transpose(Image.open(BytesIO(jpeg))).convert("RGB")
     photo.thumbnail((640, 640), Image.Resampling.LANCZOS)
-    before = np.asarray(photo, dtype=np.float32) / 255.0
-    after = apply_lut(before, make_fixtures.make_test_look())
-    gap = np.full((before.shape[0], 16, 3), 1.0, dtype=np.float32)
-    both = np.concatenate([before, gap, after], axis=1)
-    path = OUT / "photo_before_after.jpg"
-    Image.fromarray(np.round(both * 255).astype(np.uint8)).save(
+    return np.asarray(photo, dtype=np.float32) / 255.0
+
+
+def photo_match() -> Path | None:
+    """Show your photo, the target look, and the look lookmatch learned.
+
+    A known look (teal_orange from the benchmark) is applied to the three
+    demo photos to make the references. lookmatch then learns the look from
+    those references and the original photos, with its default settings.
+    This is the same-scenes case: the references show the same scenes as
+    the inputs. Prints the ΔE 2000 numbers quoted in the README. Skipped if
+    the RAW files aren't on disk.
+    """
+    if not all((DEMO_DIR / f"{n}.ARW").is_file() for n in DEMO_PHOTOS):
+        print(f"Skipping photo figure: demo photos not found in {DEMO_DIR}")
+        return None
+    look = make_looks.make_look(DEMO_LOOK)
+    photos = {n: _camera_jpeg(n) for n in DEMO_PHOTOS}
+    with TemporaryDirectory() as tmp:
+        refs, mine = Path(tmp, "refs"), Path(tmp, "mine")
+        refs.mkdir()
+        mine.mkdir()
+        for name, image in photos.items():
+            _save_png(refs / f"{name}.png", apply_lut(image, look))
+            _save_png(mine / f"{name}.png", image)
+        learned = fit(refs, mine, name="learned").cube
+
+    for name, image in photos.items():
+        target = apply_lut(image, look)
+        look_size = delta_e_2000(image, target).mean()
+        miss = delta_e_2000(apply_lut(image, learned), target).mean()
+        print(
+            f"  {name}: target vs original ΔE {look_size:.2f}, vs lookmatch {miss:.2f}"
+        )
+
+    shown = photos[DEMO_SHOWN]
+    panels = [shown, apply_lut(shown, look), apply_lut(shown, learned)]
+    gap = np.full((shown.shape[0], 16, 3), 1.0, dtype=np.float32)
+    row = np.concatenate([panels[0], gap, panels[1], gap, panels[2]], axis=1)
+    path = OUT / "photo_match.jpg"
+    Image.fromarray(np.round(np.clip(row, 0, 1) * 255).astype(np.uint8)).save(
         path, quality=88, optimize=True
     )
     return path
+
+
+def _save_png(path: Path, srgb: npt.ArrayLike) -> None:
+    pixels = np.round(np.clip(np.asarray(srgb), 0, 1) * 255).astype(np.uint8)
+    Image.fromarray(pixels).save(path)
 
 
 # --- Figure: the pipeline --------------------------------------------------------
@@ -256,7 +303,7 @@ def pipeline(theme: str) -> Path:
 def main() -> None:
     """Write every README figure."""
     written = [chart_before_after()]
-    photo = photo_before_after()
+    photo = photo_match()
     if photo is not None:
         written.append(photo)
     for theme in THEMES:

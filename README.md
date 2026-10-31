@@ -49,10 +49,19 @@ built to match how people see color differences.
   <img alt="Line chart. Warmth rises by about 2 OKLab units in the shadows and falls by about 2.5 in the highlights. Lightness drops by up to 3 in the shadows and rises by up to 3 in the highlights. Pure black and pure white stay unchanged." src="docs/figures/tone_response_light.svg" width="100%">
 </picture>
 
-**On a real photo.** Left: the camera's own JPEG. Right: the same photo with
-the test look applied by lookmatch.
+**Learning a look from photos.** Left: your photo (the camera's own JPEG).
+Middle: the target, a known teal-and-orange look. Right: the look lookmatch
+learned from reference photos, with its default settings, applied to your
+photo.
 
-<img alt="Horseshoe Bend, before and after the test look. After, the shadows on the rocks are warmer and the clouds slightly cooler and brighter." src="docs/figures/photo_before_after.jpg" width="100%">
+<img alt="Three versions of Horseshoe Bend. Left, the original. Middle, a teal-and-orange look with warm, peach-colored clouds. Right, lookmatch's result, nearly the same as the middle, with clouds a little less orange." src="docs/figures/photo_match.jpg" width="100%">
+
+The target look is ΔE 6.15 away from the original; lookmatch's result is
+ΔE 1.30 away from the target, which is barely noticeable even side by side
+(1.30 to 2.35 across the three demo photos). This is the **easy case**: the
+reference photos were these same scenes with the look applied. When the
+references show different scenes, lookmatch doesn't work yet (see
+[Benchmark](#benchmark)).
 
 **On a test chart.** A gray ramp, the 24-patch ColorChecker and pure
 primaries, before (left) and after (right).
