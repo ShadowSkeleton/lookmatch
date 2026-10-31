@@ -254,6 +254,46 @@ the test look applied:
 This is the easy case, the same scene on both sides; the benchmark measures
 the hard ones.
 
+## The full pipeline
+
+`lookmatch.pipeline.fit()` runs every step above in order: load and sample
+each photo (one at a time, so memory stays low), neutralize each group,
+fit the tone curve, split toning and transport on the pooled samples, cap
+skin hue in portrait mode, and bake. Every photo contributes the same number
+of samples, the total per side is capped at 200,000 so large folders stay
+fast, and one fixed seed makes the result exactly repeatable. On small test
+photos it takes about 3 seconds.
+
+The transport strength defaults to 0.5. That is a cautious starting value,
+not a tuned one: the benchmark will choose it from measured results.
+
+**Results on the maintainer's photos, and the open problem.** The test look
+was applied to some photos to make "reference" photos, and the LUT that
+lookmatch fitted was compared with the true look on all four photos (mean
+error in 8-bit levels; "nothing" means not applying any look):
+
+| Setup | DSC08118 | DSC08255 | DSC08549 | DSC08606 |
+|---|---|---|---|---|
+| Doing nothing | 7.6 | 7.1 | 5.4 | 7.5 |
+| Same 4 scenes on both sides | 4.2 | 2.3 | 1.7 | 2.0 |
+| Different scenes on each side | 26.0 | 35.9 | 28.4 | 22.9 |
+
+With the same scenes on both sides, the fitted LUT gets every photo closer to
+the true look. With different scenes on each side (references: a cloudy
+canyon trail and a dark slot canyon; inputs: a bright desert path and
+Horseshoe Bend), it is 3 to 5 times *worse* than doing nothing. The fitted
+tone curve took midtones to 0.30 instead of 0.50, because the reference set
+contains a dark canyon, and split toning added a strong orange shadow tint
+taken from the canyon's red rock. Transport strength made almost no
+difference, so the cause is the tone curve and split toning, which compare
+distributions and can't tell scene content from the look.
+
+This is the central problem for using other photographers' photos as
+references, and it is not solved yet. The next steps are to measure it with
+the benchmark (many scenes, known answers) and then to test ways to separate
+the look from the scene. Until then, lookmatch works best when the
+references and your photos show similar kinds of scenes.
+
 ## References
 
 - R. E. Barlow, D. J. Bartholomew, J. M. Bremner and H. D. Brunk,

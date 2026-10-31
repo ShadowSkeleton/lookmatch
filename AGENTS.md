@@ -169,6 +169,7 @@ lookmatch/
     metrics.py     all metrics
     report.py      report.html
     look.py        Look dataclass + look.json read/write
+    pipeline.py    fit(): every step in order, returns Look + LUT
     export/
       cube.py  hald.py  lr_preset.py  lr_profile_guide.py
     cli.py
