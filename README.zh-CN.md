@@ -8,7 +8,7 @@
 
 给 lookmatch 一张或几张你喜欢的调色照片，再加上一个装着你自己照片的文件夹。它会测量两边的颜色，生成一个 LUT，让你这台相机拍的照片都能呈现同样的色调，包括你以后拍的照片。你会得到可以在 Lightroom、Photoshop、DaVinci Resolve 等软件里使用的 LUT 和预设。
 
-> **当前状态：** 早期开发中，还不能正式使用。整套引擎已经完成并通过测试，lookmatch 生成的 LUT 在 Photoshop 和 DaVinci Resolve 里的效果完全一致。当参考照片和你的照片拍的是相同或相似的场景时，色调匹配得很准；当两边场景不同时，它只学习可靠的部分（黑白点和色调偏色），其余保持不变，详见[基准测试](#基准测试)。欢迎 Star 关注进展。
+> **当前状态：** 早期开发中。你可以[试用](#试用)，但还不够完善。整套引擎已经完成并通过测试，lookmatch 生成的 LUT 在 Photoshop 和 DaVinci Resolve 里的效果完全一致。当参考照片和你的照片拍的是相同或相似的场景时，色调匹配得很准；当两边场景不同时，它只学习可靠的部分（黑白点和色调偏色），其余保持不变，详见[基准测试](#基准测试)。欢迎 Star 关注进展。
 
 ## 基于测量，而不是猜测
 
@@ -49,6 +49,37 @@
 <img alt="测试色卡套用测试色调前后对比。" src="docs/figures/chart_before_after.png" width="100%">
 
 **在你的软件里效果一样。** 把同一个 LUT 在 Photoshop 和 DaVinci Resolve 中套用到测试色卡上，测量全部 69 个色块：Photoshop 与 lookmatch 完全一致，Resolve 的差异在 1/255 以内（[结果](bench/APP_CHECK_RESULTS.md)）。
+
+## 试用
+
+lookmatch 还没有发布到 PyPI。现在想试用，需要 Python 3.11 或更新版本：
+
+```bash
+git clone https://github.com/ShadowSkeleton/lookmatch.git
+cd lookmatch
+python3 -m venv .venv
+.venv/bin/pip install -e .
+```
+
+把几张有你想要色调的照片放进一个文件夹，再把至少 5 张你自己未经调色的照片放进另一个文件夹，然后运行：
+
+```bash
+.venv/bin/lookmatch fit ~/Pictures/look-i-love ~/Pictures/my-photos --name "日系清新"
+```
+
+lookmatch 只读取你的照片，绝不修改。它会新建一个文件夹 `日系清新/`：
+
+| 文件 | 内容 |
+|---|---|
+| `report.html` | 先打开这个：你的照片套用前后对比、这个色调做了什么、需要注意的地方 |
+| `日系清新_33.cube` | 色调 LUT，用于 Photoshop、DaVinci Resolve 和大多数软件 |
+| `日系清新_hald.png` | 图片格式的同一个 LUT，用于 RawTherapee 和 darktable |
+| `日系清新_preset.xmp` | 可编辑的 Lightroom / Camera Raw 预设（接近原色调，但不完全一样） |
+| `LIGHTROOM_PROFILE.md` | 在 Lightroom 里使用完整色调的步骤 |
+| `look.json` | lookmatch 测量到的全部数据，可完全复现这个色调 |
+| `previews/` | 套用色调后的你的照片 |
+
+如果照片里有人物，加上 `--portrait`，让肤色保持自然。各软件的详细使用步骤见 [docs/apps.md](docs/apps.md)（英文）。
 
 ## 如何测试
 

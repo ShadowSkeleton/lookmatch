@@ -185,6 +185,7 @@ lookmatch/
     report.py      report.html (template in templates/report.html)
     look.py        Look dataclass + look.json read/write
     pipeline.py    fit(): every step in order, returns Look + LUT
+    run.py         run(): fit, then write the look folder (CLI + agent layer)
     scenes.py      scene match: graded copies + color distance
     baselines.py   no change, Reinhard, plain OT (for the benchmark)
     export/

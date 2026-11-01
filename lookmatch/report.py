@@ -76,12 +76,16 @@ def make_previews(
     return previews
 
 
-def preview_metrics(previews: Sequence[Preview]) -> dict[str, float]:
-    """Return the SSIM summary for look.json: mean and lowest over previews."""
-    if not previews:
+def ssim_summary(values: Sequence[float]) -> dict[str, float]:
+    """Return the SSIM summary for look.json: mean and lowest over photos."""
+    if not values:
         return {}
-    values = [p.ssim for p in previews]
     return {"ssim_mean": float(np.mean(values)), "ssim_min": float(np.min(values))}
+
+
+def preview_metrics(previews: Sequence[Preview]) -> dict[str, float]:
+    """Return the SSIM summary for look.json over a list of previews."""
+    return ssim_summary([p.ssim for p in previews])
 
 
 def _data_uri(image: Uint8Image) -> str:
@@ -279,8 +283,13 @@ def render_report(
     look: Look,
     previews: Sequence[Preview] = (),
     files: Sequence[str] = (),
+    preview_count: int | None = None,
 ) -> str:
-    """Return report.html for a fitted look as one HTML string."""
+    """Return report.html for a fitted look as one HTML string.
+
+    ``preview_count`` is how many photos were previewed in all, when only
+    some of them are passed in ``previews``.
+    """
     refs = [p for p in look.photos if p.role == "reference"]
     mine = [p for p in look.photos if p.role == "input"]
     shown = list(previews)[:MAX_PREVIEWS]
@@ -301,7 +310,7 @@ def render_report(
             {"name": p.name, "before": _data_uri(p.before), "after": _data_uri(p.after)}
             for p in shown
         ],
-        "more_previews": max(0, len(previews) - len(shown)),
+        "more_previews": max(0, (preview_count or len(previews)) - len(shown)),
         "curve_svg": tone_curve_svg(look.tone_curve),
         "toning": toning_rows(look.split_toning),
         "measurements": measurement_rows(look),
@@ -317,8 +326,11 @@ def write_report(
     look: Look,
     previews: Sequence[Preview] = (),
     files: Sequence[str] = (),
+    preview_count: int | None = None,
 ) -> Path:
     """Write report.html and return its path."""
     path = Path(path)
-    path.write_text(render_report(look, previews, files), encoding="utf-8")
+    path.write_text(
+        render_report(look, previews, files, preview_count), encoding="utf-8"
+    )
     return path

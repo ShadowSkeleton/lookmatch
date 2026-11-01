@@ -11,13 +11,13 @@ own photos. It measures both and builds one LUT that gives your camera's
 photos that look, including photos you take later. You get a LUT and presets
 you can use in Lightroom, Photoshop, DaVinci Resolve, and other editing apps.
 
-> **Status:** early development, not ready to use yet. The whole engine is
-> built and tested, and a LUT from lookmatch looks identical in Photoshop and
-> DaVinci Resolve. It matches a look closely when the reference photos show
-> the same or similar scenes as your photos. When they show different
-> scenes, it learns the safe part of the look (black and white points and
-> color tint) and leaves the rest alone: see [Benchmark](#benchmark). Star
-> the repo to follow along.
+> **Status:** early development. You can [try it](#try-it), but expect rough
+> edges. The whole engine is built and tested, and a LUT from lookmatch
+> looks identical in Photoshop and DaVinci Resolve. It matches a look
+> closely when the reference photos show the same or similar scenes as your
+> photos. When they show different scenes, it learns the safe part of the
+> look (black and white points and color tint) and leaves the rest alone:
+> see [Benchmark](#benchmark). Star the repo to follow along.
 
 ## Built on measurement, not guessing
 
@@ -82,6 +82,40 @@ primaries, before (left) and after (right).
 Photoshop and DaVinci Resolve, was measured on all 69 patches: Photoshop
 matches lookmatch exactly, and Resolve is within 1 level out of 255
 ([results](bench/APP_CHECK_RESULTS.md)).
+
+## Try it
+
+lookmatch isn't on PyPI yet. To try it now, you need Python 3.11 or newer:
+
+```bash
+git clone https://github.com/ShadowSkeleton/lookmatch.git
+cd lookmatch
+python3 -m venv .venv
+.venv/bin/pip install -e .
+```
+
+Put a few photos with the look you want in one folder, and at least 5 of
+your own unedited photos in another. Then:
+
+```bash
+.venv/bin/lookmatch fit ~/Pictures/look-i-love ~/Pictures/my-photos --name "Airy"
+```
+
+Your photos are only read, never changed. lookmatch makes a new folder,
+`Airy/`:
+
+| File | What it is |
+|---|---|
+| `report.html` | Open this first: your photos before and after, what the look does, and anything to check |
+| `Airy_33.cube` | The look as a LUT, for Photoshop, DaVinci Resolve and most apps |
+| `Airy_hald.png` | The same LUT as an image, for RawTherapee and darktable |
+| `Airy_preset.xmp` | A Lightroom and Camera Raw preset you can edit (close to the look, not exact) |
+| `LIGHTROOM_PROFILE.md` | How to use the exact look in Lightroom |
+| `look.json` | Everything lookmatch measured, to reproduce the look |
+| `previews/` | Your photos with the look |
+
+If your photos have people, add `--portrait` to keep skin tones natural.
+Step-by-step guides for each app: [docs/apps.md](docs/apps.md).
 
 ## How it's tested
 
