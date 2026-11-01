@@ -122,7 +122,9 @@ to learn it and use it.
 ## Outputs of one run (folder NAME/)
 - NAME_33.cube            Adobe/IRIDAS .cube, LUT_3D_SIZE 33, red changes fastest
 - NAME_hald.png           Hald CLUT level 8 (512x512)
-- NAME_preset.xmp         Lightroom/ACR preset: tone curve + color grading wheels
+- NAME_preset.xmp         Lightroom/ACR preset: tone curve (master point curve) +
+                          split toning (R/G/B point curves). Color Grading
+                          wheels need a Lightroom measurement first.
 - LIGHTROOM_PROFILE.md    steps to turn the .cube into a LR profile via Camera Raw
 - look.json               every fitted parameter + version + seed (reproducible)
 - report.html             before/after grid, curves, metrics, warnings

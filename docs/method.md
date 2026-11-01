@@ -416,6 +416,71 @@ toning is shown as the tint actually added at three brightness levels
 strength (OKLab chroma under 0.005: none; under 0.015: subtle; under 0.03:
 moderate; above: strong).
 
+## Exporting the look
+
+Each look is written in several formats, because editing apps read looks
+differently. The `.cube` LUT is the master copy; the other files are made
+from it or from the same fitted look.
+
+**.cube** (Adobe Cube LUT specification 1.0): the 33-point LUT itself.
+Photoshop and DaVinci Resolve apply it exactly as lookmatch does (Photoshop
+pixel for pixel, Resolve within 1 level; see
+[bench/APP_CHECK_RESULTS.md](../bench/APP_CHECK_RESULTS.md)).
+
+**Hald CLUT** (`NAME_hald.png`): the same LUT stored as a 512 x 512 image
+(level 8, 64 points per side), for apps that read looks as images. Pixel i,
+read left to right and top to bottom, holds the output for red = i mod 64,
+green = (i div 64) mod 64, blue = i div 4096, each divided by 63. The
+identity image matches ImageMagick's `hald:8` exactly. The 33-point LUT is
+sampled at the 64 points with trilinear interpolation and rounded to 8
+bits. Because apps interpolate between 64 points instead of the original 33,
+the result differs slightly from the .cube: on the test LUT, 99% of colors
+are within half a level and the worst about 3 levels, and ImageMagick's
+`-hald-clut` lands within 1 level of lookmatch on 99% of the test chart's
+pixels.
+
+**Lightroom preset** (`NAME_preset.xmp`): the tone curve and split toning
+as four point curves, so they can be edited in Lightroom's Tone Curve panel.
+
+- *Master curve.* A neutral gray has the same encoded value in sRGB and in
+  Lightroom's curve space (ProPhoto primaries with the sRGB tone response,
+  which Adobe calls Melissa RGB), because gray is gray whatever the
+  primaries. So for each input level, the target is the gray the look's
+  tone curve gives: sRGB gray to OKLab L, through the tone curve, back to
+  sRGB.
+- *Red, green and blue curves.* For each gray, the target is the tinted
+  color the split toning gives it, converted to Lightroom's curve space
+  (linear sRGB to ProPhoto primaries with Bradford adaptation from D65 to
+  D50, rows scaled so gray stays gray, then the sRGB tone response). The
+  channel curves are fitted on top of the master curve's output, assuming
+  Lightroom applies them after it.
+- *Points.* Each curve is sampled at all 256 levels, then points are picked
+  greedily: start from both ends and add the level where straight lines
+  between the points miss the target most, at least 4 levels from every
+  point so far, until every level is within half a level or there are 16
+  points. Lightroom draws a smooth curve through the points. Levels no photo
+  reaches (for example above a lowered white point) continue at slope 1.
+- *Limits.* In the deepest shadows (the first few levels), lifted blacks
+  become an almost vertical rise in sRGB levels, which no smooth point
+  curve can follow: there the preset can miss by several levels. Point
+  curves change each color channel separately, so saturated colors respond
+  differently than to the LUT, and the LUT's color-by-color corrections
+  (sliced optimal transport) can't be written as curves. The preset is an
+  editable approximation; the profile carries the exact look.
+- *Not used: the Color Grading wheels.* They would be easier to edit, but
+  how a wheel's saturation number turns into an amount of tint isn't
+  published. Using them needs a measurement of Lightroom's response (a gray
+  ramp exported with known wheel settings), which hasn't been done yet.
+- Every XMP field name and value format is copied from a preset saved by
+  Lightroom Classic (`tests/fixtures/lr_preset_reference.xmp`), and a test
+  checks that the preset uses no other field.
+
+**Lightroom profile** (`LIGHTROOM_PROFILE.md`): Lightroom Classic can't load
+a `.cube` file itself, but Camera Raw can turn one into a profile once, with
+the LUT's color space set to sRGB. The guide walks through it with the
+look's own file names. These steps haven't yet been checked with a
+measurement, the way Photoshop and Resolve were.
+
 ## Baselines
 
 To know whether lookmatch helps, it is compared with simpler methods. Each
