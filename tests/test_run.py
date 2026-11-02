@@ -1,3 +1,4 @@
+import re
 import sys
 from pathlib import Path
 
@@ -16,6 +17,8 @@ from test_pipeline import LOOK, _save, _scene  # noqa: E402
 from lookmatch.apply import apply_lut  # noqa: E402
 
 runner = CliRunner()
+# CI terminals turn on color; Rich then splits option names with color codes.
+_ANSI = re.compile(r"\x1b\[[0-9;]*m")
 
 
 @pytest.fixture
@@ -115,4 +118,4 @@ def test_cli_missing_folder(tmp_path: Path) -> None:
 def test_cli_fit_help() -> None:
     result = runner.invoke(app, ["fit", "--help"])
     assert result.exit_code == 0
-    assert "--portrait" in result.output
+    assert "--portrait" in _ANSI.sub("", result.output)
