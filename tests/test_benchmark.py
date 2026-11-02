@@ -81,6 +81,15 @@ def test_folds_never_share_photos() -> None:
         assert len(ref) + len(inputs) == 7
 
 
+def test_shoots_follow_file_numbers() -> None:
+    names = ["DSC0100.ARW", "DSC0103.ARW", "DSC0110.ARW", "DSC0400.ARW",
+             "DSC0401.ARW", "DSC0402.ARW", "DSC0900.ARW", "notes.jpg"]  # fmt: skip
+    assert bench.shoots(names) == [[0, 1, 2], [3, 4, 5], [6], [7]]
+    splits = bench.shoot_folds(names, max_folds=3)
+    assert splits == [([0, 1, 2], [3, 4, 5, 6, 7]), ([3, 4, 5], [0, 1, 2, 6, 7])]
+    assert bench.shoot_folds(["a1.jpg", "a2.jpg", "a3.jpg"]) == []  # one shoot
+
+
 def test_summary_and_report(result, tmp_path: Path) -> None:  # type: ignore[no-untyped-def]
     scores, photos, looks = result
     rows = bench.summarize(scores)

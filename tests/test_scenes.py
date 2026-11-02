@@ -72,3 +72,26 @@ def test_scene_match() -> None:
 def test_rejects_bad_input() -> None:
     with pytest.raises(ValueError, match="RGB"):
         scenes.structure(np.zeros((10, 10)))
+
+
+def test_effective_count() -> None:
+    from lookmatch.scenes import effective_count
+
+    assert effective_count(5, 0.0, 1.0) == pytest.approx(1.0)  # one shoot
+    assert effective_count(5, 1.0, 1.0) == pytest.approx(5.0)  # as varied as yours
+    assert effective_count(5, 2.0, 1.0) == pytest.approx(5.0)
+    assert 1.0 < effective_count(5, 0.5, 1.0) < 5.0
+    assert effective_count(1, 0.0, 1.0) == pytest.approx(1.0)
+
+
+def test_shrink_weight() -> None:
+    from lookmatch.scenes import shrink_weight
+
+    signal, spread = np.array([0.01, 0.01]), np.array([0.001, 0.001])
+    alone = shrink_weight(signal, spread, 10, None, caution=2.0)
+    np.testing.assert_allclose(alone, 0.01 / (0.01 + 2.0 * 0.0001))
+    # The same references, but your photos show scenes scatter a lot more:
+    # agreeing references are one shoot, so the change is shrunk hard.
+    shoot = shrink_weight(signal, spread, 10, np.array([0.02, 0.02]), caution=2.0)
+    assert np.all(shoot < 0.3)
+    assert shrink_weight(np.zeros(1), np.zeros(1), 3, np.zeros(1), 2.0)[0] == 0.0

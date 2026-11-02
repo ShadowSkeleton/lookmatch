@@ -90,3 +90,46 @@ def distance_match(distance: float, scale: float = SCENE_SCALE) -> float:
 def scene_match(copied: float, distance: float) -> float:
     """Combine both measurements: the larger one wins."""
     return max(float(copied), distance_match(distance))
+
+
+def effective_count(
+    count: int, spread: npt.ArrayLike, scene: npt.ArrayLike
+) -> npt.NDArray[np.float64]:
+    """How many independent scenes ``count`` reference photos are worth.
+
+    Photos from one shoot agree with each other because they share light
+    and content, not only the look. Comparing the references' spread with
+    the scene spread (how much your photos, which share no look, scatter)
+    gives the intra-class correlation rho = 1 - spread / scene, clipped to
+    [0, 1], and the effective count n / (1 + (n - 1) rho) (Kish 1965).
+    References as varied as your photos count fully; references that agree
+    perfectly count as one scene. ``spread`` and ``scene`` are variances.
+    """
+    s, v = np.asarray(spread, dtype=np.float64), np.asarray(scene, dtype=np.float64)
+    rho = np.clip(1.0 - s / np.maximum(v, 1e-30), 0.0, 1.0)
+    return np.asarray(count / (1.0 + (count - 1) * rho), dtype=np.float64)
+
+
+def shrink_weight(
+    estimate_sq: npt.ArrayLike,
+    spread: npt.ArrayLike,
+    count: int,
+    scene: npt.ArrayLike | None,
+    caution: float,
+) -> npt.NDArray[np.float64]:
+    """Return how much of a measured change to keep, 0 to 1, per entry.
+
+    keep = signal / (signal + caution * noise), with signal the squared
+    change and noise its squared standard error (empirical Bayes shrinkage,
+    Efron and Morris 1975). The noise is the references' own spread / count,
+    and, when ``scene`` (the spread of your photos) is given, at least
+    scene / effective_count: a change seen in one shoot is only as
+    trustworthy as one scene.
+    """
+    signal = np.asarray(estimate_sq, dtype=np.float64)
+    noise = np.asarray(spread, dtype=np.float64) / count
+    if scene is not None:
+        noise = np.maximum(
+            noise, np.asarray(scene) / effective_count(count, spread, scene)
+        )
+    return np.asarray(signal / np.maximum(signal + caution * noise, 1e-30))

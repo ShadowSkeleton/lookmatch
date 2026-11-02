@@ -25,12 +25,15 @@ safe alternative used when the scenes differ: it only matches the black and
 white points. The pipeline blends the two by how alike the scenes are.
 """
 
+from collections.abc import Sequence
 from typing import Any
 
 import numpy as np
 import numpy.typing as npt
 from scipy.interpolate import PchipInterpolator
 from scipy.optimize import isotonic_regression
+
+from lookmatch import scenes
 
 FloatArray = npt.NDArray[np.floating[Any]]
 
@@ -39,6 +42,7 @@ GRID = np.linspace(0.0, 1.0, SAMPLES)  # input lightness of each curve sample
 QUANTILES = 1000
 KNOT_GROUP = 20  # quantile pairs averaged into one knot (about 50 knots)
 END_LOW, END_HIGH = 0.005, 0.995  # quantiles used as black and white points
+END_CAUTION = 2.0  # same caution as the split toning (toning.CAUTION)
 
 
 def _lightness(values: npt.ArrayLike, what: str) -> npt.NDArray[np.float64]:
@@ -91,6 +95,9 @@ def fit_end_points(
     reference_lightness: npt.ArrayLike,
     low: float = END_LOW,
     high: float = END_HIGH,
+    input_photos: Sequence[npt.ArrayLike] = (),
+    reference_photos: Sequence[npt.ArrayLike] = (),
+    caution: float = END_CAUTION,
 ) -> npt.NDArray[np.float64]:
     """Fit only the black and white points: the safe curve for other scenes.
 
@@ -101,11 +108,34 @@ def fit_end_points(
     say more about the look than about the scene, while the full histogram
     in between mostly says how bright the scenes were. Returns 256 samples
     like fit_tone_curve.
+
+    Given the lightness of each photo (``input_photos`` and
+    ``reference_photos``), each point's move is shrunk like the split
+    toning (scenes.shrink_weight): how much the references' own points
+    scatter, and how much your photos' points scatter from scene to scene,
+    say how far a move seen in a few photos, or in one shoot, can be
+    trusted.
     """
     x = _lightness(input_lightness, "input")
     y = _lightness(reference_lightness, "reference")
     x0, x1 = np.quantile(x, [low, high])
     y0, y1 = np.quantile(y, [low, high])
+    if len(input_photos) >= 2:
+        q_in = np.array(
+            [np.quantile(_lightness(p, "input"), [low, high]) for p in input_photos]
+        )
+        q_ref = np.array(
+            [
+                np.quantile(_lightness(p, "reference"), [low, high])
+                for p in reference_photos
+            ]
+        )
+        spread = q_ref.var(axis=0, ddof=1) if len(q_ref) >= 2 else np.zeros(2)
+        move = np.array([y0 - x0, y1 - x1])
+        keep = scenes.shrink_weight(
+            move**2, spread, max(len(q_ref), 1), q_in.var(axis=0, ddof=1), caution
+        )
+        y0, y1 = x0 + keep[0] * move[0], x1 + keep[1] * move[1]
     if x1 - x0 < 1e-6:  # every input pixel had about the same lightness
         return GRID.copy()
     curve = np.interp(

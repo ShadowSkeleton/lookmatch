@@ -19,10 +19,14 @@ answer *is* known:
    to the same photos, pixel by pixel with **ΔE 2000**, the standard measure
    of visible color difference (below about 1 is invisible).
 
-Two conditions are measured:
+Three conditions are measured:
 
 - **Different scenes**: references and inputs are different photos. This is
   the real use case.
+- **One shoot**: 3 references from one shoot, inputs from all other shoots.
+  Photos whose file numbers are within 40 of each other count as one shoot.
+  The hard case: the references agree because they share their light and
+  content, not only the look.
 - **Same scenes**: references are L applied to the input photos themselves.
   The easy case, an upper bound on accuracy.
 

@@ -142,3 +142,37 @@ def test_end_points_and_blend_never_decrease() -> None:
     np.testing.assert_allclose(blend_curves(safe, full, 0.0), safe)
     np.testing.assert_allclose(blend_curves(safe, full, 1.0), full)
     np.testing.assert_allclose(fit_end_points(np.full(10, 0.5), rng.random(10)), GRID)
+
+
+def test_end_points_doubt_a_shift_seen_in_one_shoot() -> None:
+    from lookmatch.tone import fit_end_points
+
+    # No look: your photos' black points vary from scene to scene; the
+    # references are one hazy shoot whose darkest tones are all lifted.
+    rng = np.random.default_rng(4)
+    mine = [rng.uniform(rng.uniform(0, 0.5), 1.0, 5000) for _ in range(10)]
+    refs = [rng.uniform(0.2, 1.0, 5000) for _ in range(3)]
+    pooled_in, pooled_ref = np.concatenate(mine), np.concatenate(refs)
+    blind = fit_end_points(pooled_in, pooled_ref)
+    fit = fit_end_points(
+        pooled_in, pooled_ref, input_photos=mine, reference_photos=refs
+    )
+    assert blind[0] > 0.1  # lifted blacks learned from one shoot
+    assert fit[0] < 0.5 * blind[0]
+
+
+def test_end_points_keep_a_lift_seen_in_varied_scenes() -> None:
+    from lookmatch.tone import fit_end_points
+
+    rng = np.random.default_rng(5)
+    mine = [rng.uniform(rng.uniform(0, 0.02), 1.0, 5000) for _ in range(10)]
+    refs = [
+        0.15 + 0.85 * rng.uniform(rng.uniform(0, 0.02), 1.0, 5000) for _ in range(6)
+    ]
+    fit = fit_end_points(
+        np.concatenate(mine),
+        np.concatenate(refs),
+        input_photos=mine,
+        reference_photos=refs,
+    )
+    assert fit[0] > 0.12  # faded blacks seen in every scene are kept

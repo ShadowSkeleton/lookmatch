@@ -9,8 +9,13 @@ you add to bench/looks/):
 
 1. Split your photos into reference photos and input photos that never
    overlap. L applied to the reference photos plays "another photographer's
-   graded photos". (The same-scenes condition instead uses L applied to the
-   input photos themselves: the easy case, an upper bound.)
+   graded photos". Three conditions:
+   - different scenes: about a third of the photos (spanning many shoots)
+     are references, the rest inputs;
+   - one shoot: 3 photos from one shoot are references (shoots are found
+     by file number), photos from every other shoot are inputs;
+   - same scenes: L applied to the input photos themselves: the easy case,
+     an upper bound.
 2. Each method builds a LUT from the references and the inputs: no change,
    Reinhard transfer, plain optimal transport, and lookmatch.
 3. Each LUT is applied to each input photo and compared with the right
@@ -51,7 +56,9 @@ sys.path.insert(0, str(HERE))
 import make_looks  # noqa: E402
 
 METHODS = ("no change", "Reinhard", "plain OT", "lookmatch")
-CONDITIONS = ("different scenes", "same scenes")
+CONDITIONS = ("different scenes", "one shoot", "same scenes")
+SHOOT_GAP = 40  # photos numbered this close together count as one shoot
+SHOOT_REFS = 3  # reference photos taken from one shoot
 BASELINE_SAMPLES = 50_000  # per photo, for the baselines' pooled samples
 # Each photo is scored on a fixed random sample of its pixels. A LUT changes
 # every pixel independently, so this measures the same thing as scoring the
@@ -127,6 +134,46 @@ def folds(n: int, max_folds: int = 3) -> list[tuple[list[int], list[int]]]:
     return out
 
 
+def shoots(names: Sequence[str], gap: int = SHOOT_GAP) -> list[list[int]]:
+    """Group photos (sorted by name) into shoots by their file numbers.
+
+    Cameras number photos in order, so photos whose numbers are within
+    ``gap`` of the previous one count as one shoot. A name without a
+    number is a shoot of its own.
+    """
+    groups: list[list[int]] = []
+    last: int | None = None
+    for i, name in enumerate(names):
+        digits = "".join(c for c in Path(name).stem if c.isdigit())
+        number = int(digits) if digits else None
+        if number is None or last is None or number - last > gap:
+            groups.append([])
+        groups[-1].append(i)
+        last = number
+    return groups
+
+
+def shoot_folds(
+    names: Sequence[str], max_folds: int = 3
+) -> list[tuple[list[int], list[int]]]:
+    """Split photos into (reference, input) lists: references from one shoot.
+
+    References are SHOOT_REFS photos of one shoot; inputs are every photo
+    from other shoots. Shoots are picked evenly across the folder.
+    """
+    big = [g for g in shoots(names) if len(g) >= SHOOT_REFS]
+    if not big:
+        return []
+    picks = sorted(set(np.linspace(0, len(big) - 1, min(max_folds, len(big))).round()))
+    out = []
+    for k in picks:
+        group = big[int(k)]
+        others = [i for i in range(len(names)) if i not in group]
+        if others:  # a folder of a single shoot has nothing to compare
+            out.append((group[:SHOOT_REFS], others))
+    return out
+
+
 def _save(folder: Path, name: str, srgb: npt.ArrayLike) -> None:
     folder.mkdir(parents=True, exist_ok=True)
     pixels = np.round(np.clip(np.asarray(srgb), 0, 1) * 255).astype(np.uint8)
@@ -154,9 +201,15 @@ def run(
             "15 to 30 varied photos give meaningful results."
         )
     scores = []
+    names = [name for name, _ in photos]
     for look_name, look in looks.items():
         for condition in conditions:
-            for k, (ref_idx, in_idx) in enumerate(folds(len(photos), max_folds)):
+            splits = (
+                shoot_folds(names, max_folds)
+                if condition == "one shoot"
+                else folds(len(photos), max_folds)
+            )
+            for k, (ref_idx, in_idx) in enumerate(splits):
                 inputs = [photos[i] for i in in_idx]
                 if condition == "same scenes":
                     refs = [(f"ref_{n}", apply_lut(im, look)) for n, im in inputs]

@@ -311,8 +311,8 @@ lookmatch therefore fits the look in two versions and blends them.
   |t|² / (|t|² + 2 se²), where se is the standard error of the per-photo
   tints (empirical Bayes shrinkage, Efron and Morris 1975). A tint every
   reference agrees on is kept; one they scatter around is shrunk toward
-  none. With a single reference photo there is nothing to compare, and the
-  tint is kept.
+  none. When the references come from one shoot, agreeing proves little;
+  see [References from one shoot](#references-from-one-shoot).
 
 **2. How alike are the scenes?** Two measurements; the larger one wins.
 
@@ -360,6 +360,66 @@ with the same shrinkage was worse than the most-common-color version (4.22
 vs 3.56). The look's scene distance, scene match and how much tint was kept
 per zone are recorded in look.json, along with the fraction of references
 that were copies of your photos.
+
+### References from one shoot
+
+The agreement check above assumes the reference photos are independent
+scenes. Photos from one shoot agree with each other because they share the
+light and the content, not only the look. When 3 references came from one
+shoot and showed mostly warm content, lookmatch learned a strong orange
+midtone tint (OKLab (0.146, 0.145)) even for a look that changes almost
+nothing, and the three photos agreed on it, so nearly all of it was kept.
+
+**Measured.** In an experiment with 3 references from one shoot (shoots
+found by file number; 6 shoots of the maintainer's photos, 8 looks, 12
+input photos from other shoots each), lookmatch averaged 5.93 ΔE 2000
+against 4.54 for doing nothing, and was worse than doing nothing in 27 of 48
+cases. On the three shoots used for the ablation, fitting without the tint
+took it from 7.71 to 5.32, and without the black and white points to 7.44:
+the tint was the main cause, the black and white points a smaller one.
+
+**The fix: your photos measure how far one scene can stray.** Your photos
+share no look, so the scatter of their per-photo tints (and of their black
+and white points) shows how much one scene moves these numbers on its own:
+the *scene spread*. The references' own spread is compared with it, giving
+the intra-class correlation rho = 1 - reference spread / scene spread
+(clipped to [0, 1]) and the effective number of independent scenes
+n / (1 + (n - 1) rho) (Kish's design effect, 1965). References as varied as
+your photos count fully; references that agree perfectly count as one
+scene. The squared standard error used in the shrinkage above is then at
+least scene spread / effective count. A single reference photo counts as
+one scene. The same shrinkage now also applies to the black and white
+points, from each photo's own 0.5% and 99.5% quantiles.
+
+Results on the one-shoot experiment (mean ΔE 2000 over 48 cases; doing
+nothing: 4.54):
+
+| Version | One shoot | Worse than doing nothing |
+|---|---|---|
+| Before | 5.93 | 27 of 48 |
+| Black and white points corrected | 5.66 | 26 of 48 |
+| Tint and black and white points corrected | **4.63** | 21 of 48 |
+
+**The cost.** References from varied scenes that a look makes alike (a look
+that pulls every photo toward the same colors) also agree more than your
+photos do, and some of their tint is now held back. Two variants were
+tried and dropped: scaling the scene spread by how colorful each group is
+(4.12 on varied references, 5.32 on one shoot), and the stricter
+shrinkage max(0, 1 - c se² / |t|²) (no better on average). The effective
+count is recorded in look.json (`reference_scene_count`) but not warned
+about: estimated from 3 photos it is too noisy to trust (two one-shoot sets
+scored a full 3.0, and 15 varied references under a strong look 1.7).
+
+**On the full benchmark** (the "one shoot" condition: 3 shoots, all ~40
+other photos as inputs), lookmatch went from 7.82 to 5.94 (doing nothing:
+4.50; photos made worse: 73% to 59%), better than doing nothing on two of
+the three shoots (4.08 and 4.16 against 4.5) but not on one dominated by
+warm content (9.38, from 13.16). On references from many shoots it went
+from 3.88 to 4.08; same scenes stayed at 0.99.
+
+**What it can't fix.** When everything in a shoot is orange, "the look is
+orange" explains the references as well as "the scene is orange". Only
+references from more than one shoot can tell them apart.
 
 **What is still missing.** On other scenes, lookmatch now learns black and
 white points and tints, but not contrast in the midtones, saturation, or
@@ -568,3 +628,5 @@ photos and 8 looks, and the fix is described in
   and management, Part 2-1: Default RGB colour space, sRGB.
 - B. Ottosson, "A perceptual color space for image processing," 2020.
   https://bottosson.github.io/posts/oklab/
+- L. Kish, *Survey Sampling*, Wiley, 1965. (Design effect, effective
+  sample size of clustered samples.)

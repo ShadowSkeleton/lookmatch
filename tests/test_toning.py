@@ -154,6 +154,47 @@ def test_neutral_toning_shrinks_a_tint_the_references_disagree_on() -> None:
     assert fit.spread > 0.01  # the casts have a spread of 0.02 per channel
 
 
+def _shoot(count: int, seed: int, color: tuple[float, float]) -> list[np.ndarray]:
+    """Photos of one shoot: the same big colored object in every photo."""
+    out = []
+    for p in _photos(count, seed):
+        obj = np.random.default_rng(seed).random(p.shape[0]) < 0.6
+        p[obj, 1:] += color
+        out.append(p)
+    return out
+
+
+def test_neutral_toning_doubts_a_tint_seen_in_one_shoot() -> None:
+    from lookmatch.toning import fit_neutral_toning
+
+    # No look: the references are one shoot dominated by an orange object,
+    # and your photos show varied scenes, each with its own dominant color.
+    rng = np.random.default_rng(7)
+    mine = []
+    for i in range(10):
+        mine += _shoot(1, seed=100 + i, color=tuple(rng.normal(0, 0.06, 2)))
+    refs = _shoot(3, seed=3, color=(0.06, 0.06))
+    blind = fit_neutral_toning(np.vstack(mine), refs)
+    fit = fit_neutral_toning(np.vstack(mine), refs, input_labs=mine)
+    assert np.abs(blind.toning.as_array()).max() > 0.02  # fooled by the shoot
+    assert (
+        np.abs(fit.toning.as_array()).max()
+        < 0.5 * np.abs(blind.toning.as_array()).max()
+    )
+    assert fit.scene_count is not None and fit.scene_count < 1.5
+    assert blind.scene_count is None
+
+
+def test_neutral_toning_keeps_a_tint_seen_in_varied_scenes() -> None:
+    from lookmatch.toning import fit_neutral_toning
+
+    mine = _photos(10, seed=1, cast=1.0)
+    refs = [apply_split_toning(p, TEAL_AND_ORANGE) for p in _photos(8, 2, 1.0)]
+    fit = fit_neutral_toning(np.vstack(mine), refs, input_labs=mine)
+    _close(fit.toning, TEAL_AND_ORANGE, atol=0.006)
+    assert fit.scene_count is not None and fit.scene_count > 4
+
+
 def test_neutral_toning_single_reference_and_errors() -> None:
     from lookmatch.toning import fit_neutral_toning
 

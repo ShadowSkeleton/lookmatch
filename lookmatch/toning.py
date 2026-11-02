@@ -35,6 +35,8 @@ from typing import Any
 import numpy as np
 import numpy.typing as npt
 
+from lookmatch import scenes
+
 FloatArray = npt.NDArray[np.floating[Any]]
 Offset = tuple[float, float]
 
@@ -193,6 +195,9 @@ class NeutralFit:
     # (OKLab a, b) of each photo's own tint from the average tint, over all
     # zones. 0 with a single reference photo.
     spread: float
+    # How many independent scenes the references are worth, judged by their
+    # tints (scenes.effective_count over all zones). None without your photos.
+    scene_count: float | None = None
 
 
 def fit_neutral_toning(
@@ -200,6 +205,7 @@ def fit_neutral_toning(
     reference_labs: Sequence[npt.ArrayLike],
     radius: float = MODE_RADIUS,
     caution: float = CAUTION,
+    input_labs: Sequence[npt.ArrayLike] = (),
 ) -> NeutralFit:
     """Fit split toning that holds up when the scenes differ.
 
@@ -216,8 +222,15 @@ def fit_neutral_toning(
        zero by signal / (signal + caution * noise), where signal is the
        squared pooled tint and noise is the squared standard error of the
        per-photo tints (an empirical Bayes shrinkage, Efron and Morris
-       1975). A single reference photo can't show agreement, so its tint is
-       kept unshrunk.
+       1975).
+    3. References from one shoot agree because they share the scene, not
+       only the look. When ``input_labs`` (each of your photos) is given,
+       the per-photo tints of your photos measure how far one scene's most
+       common color strays with no look at all (the scene spread). The
+       noise is then at least scene spread / scenes.effective_count(), so
+       a tint seen in only one shoot, or one photo, is shrunk as much as
+       one scene's quirk would be. Without your photos, a single reference
+       photo can't show agreement, so its tint is kept unshrunk.
 
     ``reference_labs`` holds the OKLab samples of each reference photo.
     """
@@ -227,18 +240,32 @@ def fit_neutral_toning(
     n_in, m_in = _bin_modes(_check(input_lab, "input"), radius)
     n_ref, m_ref = _bin_modes(np.vstack(refs), radius)
     pooled = _fit_offsets(n_in, m_in, n_ref, m_ref)
-    if len(refs) < 2:
+    variance = np.zeros(3)
+    if len(refs) >= 2:
+        per_photo = np.stack(
+            [_fit_offsets(n_in, m_in, *_bin_modes(r, radius)) for r in refs]
+        )
+        variance = per_photo.var(axis=0, ddof=1).sum(axis=1)  # per zone
+    mine = [_check(x, "input") for x in input_labs]
+    scene = None
+    if len(mine) >= 2:
+        scene = (
+            np.stack([_fit_offsets(n_in, m_in, *_bin_modes(x, radius)) for x in mine])
+            .var(axis=0, ddof=1)
+            .sum(axis=1)
+        )
+    elif len(refs) < 2:
         return NeutralFit(_from_array(pooled), np.ones(3), 0.0)
-
-    per_photo = np.stack(
-        [_fit_offsets(n_in, m_in, *_bin_modes(r, radius)) for r in refs]
+    keep = scenes.shrink_weight(
+        np.sum(pooled**2, axis=1), variance, len(refs), scene, caution
     )
-    variance = per_photo.var(axis=0, ddof=1).sum(axis=1)  # per zone
-    noise = variance / len(refs)  # squared standard error of the mean
-    signal = np.sum(pooled**2, axis=1)
-    keep = signal / np.maximum(signal + caution * noise, 1e-30)
     spread = float(np.sqrt(variance.mean()))
-    return NeutralFit(_from_array(pooled * keep[:, None]), keep, spread)
+    count = (
+        None
+        if scene is None
+        else float(scenes.effective_count(len(refs), variance.sum(), scene.sum()))
+    )
+    return NeutralFit(_from_array(pooled * keep[:, None]), keep, spread, count)
 
 
 def blend_toning(safe: SplitToning, full: SplitToning, weight: float) -> SplitToning:

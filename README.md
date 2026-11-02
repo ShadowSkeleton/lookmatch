@@ -143,16 +143,17 @@ difference (below about 1, people can't see it). Details:
 [bench/README.md](bench/README.md).
 
 Results on 45 of the maintainer's photos (two Sony cameras; city, street,
-portraits, night, desert) with 8 known looks, 15 reference photos and 30
-input photos per test ([full table](bench/RESULTS.md)). Mean ΔE 2000, lower
-is better:
+portraits, night, desert) with 8 known looks ([full table](bench/RESULTS.md)).
+Three tests: 15 references from many shoots (different scenes), 3
+references from one shoot, and references that are your own photos with the
+look (same scenes). Mean ΔE 2000, lower is better:
 
-| Method | Same scenes | Different scenes | Photos made worse (different scenes) |
+| Method | Same scenes | Different scenes | One shoot |
 |---|---|---|---|
-| No change | 4.51 | 4.51 | – |
-| Reinhard color transfer | 3.71 | 7.97 | 84% |
-| Plain optimal transport | **0.62** | 7.41 | 77% |
-| lookmatch | 0.99 | **3.88** | 41% |
+| No change | 4.51 | 4.51 | 4.50 |
+| Reinhard color transfer | 3.71 | 7.97 | 9.87 |
+| Plain optimal transport | **0.62** | 7.41 | 10.11 |
+| lookmatch | 0.99 | **4.08** | 5.94 |
 
 With the same scenes, lookmatch gets within about 1 ΔE of the right answer.
 With different scenes, the classic methods make most photos worse than doing
@@ -160,13 +161,22 @@ nothing: they mistake the difference between two sets of scenes for a look
 (a set of dark canyon photos teaches "darken everything"). lookmatch avoids
 this by measuring how alike the scenes are and, when they differ, learning
 only what holds up across scenes: black and white points and the color tint
-that all the reference photos agree on. That makes it the only method that
-beats doing nothing on average, and on 6 of 8 looks. On the two looks that
-barely change anything, it still adds about 2 ΔE that isn't there (down
-from 7). What it can't learn yet from other
-scenes is midtone contrast, saturation and hue-selective changes, so
-references that resemble your photos still give the best result. How it
-works: [docs/method.md](docs/method.md#when-the-scenes-differ).
+that the reference photos agree on. That makes it the only method that beats
+doing nothing on average (37% of photos made worse, against 77% or more for
+the others), and on 5 of 8 looks. On the two looks that barely change
+anything, it still adds about 1.5 ΔE that isn't there.
+
+**References from one shoot are the hard case.** Photos from one shoot
+agree with each other because they share their light and content, so a warm
+sunset scene can pass for a warm look. lookmatch uses the spread of your own
+photos to judge how much one scene can fool it, which took this test from
+7.82 to 5.94, but it is still worse than doing nothing on average, mostly
+because of one shoot dominated by warm colors. For the best result, use
+reference photos from several different shoots, or of scenes like yours.
+
+What lookmatch can't learn yet from other scenes is midtone contrast,
+saturation and hue-selective changes. How it works:
+[docs/method.md](docs/method.md#when-the-scenes-differ).
 
 ## License
 

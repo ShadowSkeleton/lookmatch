@@ -170,6 +170,7 @@ def fit(
     ref_srgb, in_srgb = np.vstack(ref_photos), np.vstack(in_photos)
     ref_lab, in_lab = io.srgb_to_oklab(ref_srgb), io.srgb_to_oklab(in_srgb)
     ref_labs = [io.srgb_to_oklab(p) for p in ref_photos]
+    in_labs = [io.srgb_to_oklab(p) for p in in_photos]
 
     def tone_and_toning(
         lab: FloatArray, curve: FloatArray, tint: toning.SplitToning | None
@@ -180,9 +181,16 @@ def fit(
 
     # 2. The safe part of the look: black and white points, and the tint of
     # the most common colors, kept only as far as the references agree.
-    safe_curve = tone.fit_end_points(in_lab[:, 0], ref_lab[:, 0])
+    safe_curve = tone.fit_end_points(
+        in_lab[:, 0],
+        ref_lab[:, 0],
+        input_photos=[x[:, 0] for x in in_labs],
+        reference_photos=[x[:, 0] for x in ref_labs],
+    )
     safe_split = toning.fit_neutral_toning(
-        tone_and_toning(in_lab, safe_curve, None), ref_labs
+        tone_and_toning(in_lab, safe_curve, None),
+        ref_labs,
+        input_labs=[tone_and_toning(x, safe_curve, None) for x in in_labs],
     ).toning
 
     # 3. How alike are the scenes? The full fit (whole tone curve, average
@@ -200,7 +208,9 @@ def fit(
         safe_curve, tone.fit_tone_curve(in_lab[:, 0], ref_lab[:, 0]), match
     )
     toned = tone_and_toning(in_lab, curve, None)
-    neutral = toning.fit_neutral_toning(toned, ref_labs)
+    neutral = toning.fit_neutral_toning(
+        toned, ref_labs, input_labs=[tone_and_toning(x, curve, None) for x in in_labs]
+    )
     split = toning.blend_toning(
         neutral.toning, toning.fit_split_toning(toned, ref_lab), match
     )
@@ -274,6 +284,11 @@ def fit(
         metrics={
             "references_copied_from_inputs": copied,
             "reference_tint_spread": neutral.spread,
+            **(
+                {}
+                if neutral.scene_count is None
+                else {"reference_scene_count": neutral.scene_count}
+            ),
             "scene_distance": distance,
             "scene_match": match,
             "transport_strength_used": strength,

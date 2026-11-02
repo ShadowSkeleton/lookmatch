@@ -96,7 +96,11 @@ to learn it and use it.
    b. Split toning: weighted least squares fit of OKLab a/b offsets for
       shadows / midtones / highlights with smooth zone weights. Safe = per
       bin most common color (mean shift), shrunk by how much the reference
-      photos agree (empirical Bayes); full = per bin average color
+      photos agree (empirical Bayes); full = per bin average color.
+      The shrinkage's noise is at least the scene spread of the user's
+      photos / the references' effective scene count (Kish design effect),
+      so references from one shoot don't pass their scene off as the look;
+      the black and white points are shrunk the same way
    c. Residual color: sliced optimal transport in OKLab, strength =
       scene match (only the full fit)
    d. Skin constraint (opt-in with `--portrait`, off by default): YCbCr
